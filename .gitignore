@@ -1,0 +1,42 @@
+### --- JUPYTER NOTEBOOKS & PYTHON --- ###
+# Dossiers de sauvegarde automatique Jupyter
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Fichiers temporaires Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environnements virtuels
+venv/
+env/
+.env
+
+### --- LATEX --- ###
+# Fichiers auxiliaires (générés lors de la compilation)
+*.aux
+*.log
+*.toc
+*.out
+*.nav
+*.snm
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.lof
+*.lot
+
+# Fichiers PDF
+*.pdf
+
+### --- SYSTÈME & IDE --- ###
+# Windows / macOS / Linux
+.DS_Store
+Thumbs.db
+
+# VS Code / PyCharm
+.vscode/
+.idea/
