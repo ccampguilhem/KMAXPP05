@@ -1,0 +1,193 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -2.54cm
+\textwidth 17cm
+\textheight 27cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+\newcommand{\x}{\boldsymbol{x}}
+\newcommand{\w}{\boldsymbol{w}}
+\newcommand{\param}{\boldsymbol{\theta}}
+
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\usepackage{accents}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator{\re}{Re}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L3 FLEX}
+\hfill 2024--2025\\
+\noindent Introduction au Machine Learning 
+\vspace{1cm}
+
+\begin{center}
+{\bf\large \'Epreuve du 3 avril 2025} \\
+{\it Durée 1h30. Les notes de cours et les calculatrices sont autorisées.}
+\end{center}
+%
+
+\section*{Rappel de cours}
+
+\subsection*{Conditions de Karush-Kuhn-Tucker}
+
+\noindent
+Soit $f : \mathbb{R}^d \longrightarrow \mathbb{R}$ une fonction de coût, et $g_j : \mathbb{R}^d \longrightarrow \mathbb{R}, j \in (1, \ldots, m)$ des contraintes linéaires. On considère le problème d'optimisation suivant :
+\begin{align*}
+	\min_{\param \in \mathbb{R}^d} & \:\: f(\param) \\
+	\mbox{s.c.} & \:\: \forall j \in (1, \ldots, m),\:\:  g_j(\param) \leq 0
+\end{align*}
+On appelle le Lagrangien du problème, noté $\mathcal{L}(\param, \boldsymbol{\alpha})$, la fonction suivante :
+\begin{align*}
+	\mathcal{L}(\param, \boldsymbol{\alpha}) = f(\param) + \sum_{j=1}^m \alpha_j g_j(\param), \:\: \alpha_j \geq 0,
+\end{align*}
+où les $\alpha_j$ sont appelés les coefficients de Lagrange.
+Si $f$ admet un minimum en $\param^\ast$ sous les contraintes $g_j(\param^\ast) \leq 0$ pour tout $j \in (1, \ldots, m)$, alors il existe $\alpha_j, j \in (1, \ldots, m)$ vérifiant les conditions suivantes, dites conditions de Karush-Kuhn-Tucker :
+\begin{align}
+	\mbox{{Condition de stationarité}} & & \nabla_{\boldsymbol{\theta}} \mathcal{L}(\boldsymbol{\theta}, \boldsymbol{\alpha}) |_{\boldsymbol{\theta}=\boldsymbol{\theta}^\ast, \boldsymbol{\alpha}=\boldsymbol{\alpha}^\ast} = \boldsymbol{0} \label{eq:1}  \\ 
+	\mbox{{Conditions de faisabilité primale}} & & \forall j \in (1, \ldots, m), g_j(\boldsymbol{\theta}^\ast) \leq 0 \\
+	\mbox{{Conditions de faisabilité duale}} & & \forall j \in (1, \ldots, m), \alpha_j^\ast \geq 0 \\
+	\mbox{{Conditions de relâchement supplémentaires}} & & \forall j \in (1, \ldots, m), \alpha_j^\ast g_j(\boldsymbol{\theta}^\ast) = 0	\label{eq:slack}
+\end{align}
+
+\section{Régression linéaire}
+
+\noindent
+Soit $N$ un entier naturel non nul. Pour $i = 1, \ldots, N$, on considère des observations $X_i \in \mathbb{R}$, fixes, et des variables aléatoires indépendantes $\epsilon_i$. On suppose que les variables $\epsilon_i$ sont centrées et de même variance $\sigma_\ast^2$. 
+Soit $\bar{\beta} \in \mathbb{R}$ un paramètre inconnu, pour $i  = 1, \ldots, N$, on observe $Y_i = \bar{\beta}	X_i + \epsilon_i$. L'objectif est d'estimer le paramètre inconnu $\bar{\beta}$.
+\begin{enumerate}
+	\item On considère la fonction de perte
+	\begin{align*}
+		L_2(\beta) = \sum_{i=1}^N (Y_i - \beta X_i)^2.
+	\end{align*}
+	\begin{itemize}
+		\item[(a)] Montrer que $L_2$ possède un unique minimum sur $\mathbb{R}$ en $\hat{\beta}$ ($\hat{\beta} = \argmin_{\beta} L_2(\beta)$).
+		\item[(b)] Montrer que $\hat{\beta}$ est sans biais ($\mathbb{E}[\hat{\beta}] = \bar{\beta}$).
+		\item[(c)] Montrer que son risque quadratique $r_2(\hat{\beta}, \bar{\beta}):=\mathbb{E}[(\hat{\beta} - \bar{\beta})^2]$ vaut $\frac{\sigma_\ast^2}{\sum_{i=1}^N X_i^2}$.
+	\end{itemize}
+	\item Pour $\lambda > 0$ fixé, on considère maintenant la version \textit{ridge} de la perte $L_2$ :
+	\begin{align*}
+		L_2^{ridge}(\beta, \lambda) = \sum_{i=1}^N (Y_i - \beta X_i)^2 + \lambda \beta^2.
+	\end{align*}
+	\begin{itemize}
+		\item[(a)] Déterminer le paramètre $\hat{\beta}_\lambda$ qui minimise $L_2^{ridge}$ sur $\mathbb{R}$ ($\hat{\beta}_\lambda = \argmin_{\beta} L_2^{ridge}(\beta, \lambda)$) et montrer qu'il peut s'écrire 
+		\begin{align*}
+			\hat{\beta}_\lambda = \frac{\hat{\beta}}{1 + \frac{\lambda}{\sum_{i=1}^N X_i^2}}.
+		\end{align*}
+		\item[(b)] Montrer que
+		\begin{align*}
+			r_2(\hat{\beta}_\lambda, \bar{\beta}) & = \mathbb{E}\big[(\hat{\beta}_\lambda - \mathbb{E}[\hat{\beta}_\lambda] + \mathbb{E}[\hat{\beta}_\lambda] - \bar{\beta})^2\big] \\
+			& = (\mathbb{E}[\hat{\beta}_\lambda] - \bar{\beta})^2 + \mbox{Var}[\hat{\beta}_\lambda] \\
+			& = \frac{\lambda^2 \bar{\beta}^2}{(\lambda + \sum_{i=1}^N X_i^2)^2} + \frac{\sigma_\ast^2 \sum_{i=1}^N X_i^2}{(\lambda + \sum_{i=1}^N X_i^2)^2} =  \frac{\lambda^2 \bar{\beta}^2 + \sigma_\ast^2 \sum_{i=1}^N X_i^2}{(\lambda + \sum_{i=1}^N X_i^2)^2}.
+		\end{align*}
+		La première égalité est générale et est appelée la décomposition biais variance du risque quadratique. \vspace{0.1cm}
+		\item[(c)] Pour $\lambda = \sum_{i=1}^N X_i^2$, de combien est réduit la variance de l'estimateur $\hat{\beta}_\lambda$ par rapport rapport à la version standard ($\lambda = 0$) ? Quel est le "coût" de cette réduction ?  Justifier l'appellation de compromis biais variance.
+	\end{itemize}
+	\item Pour $b > 0$, on considère le problème d'optimisation sous contrainte suivant :
+	\begin{align*}
+		\min_{\beta} & \:\: L_2(\beta) \\
+		\mbox{s.c.} & \:\: \beta^2 \leq b
+	\end{align*}
+	L'objectif est de montrer que ce problème d'optimisation est équivalent au problème de régression \textit{ridge} pour une constante $b$.
+	\begin{itemize}
+		\item[(a)] Déterminer le Lagrangien $\mathcal{L}(\beta, \alpha)$ associé à ce problème d'optimisation.
+		\item[(b)] Notons $\beta^\ast$ et $\alpha^\ast$ les paramètres optimaux de ce problème. Montrer que 
+		\begin{align*}
+			\sum_{i=1}^N X_i^2 \beta^\ast - \sum_{i=1}^N X_i Y_i + \alpha^\ast \beta^\ast = 0.
+		\end{align*}
+		\item[(c)] En déduire qu'il existe un $b$ tel que $\alpha^\ast = \lambda$ et $\beta^\ast = \hat{\beta}_\lambda$. 
+	\end{itemize}
+\end{enumerate}
+
+\section{Régression logistique}
+
+\noindent
+On cherche à expliquer une variable binaire $Y$, qui vaut $0$ ou $1$, à partir d'un vecteur de variables explicatives $X \in \mathbb{R}^d$. Pour cela, on souhaite prédire la probabilité $\gamma(x) = \mathbb{P}(Y = 1 \vert X = x)$, dont les valeurs sont comprises entre 0 et 1. La régression est adaptée à la prédiction de valeurs sur $\mathbb{R}$, on va donc se servir d’une fonction croissante qui transforme l’intervalle $]0, 1[$ en $\mathbb{R}$.
+\begin{enumerate}
+	\item On considère la fonction 
+\begin{align*}
+	f : & \:\:\: ]0, 1[ \longrightarrow \mathbb{R} \\
+	& \:\:\: \gamma \longmapsto \mbox{tan}(\pi \gamma - \frac{\pi}{2})
+	\end{align*}
+	Montrer que la fonction $f$ est croissante et qu'on a $\lim_{\gamma \longrightarrow 0} f(\gamma) = - \infty$, $\lim_{\gamma \longrightarrow 1} f(\gamma) = + \infty$. \vspace{0.1cm}
+
+\noindent
+La variable $f(\gamma(x))$ prend donc ses valeurs sur $\mathbb{R}$. On va pouvoir l'exprimer en fonction de $x$ sous la forme d'une régression linéaire : 
+	\begin{align*}
+		f(\gamma(x)) = \beta_0 + \langle \beta, x \rangle.
+	\end{align*}
+	où $\beta_0 \in \mathbb{R}$ et $\beta \in \mathbb{R}^d$ sont les paramètres du modèle.
+	
+	\item On souhaiterait utiliser la méthode du maximum de vraisemblance pour optimiser le modèle. Pour cela, exprimer la probabilité $\gamma(x) = \mathbb{P}(Y = 1 \vert X = x)$ en fonction des paramètres du modèle.
+	\item On considère que $d = 3$. Après optimisation du modèle, on obtient $\hat{\beta}_0 = 1$ et $\hat{\beta} = \begin{bmatrix}
+		1 \\ 2 \\ -2
+	\end{bmatrix}$. On considère l'échantillon $X_{\mbox{test}}, y_{\mbox{test}}$ suivant :
+	\begin{align*}
+		X_{\mbox{test}} = \begin{bmatrix}
+			x^{(1)} \\
+			x^{(2)} \\
+			x^{(3)} \\
+			x^{(4)} 
+		\end{bmatrix} = \begin{bmatrix}
+			1 & 0 & 0 \\
+			2 & -1 & 0 \\
+			2 & -1 & 1 \\
+			-1 & 0 & 3
+		\end{bmatrix}
+		\:\:\:\:\:\:\:\:
+		y_{\mbox{test}} = 
+		\begin{bmatrix}
+			y^{(1)} \\
+			y^{(2)} \\
+			y^{(3)} \\
+			y^{(4)} 
+		\end{bmatrix}
+		= \begin{bmatrix}
+			 1\\
+			 0\\
+			 0\\
+			 0
+		\end{bmatrix}
+	\end{align*}
+	On définit les prédictions du modèle par
+	\begin{align*}
+		\hat{y}(x) = \begin{cases} 1 \mbox{ si } \gamma(x) \geq 1/2 \\
+		0 \mbox{ sinon } \end{cases}
+	\end{align*}
+	Prédire les classes $\hat{y}(x^{(i)})$ pour $1 \leq i \leq 4$, puis calculer le taux d'erreur sur $X_{\mbox{test}}, y_{\mbox{test}}$.
+	\item Modifier le critère de prédiction pour que le taux d'erreur soit nul.
+\end{enumerate}
+
+
+\end{document}

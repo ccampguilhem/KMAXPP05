@@ -1,0 +1,2614 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -2.54cm
+\textwidth 17cm
+\textheight 27cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+%
+\DeclareMathOperator{\logit}{logit}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L FLEX}
+\hfill 2023--2024\\
+\noindent Introduction au Machine Learning 
+\vspace{1cm}
+
+\begin{center}
+{\bf\large Feuille d'exercice 6} \\
+{\it Introduction à l'optimisation}
+\end{center}
+\section{Racine de $2$}
+\noindent
+On souhaite calculer numériquement $\sqrt{2}$ en minimisant une fonction.
+\begin{enumerate}
+\item En remarquant que  $\sqrt{2}$ est un zéro du polynôme $x^2-2$, déterminer une fonction polynomiale $P$ de degré $3$ sur $]0,+\infty[$ qui est minimale en $\sqrt{2}$.
+\item On se place sur l'intervalle $[1,2]$. Calculer quelques itérations de la méthode de dichotomie sur $P$.  Donner une borne sur l'erreur d'approximation en fonction du nombre d'itérations.
+\item En prenant comme point initial $2$, mettre en place la méthode de descente du gradient et calculer quelques itérations.
+\item En prenant comme point initial $2$, mettre en place la méthode de Newton et calculer quelques itérations.
+\item Généraliser la méthode de Newton au cas où l'on souhaite calculer numérique la racine carré de $\alpha>0$.
+\end{enumerate}
+\section{Régression poissonnienne}
+\noindent
+Pour $n\geq 1$, on considère des nombres réels
+$x_1,\cdots, x_n$. Soit $Y_1,\cdots, Y_n$ des variables aléatoires indépendantes. Pour, $i=1,\cdots,n$, on suppose que $Y_i$ suit la loi $\mathcal{P}(\exp(\alpha^*+\beta^*x_i))$. Ici, $\alpha^*$ et $\beta^*$ sont des paramètres inconnus.
+\begin{enumerate}
+\item Écrire la $\log$-Vraisemblance $l_n(\alpha,\beta)$ associée aux observation $y_i,\; i=1,\ldots, n$.
+\item Montrer que $l_n$ possède un unique maximum sur $\BBr^2$.
+\item On observe $\frac{1}{n}\sum_{i=1}^{n} y_i=1$.
+\begin{enumerate}
+\item Mettre en \oe{uvre} l'algorithme de descente de gradient et calculer quelques itérations de l'algorithme.
+\item Mettre en \oe{uvre} l'algorithme de Newton et calculer quelques itérations de l'algorithme.
+\end{enumerate}
+\end{enumerate}
+\section{More difficult}
+\subsection{En dimension 2}
+Soit l'application $f: \mathbb{R}^{2} \rightarrow \mathbb{R}$ définie par
+%
+$$
+f(x, y)=x y e^{-\pi\left(x^{2}+y^{2}\right)}
+$$
+%
+Déterminer les points critiques de $f$ ainsi que leur nature~: maximum ou minimum local, point-selle, maximum ou minimum global.
+%
+\subsection{Plusieurs fonctions}
+Soit les fonctions $f, g$ et $h$ définies sur $\mathbb{R}^{2}$ par $f(x, y)=x^{4}+y^{4}$, $g(x, y)=(x-y)^{2}$ et $h=f-2 g$.
+\begin{enumerate}
+\item Montrer que les fonctions $f$ et $g$ sont convexes sur $\mathbb{R}^{2}$, mais que $h=f-2 g$ n'est ni convexe ni concave sur $\mathbb{R}^{2}$.
+%
+\item La fonction $h$ admet-elle un minimum ou un maximum sur $\mathbb{R}^{2}$ ?
+%
+\item  Déterminer les points critiques de $h$, et préciser leur nature.
+\end{enumerate}
+%
+
+%
+\end{document}
+%
+%
+%
+%
+%
+%\section*{1. Optimisation de fonctions, Hessienne, convexité}
+%Exercice 1. Soit l'application $f: \mathbb{R}^{2} \rightarrow \mathbb{R}$ définie par
+%
+%$$
+%f(x, y)=x y e^{-\pi\left(x^{2}+y^{2}\right)}
+%$$
+%
+%Déterminer les points critiques de $f$ ainsi que leur nature : maximum ou minimum local, point-selle, maximum ou minimum global.
+%
+%Exercice 2. Soit les fonctions $f, g$ et $h$ définies sur $\mathbb{R}^{2}$ par $f(x, y)=x^{4}+y^{4}$, $g(x, y)=(x-y)^{2}$ et $h=f-2 g$.
+%
+%(1) Montrer que les fonctions $f$ et $g$ sont convexes sur $\mathbb{R}^{2}$, mais que $h=f-2 g$ n'est ni convexe ni concave sur $\mathbb{R}^{2}$.
+%
+%(2) La fonction $h$ admet-elle un minimum ou un maximum sur $\mathbb{R}^{2}$ ?
+%
+%(3) Déterminer les points critiques de $h$, et préciser leur nature.
+%
+%Exercice 3. Soit $f$ la fonction définie sur $\mathbb{R}^{3}$ par $f(x, y, z)=x^{4}-2 x^{2} y+2 y^{2}-$ $2 y z+2 z^{2}-4 z+5$.
+%
+%(1) Déterminer les points critiques de $f$ sur $\mathbb{R}^{3}$
+%
+%(2) Montrer que l'expression $f(x, y, z)$ peut s'écrire sous forme d'une somme de carrés.
+%
+%(3) En déduire les extrema de $f$ sur $\mathbb{R}^{3}$.
+%
+%Exercice 4. Soit $f: \mathbb{R}^{3} \rightarrow \mathbb{R}$ donnée par $f(x, y, z)=x y+y z+z x$. Trouver la valeur maximale et la valeur minimale de $f$ sur $B_{1}:=\left\{(x, y, z) \in \mathbb{R}^{3}: x^{2}+y^{2}+z^{2} \leq 1\right\}$, après avoir démontré qu'elles existent.
+%
+%Exercice 5. Soit $T \subset \mathbb{R}^{2}$ l'ensemble
+%
+%$$
+%T:=\left\{(x, y) \in \mathbb{R}^{2}: x \geq 0, y \geq 0, x+y \leq 1\right\}
+%$$
+%
+%Soit $f$ la fonction donnée par $f(x, y)=-x-2 y-2 x y+\frac{1}{2} x^{2}+\frac{1}{2} y^{2}$.
+%
+%(1) $f$ est-elle convexe ? concave ?
+%
+%(2) Démontrer que tout minimum ou maximum local de $f$ sur $T$ se trouve sur la frontière de $T$.
+%
+%(3) Démontrer que $f$ admet bien un minimum et un maximum sur $T$.
+%
+%(4) Trouver le minimum et le maximum de $f$ sur $T$.
+%
+%Solution. 1) La fonction $f$ n'est ni convexe ni concave, puisque elle est $C^{2}$ et sa matrice Hessienne est
+%
+%$$
+%D^{2} f(x, y)=\left(\begin{array}{rr}
+%1 & -2 \\
+%-2 & 1
+%\end{array}\right)
+%$$
+%
+%de déterminant $\operatorname{det}\left(D^{2} f\right)=-3<0$, ce qui implique que ses valeurs propres sont de signe opposé.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Si il y avait un minimum ou maximum local à l'intérieur il devrait annuler $\nabla f$. Or, $\nabla f(x, y)=(-1-2 y+x,-2-2 x+y)=0$ seulement pour $(x, y)=\left(-\frac{5}{3},-\frac{4}{3}\right) \notin C$ donc il n'est pas possible que $f$ ait un minimum ou un maximum local à l'intérieur.
+%
+%  \item La fonction $f$ est continue et $C$ est fermé (par les inégalités larges) et borné ( $T$ est inclus dans la boule unité), donc compact. On peut donc utiliser le théorème de Weierstrass.
+%
+%  \item On fait une liste de candidats à l'optimisation : il n'y a pas de points à l'intérieur, ils sont donc sur la frontière. Cette frontière est composée de 6 parties : les trois sommets $(0,0),(1,0)$ et $(0,1)$, et les trois côtés $(0, y)$ avec $y \in] 0,1[,(x, 0)$ avec $\in] 0,1[$ et $(x, y)$ avec $x, y \in] 0,1[$ et $x+y=1$. Sur ce dernier côté nous pouvons appliquer le multiplicateur de Lagrange, en imposant $\nabla f=\lambda(1,1)$, où $(1,1)$ est le gradient de la fonction $x+y$. On trouve alors $-1-2 y+x=\lambda=-2-2 x+y$, ce qui donne le système
+%
+%\end{enumerate}
+%
+%$$
+%\left\{\begin{aligned}
+%-1-2 y+x & =-2-2 x+y \\
+%x+y & =1
+%\end{aligned}\right.
+%$$
+%
+%qui a pour solution $(x, y)=\left(\frac{1}{3}, \frac{2}{3}\right)$. Pour les autres côtés il n'est pas nécessaire de faire de multiplicateurs de Lagrange, il suffit d'étudier $f(0, y)=-2 y+\frac{1}{2} y^{2}$, dont la dérivée s'annule pour $y=2$, c'est-à-dire hors de l'intervalle qui nous intéresse, et $f(x, 0)=-x+\frac{1}{2} x^{2}$, dont la dérivée s' annule pour $x=1$, ce qui est aussi hors de l'intervalle d'intérêt (c'est sur son bord). Les points intéressants sont donc $(0,0)$, $(1,0),(0,1)$ et $\left(\frac{1}{3}, \frac{2}{3}\right)$ et on a
+%
+%$$
+%f(0,0)=0, \quad f(1,0)=-\frac{1}{2}, \quad f(0,1)=-\frac{3}{2}, \quad f\left(\frac{2}{3}, \frac{1}{3}\right)=-\frac{11}{6}
+%$$
+%
+%Le minimum est donc réalisé en $\left(\frac{1}{3}, \frac{2}{3}\right)$ et vaut $-\frac{11}{6}$ et le maximum est réalisé en $(0,0)$ et vaut 0 .
+%
+%\section*{Exercice 6. Déterminer les extrema locaux des fonctions suivantes sur $\mathbb{R}^{2}$}
+%$$
+%\begin{aligned}
+%& f_{1}(x, y)=x^{3}+3 x y^{2}-15 x-12 y \\
+%& f_{2}(x, y)=3 x^{3}+x y^{2}-3 a x y \\
+%& f_{3}(x, y)=x^{4}+y^{3} / 3-4 y-2 \\
+%& f_{4}(x, y)=x^{3}+x y^{2}-x^{2} y-y^{3}
+%\end{aligned}
+%$$
+%
+%Pour chaque fonction, montrer que les extrema locaux ne sont pas globaux.
+%
+%Exercice 7. Les sous-ensembles de $\mathbb{R}^{2}$ suivants sont-ils convexes ?
+%
+%$$
+%\begin{aligned}
+%& A_{1}=\left\{(x, y) \in \mathbb{R}^{2}: x y \geq 0\right\} \\
+%& A_{2}=\left\{(x, y) \in \mathbb{R}^{2}: x^{2}+y^{2}-x+y+1 / 4<0\right\} \\
+%& A_{3}=\left\{(x, y) \in \mathbb{R}^{2}: x+2 y+1<0 \text { ou } y \geq 0\right\} \\
+%& A_{4}=\left\{(x, y) \in \mathbb{R}^{2}: x^{2}+y^{2}-6 x+4 y+9<0 \text { et }-2<x+y \leq 2\right\}
+%\end{aligned}
+%$$
+%
+%Exercice 8. Soit $C \subset \mathbb{R}^{2}$ l'ensemble donné par
+%
+%(1) Dessiner l'ensemble $C$.
+%
+%$$
+%C:=\left\{(x, y) \in \mathbb{R}^{2}:\left(x^{2}-1\right)^{2}+y^{2} \leq 4\right\}
+%$$
+%
+%(2) S'agit-il d'un ensemble compact? convexe ?
+%
+%(3) Considérer la fonction $f$ donnée par $f(x, y)=x y$. Admet-elle un minimum et un maximum sur $C$ ?
+%
+%(4) Calculer inf $\{f(x, y):(x, y) \in C\}$ et $\sup \{f(x, y):(x, y) \in C\}$.
+%
+%Solution. 1) L'ensemble $C$ est dessiné à la figure suivante.
+%
+%\begin{center}
+%\includegraphics[width=4.cm]{images/img1.jpg}
+%\end{center}
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item L'ensemble $C$ est bien compact, puisqu'il est fermé (à cause de l'inégalité large dans la définition) et borné (pour tout $(x, y) \in C$ nous avons $|x|,|y| \leq 2$ ). Il n'est pas convexe, parce que les point $A=(1,2)$ et $B=(-1,2)$ appartiennent à $C$ mais leur point intermédiaire $D=(0,2)$ n'y appartient pas puisque $2^{2}+\left(0^{2}-1\right)^{2}=5>4$.
+%
+%  \item La fonction $f$ est continue sur un ensemble compact et elle admet donc un minimum et un maximum sur $C$ par le théorème de Weierstrass.
+%
+%  \item Si on calcule $\nabla f$ on obtient $\nabla f(x, y)=(y, x)$. La contrainte peut s'écrire sous la forme $g(x, y) \leq 0$ avec $g(x, y)=y^{2}+\left(x^{2}-1\right)^{2}-4$ et $\nabla g(x, y)=\left(4 x\left(x^{2}-1\right), 2 y\right)$. Les deux fonctions $f$ et $g$ sont bien dérivables partout (elles sont $C^{1}$ ). La fonction $g$\\
+%permet d'appliquer le théorème des multiplicateurs de Lagrange parce que $\nabla g=0$ seulement en $(0,0),(1,0)$ et $(-1,0)$, qui n'appartiennent pas à l'ensemble où $g=0$ (le bord de $C$ ).
+%
+%\end{enumerate}
+%
+%Les points candidats à la minimisation et à la maximisation sont donc
+%
+%\begin{itemize}
+%  \item les points où $\nabla f=0$, c'est-à-dire juste $(0,0)$,
+%  \item les points où le système donné par le multiplicateur de Lagrange est satisfait
+%\end{itemize}
+%
+%$$
+%\left\{\begin{array}{l}
+%y=4 \lambda x\left(x^{2}-1\right) \\
+%x=2 \lambda y \\
+%y^{2}+\left(x^{2}-1\right)^{2}=4
+%\end{array}\right.
+%$$
+%
+%Pour résoudre le système on remarque d'abord que $\lambda$ ne peut pas être nul (sinon on aurait $x=y=0$ mais la troisième équation n'est pas satisfaite). En multipliant les deux premières équations entre elles après avoir réécrit la deuxième comme $2 \lambda y=x$, on obtient
+%
+%$$
+%2 \lambda y^{2}=4 \lambda x^{2}\left(x^{2}-1\right)
+%$$
+%
+%Avec la troisième équation, et en divisant par $2 \lambda \neq 0$, cela donne
+%
+%$$
+%4-\left(x^{2}-1\right)^{2}=2 x^{2}\left(x^{2}-1\right)
+%$$
+%
+%En posant $t=x^{2}-1$, on a $t \geq-1$ et
+%
+%$$
+%4-t^{2}=2 t(t+1)
+%$$
+%
+%qui est une équation d'ordre deux dont les solutions sont
+%
+%$$
+%t=\frac{-1 \pm \sqrt{13}}{3}
+%$$
+%
+%mais seulement $t=(-1+\sqrt{13}) / 3$ satisfait $t \geq-1$. On trouve donc $x= \pm \sqrt{t+1}=$ $\pm \sqrt{(2+\sqrt{13}) / 3}$. Grâce à la troisième équation du système des multiplicateurs de Lagrange, on obtient $y= \pm \sqrt{4-t^{2}}= \pm \sqrt{22+2 \sqrt{13}} / 3$. Les point sur les bords qui sont candidats à l'optimisation sont donc
+%
+%$$
+%(x, y)=\left( \pm \sqrt{\frac{2+\sqrt{13}}{3}}, \pm \frac{\sqrt{22+2 \sqrt{13}}}{3}\right)
+%$$
+%
+%Les deux choix où $x$ et $y$ ont le même signe donnent une valeur de $f$ égale et positive, les deux avec signes opposés égale et négative, et on compare cela avec $f(0,0)=0$. On en déduit que
+%
+%$$
+%\max _{C} f=\sqrt{\frac{2+\sqrt{13}}{3}} \frac{\sqrt{22+2 \sqrt{13}}}{3}, \quad \min _{C} f=-\sqrt{\frac{2+\sqrt{13}}{3}} \frac{\sqrt{22+2 \sqrt{13}}}{3} .
+%$$
+%
+%Exercice 9. Soit $C \subset \mathbb{R}^{2}$ l'ensemble donné par
+%
+%$$
+%C:=\left\{(x, y) \in \mathbb{R}^{2}:\left(x^{2}-1\right)^{2}+|y| \leq 4\right\}
+%$$
+%
+%(1) Dessiner l'ensemble $C$.
+%
+%(2) S'agit-il d'un ensemble compact ? S' agit-il d'un ensemble convexe ?
+%
+%(3) Considérer la fonction $f$ donnée par $f(x, y)=x^{2}+y$. Admet-elle un minimum et un maximum $\operatorname{sur} C$ ?
+%
+%(4) Calculer inf $\{f(x, y):(x, y) \in C\}$ et $\sup \{f(x, y):(x, y) \in C\}$.
+%
+%Exercice 10. Optimiser les fonctions suivantes sur leurs domaines :
+%
+%$$
+%\begin{aligned}
+%f(x, y, z) & =x^{4}+2 y^{2}+3 z^{2}-y z-23 y+4 x-5 \\
+%g\left(x_{1}, \ldots, x_{n}\right) & =\sum_{j=1}^{n} x_{j} \ln \left(\frac{1}{x_{j}}\right) \\
+%h\left(x_{1}, \ldots, x_{n}\right) & =\prod_{j=1}^{n} x_{j}^{x_{j}}
+%\end{aligned}
+%$$
+%
+%Exercice 11. Soit $f: \mathbb{R} \rightarrow \mathbb{R}$ strictement convexe, $c \in \mathbb{R}$ et $n \in \mathbb{N}$. Sous la contrainte $\sum_{j=1}^{n} x_{j}=c$, trouver l'infimum et le supremum de
+%
+%$$
+%\sum_{j=1}^{n} f\left(x_{j}\right)
+%$$
+%
+%\section*{2. Algorithmes d'optimisAtion ET VITESSE DE CONVERGENCE}
+%Exercice 12 (Dichotomie). Soit $f \in C^{1}(] a, b[, \mathbb{R})$ qui ne possède qu'un seul optimum.
+%
+%(1) Montrer qu'il existe $\left.\left(a_{0}, b_{0}\right) \in\right] a, b\left[{ }^{2}\right.$ tels que $a_{0}<b_{0}$ et $f^{\prime}\left(a_{0}\right)$ et $f^{\prime}\left(b_{0}\right)$ sont de signes différents.
+%
+%(2) On suppose que $f^{\prime}\left(a_{0}\right)<0<f^{\prime}\left(b_{0}\right)$ et que l'optimum est le seul point critique et on effectue l'algorithme par récurrence suivant. Pour tout $n \geq 0$, on définit $c_{n}=\frac{1}{2}\left(a_{n}+b_{n}\right)$, puis on pose
+%
+%$$
+%\left(a_{n+1}, b_{n+1}\right)= \begin{cases}\left(a_{n}, c_{n}\right) & \text { si } f^{\prime}\left(c_{n}\right)>0 \\ \left(c_{n}, b_{n}\right) & \text { si } f^{\prime}\left(c_{n}\right)<0 \\ \left(c_{n}, c_{n}\right) & \text { si } f^{\prime}\left(c_{n}\right)=0\end{cases}
+%$$
+%
+%Montrer que l'algorithme converge vers le minimum global de $f$.
+%
+%(3) Calculer la vitesse de convergence de l'algorithme.
+%
+%(4) Proposer un algorithme dans le cas où $f^{\prime}\left(b_{0}\right)<0<f^{\prime}\left(a_{0}\right)$.
+%
+%Exercice 13 (Algorithme de la section dorée). Soit $f \in C^{0}([a, b], \mathbb{R})$ dont le minimum est le seul extremum local dans $] a, b\left[\right.$. On définit pour $n=0, I_{n}=[a, b]$. On choisit ensuite $\tau \in] 0,1[$ et on effectue l'algorithme suivant.
+%
+%On définit $c=a+\tau(b-a)$ puis $d=c+\tau(b-c)$. Si $f(c)<f(d)$, on définit $I_{n+1}=[a, d]$, sinon on définit $I_{n+1}=[c, b]$. On recommence alors l'algorithme sur $I_{n+1}$.
+%
+%(1) Pour optimiser l'algorithme, on fait en sorte que les deux possibilités d'intervalle à chaque pas sont de même taille. Trouver alors la valeur de $\tau$.
+%
+%(2) Montrer que l'algorithme converge vers le minimum de $f$ et calculer sa vitesse de convergence.
+%
+%Exercice 14. Soit $c>0$ et $B_{1}=\left\{x \in \mathbb{R}^{d},|x|^{2}=x_{1}^{2}+x_{2}^{2}+\cdots+x_{d}^{2} \leq 1\right\}$. Calculer le vitesse de convergence de l'algorithme de gradient à pas fixe pour trouver le minimum de la fonction $f: B_{1} \rightarrow \mathbb{R}$ définie par $f(x)=|x|^{2+c}$ avec un pas $\alpha<1 /(2+c)$. On pourra regarder la suite $1 /\left|x^{(n)}\right|^{c}$ où $x^{(n)}$ est la n-ième valeur donnée par l'algorithme.
+%
+%Solution. Pour obtenir une expression explicite des pas de l'algorithme, on commence par calculer le gradient de $f$. On peut écrire $f=g \circ h$ avec $h: \mathbb{R}^{d} \rightarrow \mathbb{R}_{+}$définie par $h(x)=|x|^{2}=x \cdot x$ et $g: \mathbb{R}_{+} \rightarrow \mathbb{R}$ définie par $g(r)=r^{1+c / 2}$. Comme $\nabla h(x)=\nabla x \cdot x=2 x$, on en déduit que
+%
+%$$
+%\nabla f(x)=g^{\prime}(h(x)) \nabla h(x)=\frac{c+2}{2}\left(|x|^{2}\right)^{\frac{c}{2}} 2 x=(c+2)|x|^{c} x
+%$$
+%
+%Si on écrit $x^{(n)}$ le $n$-ième point calculé par l'algorithme, on a donc
+%
+%$$
+%x^{(n+1)}=x^{(n)}-\alpha \nabla f\left(x^{(n)}\right)=\left(1-\alpha(c+2)\left|x^{(n)}\right|^{c}\right) x^{(n)}
+%$$
+%
+%Si $x^{(0)}=0$ (le point $0=(0,0 \ldots, 0) \in \mathbb{R}^{d}$ ) alors c'est un point fixe, l'algorithme est fini. On suppose donc que $x^{(0)} \neq 0$. On s'attend à ce que l'algorithme converge vers le minimum de $f$ en 0 . On définit donc la suite $u_{n}:=\left|x^{(n)}-0\right|=\left|x^{(n)}\right|$, pour laquelle on obtient
+%
+%$$
+%u_{n+1}=\left|1-\alpha(c+2) u_{n}^{c}\right| u_{n}
+%$$
+%
+%Comme $u_{0} \in(0,1]$ et $\alpha(c+2)<1$, on déduit par une récurrence immédiate que pour tout $n>0,0<u_{n+1} \leq u_{n}<1$, et vérifie
+%
+%$$
+%u_{n+1}=\left(1-\alpha(c+2) u_{n}^{c}\right) u_{n}
+%$$
+%
+%Donc la suite est bornée et décroissante. En particulier, elle admet une limite $\ell \in[0,1]$ qui vérifie $\ell=\left|1-\alpha(c+2) \ell^{c}\right| \ell$, ce qui donne $\ell=0$.
+%
+%On regarde maintenant sa vitesse de convergence. On regarde
+%
+%$$
+%\frac{1}{u_{n+1}^{c}}-\frac{1}{u_{n}^{c}}=\frac{1}{u_{n}^{c}}\left(\frac{1}{\left(1-\alpha(c+2) u_{n}^{c}\right)^{c}}-1\right)=\frac{1}{u_{n}^{c}}\left(\frac{1-\left(1-\alpha(c+2) u_{n}^{c}\right)^{c}}{\left(1-\alpha(c+2) u_{n}^{c}\right)^{c}}\right)
+%$$
+%
+%En utilisant le fait que $1-(1-x)^{c} \sim c x$ et $(1-x)^{c} \sim 1$ lorsque $x \rightarrow 0$, on en déduit que
+%
+%$$
+%\frac{1}{u_{n+1}^{c}}-\frac{1}{u_{n}^{c}} \sim \frac{1}{u_{n}^{c}}\left(\frac{\alpha c(c+2) u_{n}^{c}}{1}\right)=\alpha c(c+2)
+%$$
+%
+%lorsque $n \rightarrow \infty$. En utilisant le fait que l'équivalence de suites positives associées à des séries divergentes entraîne l'équivalence des sommes partielles, on en déduit que
+%
+%$$
+%\frac{1}{u_{n}^{c}}-\frac{1}{u_{0}^{c}}=\sum_{k=0}^{n-1} \frac{1}{u_{k+1}^{c}}-\frac{1}{u_{k}^{c}} \sim \sum_{k=0}^{n-1} \alpha c(c+2)=\alpha c(c+2) n
+%$$
+%
+%ce qui entraîne que
+%
+%$$
+%\left|x^{(n)}-0\right|=u_{n} \underset{n \rightarrow \infty}{\sim} \frac{1}{(\alpha c(c+2) n)^{1 / c}}
+%$$
+%
+%\section*{3. Projection}
+%Exercice 15. Considérer l'ensemble $A=\overline{B(a, 2)} \cap \overline{B(b, 2)} \cap \overline{B(c, 2)} \subset \mathbb{R}^{2}$, où $a=(0,0), b=(1, \sqrt{3})$ et $c=(-1, \sqrt{3})$.
+%
+%(1) Prouver que $A$ est compact et convexe.
+%
+%(2) Donner une expression pour la projection sur le convexe $A$, et dessiner comment cette projection agit sur les différents points du plan.
+%
+%\section*{Solution.}
+%\begin{center}
+%\includegraphics[width=4.cm]{images/img2.jpg}
+%%\includegraphics[max width=\textwidth]{2024_04_26_4a129a8f79f9dd046175g-07}
+%\end{center}
+%
+%\begin{enumerate}
+%  \item L'ensemble $A$ est compact et convexe comme intersection d'un nombre fini d'ensembles fermés, bornés et convexes.
+%
+%  \item On fixe $x=\left(x_{1}, x_{2}\right) \in \mathbb{R}^{2}$ et pour obtenir la projection on cherche le minimiseur $P_{A}(x)$ du problème d'optimisation min $\{|x-y|: y \in A\}$, qui a le même minimiseur que le problème
+%
+%\end{enumerate}
+%
+%$$
+%\min \left\{|x-y|^{2}: y \in A\right\}
+%$$
+%
+%Comme $A$ est convexe, on a unicité de la projection et donc unicité du minimiseur. Comme $f_{x}(y):=|x-y|^{2}$ est $C^{2}$, on commence par regarder les points critiques à l'intérieur du domaine. Or pour $y \in A, \nabla f=2(y-x)=0$ n'est possible que si $x=y$ et donc si $x \in A$. Dans ce cas, on a vérifie bien que $P_{A}(x)=x$.
+%
+%On se place donc à présent dans le cas où $x \notin A$, de telle sorte que $f_{x}$ n'a pas de point critique dans l'intérieur du domaine et donc que son minimum est atteint sur le bord du domaine.
+%
+%Le triangle $(a b c)$ étant équilatéral, l'ensemble $A$ est symétrique par rapport à aux rotations d'angle $2 \pi / 3$ et de centre $O=(0,2 / \sqrt{3})=(0,2 \sqrt{3} / 3)$ (le centre du triangle) et symétrique par rapport à l'axe vertical. On peut donc se restreindre par exemple à étudier les points $x$ de la région $S$ entre l'axe vertical et la demi-droite d'extrémité $O$ et de direction $[O b)$, que l'on peut aussi définir par
+%
+%$$
+%S=\left\{x \in \mathbb{R}^{2}: x_{1} \geq 0 \text { et } x_{2}>\frac{2 \sqrt{3}}{3}+\frac{\sqrt{3}}{3} x_{1}\right\}
+%$$
+%
+%Soit donc $x \in S \backslash A$. Les points candidats à la minimisation sont les points $a, b, c$ ainsi que les points sur les trois arcs de cercle formant le bord du domaine (ab), $(a c)$ et $(c b)$.
+%
+%\begin{itemize}
+%  \item On montre que le minimiseur n'est pas dans $(a c) \cup\{a, c\}$. On remarque que $x \in S \backslash A$ implique $x_{1} \geq 0$ et $x_{2} \geq \sqrt{3}$. Si $y \in(a c)$, alors $y_{1} \leq 0$ et $y_{2} \leq \sqrt{3}$ et au moins l'une des inégalités est stricte. Donc
+%\end{itemize}
+%
+%$$
+%\begin{aligned}
+%|x-y|^{2} & =\left(x_{1}+\left|y_{1}\right|\right)^{2}+\left(x_{2}-\sqrt{3}+\sqrt{3}-y_{2}\right)^{2} \\
+%& >x_{1}^{2}+\left(x_{2}-\sqrt{3}\right)^{2}=|x-(0, \sqrt{3})|^{2}
+%\end{aligned}
+%$$
+%
+%et donc comme $(0, \sqrt{3}) \in A$, le minimiseur ne peut pas être $y \in(a c) \cup\{a, c\}$.
+%
+%\begin{itemize}
+%  \item On montre que le minimiseur n'est pas dans $(a b)$. On utilise le fait que $x \in S \backslash A$ implique que $x_{2} \geq \sqrt{3}$. Si $y \in(a b)$, alors $y_{1} \in\left[0,1\left[\right.\right.$ et $y_{2}<\sqrt{3}$ et donc
+%\end{itemize}
+%
+%$$
+%|x-y|^{2}>\left(x_{1}-y_{1}\right)^{2}+\left(x_{2}-\sqrt{3}\right)^{2}=\left|x-\left(y_{1}, \sqrt{3}\right)\right|^{2}
+%$$
+%
+%et donc comme $\left(y_{1}, \sqrt{3}\right) \in A$, le minimiseur ne peut pas être dans $(a b)$.
+%
+%\begin{itemize}
+%  \item Sur le côté $(c b)$, on a $|y-a|=|y|=2$, et (comme $f$ et $g$ sont $C^{1}$ et $\nabla g$ ne s'annule pas sur (cb)) on peut donc utiliser les multiplicateurs de Lagrange avec la contrainte $g(y)=|y|^{2}-4$, ce qui donne le système
+%\end{itemize}
+%
+%$$
+%\left\{\begin{aligned}
+%2(y-x) & =2 \lambda y \\
+%|y| & =2
+%\end{aligned}\right.
+%$$
+%
+%On déduit de la première équation que $(1-\lambda) y=x$. Si $\lambda=1$, alors $x=(0,0) \in A$ ce qui n'est pas possible. En prenant la norme de chacun de ces vecteurs et en utilisant la seconde équation du système, on obtient $|x|=|1-\lambda||y|=|1-\lambda| 2$, c'est-à-dire que $1-\lambda= \pm \frac{|x|}{2}$, et donc
+%
+%$$
+%y= \pm 2 \frac{x}{|x|}
+%$$
+%
+%Comme $x \in S$ et $y \in(c b)$, on en déduit que $y_{2}>0$ et $x_{2}>0$, ce qui n'est possible si l'on a un plus dans l'expression ci-dessus, et donc
+%
+%$$
+%y=2 \frac{x}{|x|}
+%$$
+%
+%(Remarque: ici, on aurait aussi pu utiliser le fait que l'on projette sur un cercle et utiliser le résultat du cours, que l'on a finalement reprouvé.) Il reste à vérifier dans quels cas un tel point appartient à ( $c b)$. Comme
+%
+%$$
+%(c b)=\left\{y \in \mathbb{R}^{2}:|y|=2 \text { et } y_{2}>\sqrt{3}\left|y_{1}\right|\right\}
+%$$
+%
+%on voit que $2 \frac{x}{|x|} \in(c b)$ si et seulement si $2 \frac{x_{2}}{|x|}>2 \sqrt{3} \frac{\left|x_{1}\right|}{|x|}$, c'est-à-dire (comme $\left.x_{1} \geq 0\right) x_{2}>\sqrt{3} x_{1}$.
+%
+%On déduit de tout cela que pour $x \in S \backslash A$, lorsque $x_{2} \leq \sqrt{3} x_{1}$, le minimiseur ne peut être que $b$, alors que lorsque $x_{2}>\sqrt{3} x_{1}$, comme $2 \frac{x}{|x|}$ est la projection de $x$ sur\\
+%$\overline{B(a, 2)}$ et que $b \in \overline{B(a, 2)},\left|x-2 \frac{x}{|x|}\right| \leq|x-b|$, le minimiseur est $2 \frac{x}{|x|}$. Cela donne
+%
+%$$
+%\begin{cases}P_{A}(x)=2 \frac{x}{|x|} & \text { si } x_{1} \geq 0 \text { et } x_{2} \geq \sqrt{3} x_{1} \\ P_{A}(x)=b & \text { si } x_{1} \geq 0 \text { et } \frac{2 \sqrt{3}}{3}+\frac{\sqrt{3}}{3} x_{1}<x_{2} \leq \sqrt{3} x_{1}\end{cases}
+%$$
+%
+%\begin{center}
+%\includegraphics[width=4.cm]{images/img3.jpg}
+%%\includegraphics[max width=\textwidth]{2024_04_26_4a129a8f79f9dd046175g-09(1)}
+%\end{center}
+%
+%Pour obtenir le cas général, on utilise les symétries comme expliqué au début, pour obtenir $P_{A}(x)=x$ si $x \in A$ et si $x \notin A$,
+%
+%$$
+%\begin{cases}P_{A}(x)=2 \frac{x}{|x|} & \text { si } x_{2} \geq \sqrt{3}\left|x_{1}\right| \\ P_{A}(x)=2 \frac{x-b}{|x-b|} & \text { si } \sqrt{3} x_{1} \leq x_{2} \leq \sqrt{3} \\ P_{A}(x)=2 \frac{x-c}{|x-c|} & \text { si }-\sqrt{3} x_{1} \leq x_{2} \leq \sqrt{3} \\ P_{A}(x)=a & \text { si } x_{2} \leq-\sqrt{3}\left|x_{1}\right| \\ P_{A}(x)=b & \text { si } \sqrt{3} \leq x_{2} \leq \sqrt{3} x_{1} \\ P_{A}(x)=c & \text { si } \sqrt{3} \leq x_{2} \leq-\sqrt{3} x_{1}\end{cases}
+%$$
+%
+%\begin{center}
+%\includegraphics[width=4.cm]{images/img4.jpg}
+%%\includegraphics[max width=\textwidth]{2024_04_26_4a129a8f79f9dd046175g-09}
+%\end{center}
+%
+%Exercice 16. Soit $K \subset \mathbb{R}^{n}$ un sous-ensemble fermé. Pour $x \in \mathbb{R}^{n}$ on définit $d(x, K)=$ $\inf \{|x-y|: y \in K\}$.
+%
+%(1) La borne inférieure dans la définition de $d(x, K)$ est-elle atteinte?
+%
+%(2) Donner un exemple d'ensemble $K$ et de point $x$ telle que cette borne est atteinte mais en plusieurs points $y \in K$.
+%
+%(3) La fonction $d_{K}: x \mapsto d(x, K)$ est-elle continue ?
+%
+%(4) Donner un exemple où la fonction $d_{K}: x \mapsto d(x, K)$ n'est pas convexe.
+%
+%(5) Peut-on dire qu'elle est convexe, si on rajoute l'hypothèse que $K$ est convexe ?
+%
+%Solution. 1) On est en train de minimiser la fonction $f_{x}(y)=|x-y|$ qui dépend continument de la variable $y$. Si $K$ est borné, il est compact, et donc le minimum est atteint par le théorème de Weierstrass. Si $K$ n'est pas borné, on remarque que la fonction que l'on minimise est coercive $\left(f_{x}(y) \rightarrow \infty\right.$ lorsque $y \rightarrow \infty$ ), et donc que la minimisation peut se faire sur un compact : pour $y_{0} \in K$, en notant $R=\left|x-y_{0}\right|$ et $B(x, R)$ la boule de rayon $R$ et de centre $x$, on a en effet
+%
+%$$
+%\inf _{y \in K} f_{x}(y)=\inf _{y \in K \cap B} f_{x}(y)
+%$$
+%
+%et $K \cap B$ est bien fermé (intersection de deux fermés) et borné (Car $K \cap B \subset B$ ), donc compact.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Si $K=\{A, B\}$ avec $A \neq B$ le point $(A+B) / 2$ est à distance égale de $A$ et de $B$, il a donc deux projections.
+%
+%  \item Pour tout $y$ la fonction $x \mapsto|x-y|$ est lipschitzienne de constante 1. Par conséquent, la fonction $d_{K}(x)=\inf \{|x-y|: y \in K\}$ l'est aussi (comme inf d'une famille de fonctions lipschitziennes avec la même distance).
+%
+%\end{enumerate}
+%
+%On peut aussi retrouver ceci par la définition. Si $x, x^{\prime} \in \mathbb{R}^{n}$, alors pour tout $y \in K$, par l'inégalité triangulaire
+%
+%$$
+%d_{K}(x) \leq|x-y| \leq\left|x-x^{\prime}\right|+\left|x^{\prime}-y\right|
+%$$
+%
+%C'est-à-dire que pour tout $y \in K,\left|x^{\prime}-y\right| \geq d_{K}(x)-\left|x-x^{\prime}\right|$, et donc en prenant l'infimum,
+%
+%$$
+%d_{K}\left(x^{\prime}\right) \geq d_{K}(x)-\left|x-x^{\prime}\right|
+%$$
+%
+%Par symétrie, la même inégalité est vraie en échangeant $x$ et $x^{\prime}$, d'où l'on déduit que
+%
+%$$
+%\left|d_{K}\left(x^{\prime}\right)-d_{K}(x)\right| \leq\left|x-x^{\prime}\right|
+%$$
+%
+%et donc $d_{K}$ est continue.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{3}
+%  \item Si $K=\{A, B\}$ avec $A \neq B$, le point $(A+B) / 2$ on a $d_{K}(A)=d_{K}(B)=0$ alors que $d_{K}((A+B) / 2)=|A-B| / 2>0$, ce qui démontre que $d_{K}$ n'est pas convexe.
+%
+%  \item On suppose $K$ convexe. Soit $x_{0}, x_{1} \in \mathbb{R}^{n}$ et $y_{0}, y_{1} \in K$ leurs projections respectives. Soit $t \in[0,1]$. Le point $y_{t}=(1-t) y_{0}+t y_{1}$ appartient à $K$ parce que $K$ est convexe. Donc, en posant $x_{t}:=(1-t) x_{0}+t x_{1}$ et par l'inégalité triangulaire,
+%
+%\end{enumerate}
+%
+%$$
+%\begin{aligned}
+%d_{K}\left(x_{t}\right) \leq\left|x_{t}-y_{t}\right| & =\left|(1-t)\left(x_{0}-y_{0}\right)+t\left(x_{1}-y_{1}\right)\right| \\
+%\leq & (1-t)\left|x_{0}-y_{0}\right|+t\left|x_{1}-y_{1}\right|=(1-t) d_{K}\left(x_{0}\right)+t d_{K}\left(x_{1}\right)
+%\end{aligned}
+%$$
+%
+%ce qui montre la convexité de $d_{K}$.
+%
+%Exercice 17. Considérer les ensembles
+%
+%$$
+%A=\left\{(x, y) \in \mathbb{R}^{2}:|x+y| \leq 1\right\} \quad \text { et } \quad B=\overline{B_{1}}=\left\{(x, y) \in \mathbb{R}^{2}: x^{2}+y^{2} \leq 1\right\}
+%$$
+%
+%(1) Dessiner $A, B$ et $A \cap B$. $A$ et $B$ sont-ils convexes?
+%
+%(2) Démontrer que l'intersection de deux ensembles convexes est toujours convexe.
+%
+%(3) Écrire une formule pour la projection sur $A \cap B$, du type $P_{A \cap B}(x, y)=\ldots$, en distinguant éventuellement des cas (il suffit de la justifier avec un dessin).
+%
+%(4) Lesquelles des relations suivantes sont-elles vraies?
+%
+%$$
+%P_{A \cap B}=P_{A} \circ P_{B}, \quad P_{A} \circ P_{B}=P_{B} \circ P_{A}, \quad P_{A \cap B}=P_{A \cap B} \circ P_{B}
+%$$
+%
+%Exercice 18. Soit $K \subset \mathbb{R}^{2}$ le polyèdre convexe donné par
+%
+%$$
+%K=\left\{x=\left(x_{1}, x_{2}\right) \in \mathbb{R}_{+}^{2}: x_{1} \leq 1, x_{1}+x_{2} \leq 2\right\}
+%$$
+%
+%Trouver les sommets de $K$ et écrire une formule (en distinguant éventuellement plusieurs cas) pour la projection $P_{K}$ sur $K$.
+%
+%\section*{4. Transformée de Fenchel et sous-différentiel}
+%Exercice 19. Soit $a>0, p \geq 1$ et $f: \mathbb{R}^{d} \rightarrow \mathbb{R}$ la fonction définie par
+%
+%$$
+%f(x)=a|x|+\frac{|x|^{p}}{p}
+%$$
+%
+%où $|x|$ désigne la norme euclidienne du vecteur $x \in \mathbb{R}^{d}$.
+%
+%(1) La fonction $f$ est-elle convexe?
+%
+%(2) Calculer $f^{*}$ et $f^{* *}$. On pourra commencer par regarder le cas de la dimension $d=1$.
+%
+%(3) Calculer $\partial f$.
+%
+%Solution. (1) $f$ est convexe car c'est une somme de fonctions convexes.
+%
+%(2) Comme $f$ est convexe, on a $f^{* *}=f$. On calcule à présent $f^{*}$. On se place en dimension $d=1$. Par définition
+%
+%$$
+%f^{*}(y)=\sup _{x} x y-f(x)=\sup _{x} x y-a|x|-\frac{|x|^{p}}{p}
+%$$
+%
+%Si $p>1$ ou si $|y|<a$, on remarque que ce sup est atteint (puisque la fonction a optimiser est continue et $x y-a|x|-\frac{\mid x x^{p}}{p} \rightarrow-\infty$ quand $x \rightarrow \pm \infty$ ) et qu'il est atteint en un point du même signe que $y$ (sinon $-x$ donnerait un résultat meilleur). Considérons d'abord $y \geq 0$. Dans ce cas là on cherche un maximum sur les $x$ positifs, et on cherche donc à maximiser $(y-a) x-\frac{\mid x x^{p}}{p}$. La dérivée s'annule pour $y-a=x^{p-1}$, ce qui n'est possible que pour $y \geq a$ (sinon on n'a pas $x \geq 0$ ). Si $0 \leq y<1$ la dérivée ne s'annule pas, le maximum est donc réalisé sur le bord du domaine $\{x \geq 0\}$, c'est-à-dire en $x=0$, et vaut 0 . Pour $y \geq a$ le maximum est réalisé en $x=(y-a)^{1 / p-1}$, ce qui donne une valeur de $\frac{(y-a)^{p^{\prime}}}{p^{\prime}}$ où $p^{\prime}=\frac{p}{p-1}$. On peut voir que pour $y<0$ on a une valeur\\
+%nulle pour $-a<y<0$ et égale à $\frac{(-y-a)^{p^{\prime}}}{p^{\prime}}$ pour $y \leq-a$. On peut résumer le tout en disant que
+%
+%$$
+%f^{*}(y)=\frac{(|y|-a)_{+}^{p^{\prime}}}{p^{\prime}}
+%$$
+%
+%Quant la fonction est définie sur tout $\mathbb{R}^{d}$, elle est encore convexe comme somme de fonctions convexes. Pour calculer $f^{*}$ on remarque que pour maximiser $x \cdot y-a|x|-\frac{|x|^{p}}{p}$, parmi tous les vecteurs de même norme, il vaut mieux prendre celui qui est parallèle à $y$ et dans la même direction. Disons $x=$ $r \frac{y}{|y|}$ avec $r \geq 0$. Le problème revient ensuite au même que précédemment, puisqu'on doit maximiser $(|y|-a) r-\frac{r^{p}}{p}$, qui est la même fonction d'une variable qu'avant. La réponse est alors encore
+%
+%$$
+%f^{*}(y)=\frac{(|y|-a)_{+}^{p^{\prime}}}{p^{\prime}}
+%$$
+%
+%(3) En $x \neq 0, f$ est dérivable donc $\partial f(x)=\{\nabla f(x)\}=\left\{a|x|^{-1} x-|x|^{p-2} x\right\}$. Le seul cas restant est donc $x=0$. Dans ce cas, comme $f(0)=0$, on a par définition
+%
+%$$
+%\partial f(0)=\left\{z \in \mathbb{R}^{d}: f(y) \geq z \cdot y\right\}
+%$$
+%
+%Si $z \in \partial f(0)$, alors en particulier en prenant $y=r z$ avec $r>0$, on voit qu'il faut que
+%
+%ce qui peut s'écrire
+%
+%$$
+%\operatorname{ar}|z|-\frac{r^{p}|z|^{p}}{p} \geq r|z|^{2}
+%$$
+%
+%$$
+%|z| \leq a-\frac{r^{p-1}|z|^{p-1}}{p}
+%$$
+%
+%En faisant tendre $r \rightarrow 0$, on en déduit que $|z| \leq a$. Réciproquement, si $|z| \leq a$, alors pour tout $y \in \mathbb{R}^{d}$,
+%
+%$$
+%z \cdot y \leq|z||y| \leq a|y| \leq f(y)
+%$$
+%
+%et donc on en déduit que
+%
+%$$
+%\partial f(0)=\overline{B_{a}}=\left\{z \in \mathbb{R}^{d},|z| \leq a\right\}
+%$$
+%
+%Exercice 20. Calculer le sous-différentiel de la fonction $f(x, y)=\sqrt{x^{2}+y^{4}}+$ $\sqrt{x^{4}+y^{2}}$.
+%
+%\section*{5. Choix D’algorithme}
+%Exercice 21. Soit $B:=\left\{x \in \mathbb{R}^{d}:\|x\|_{3} \leq 1\right\}$ la boule unité pour la norme $\ell^{3}$ définie pour $x=\left(x_{1}, \ldots, x_{d}\right) \in \mathbb{R}^{d}$ par $\|x\|_{3}=\left(\left|x_{1}\right|^{3}+\cdots+\left|x_{d}\right|^{3}\right)^{1 / 3}$. Décrire de manière détaillée et explicite au moins une méthode numérique pour calculer la projection sur $B$ et justifier sa convergence. Pourquoi ne serait-il pas raisonnable $d u$ tout de considérer un algorithme de gradient projeté pour répondre à la question précédente?
+%
+%Solution. S'agissant d'une optimisation sous contrainte, un algorithme adapté est, par exemple, celui d'Uzawa. L'algorithme du gradient projeté par contre est complètement inadapté parce qu'il demanderait à utiliser la projection sur $K$, ce qui est exactement ce qu'on cherche à calculer !
+%
+%La projection d'un point $y \in \mathbb{R}^{d} \backslash B$ sur l'ensemble $B$ s'obtient en trouvant le minimiseur du problème suivant
+%
+%$$
+%\min \left\{|x-y|^{2}:\|x\|_{3} \leq 1\right\}
+%$$
+%
+%Pour trouver le minimiseur, l'algorithme d'Uzawa utilise la dualité, et cherche à résoudre
+%
+%$$
+%\max _{\lambda \geq 0} \min _{x \in \mathbb{R}^{d}}|x-y|^{2}+\lambda g(x)
+%$$
+%
+%où l'on peut prendre $g(x)=\|x\|_{3}^{3}-1$. Si on appelle $F(\lambda):=\min _{x \in \mathbb{R}^{d}}|x-y|^{2}+\lambda g(x)$, l'algorithme d'Uzawa est un algorithme de gradient projeté pour la fonction concave $F$ (qu'on cherche à maximiser), soumise à la contrainte $\lambda \geq 0$ (qui est simple à gérer). On sait que $F^{\prime}(\lambda)=g\left(x_{\lambda}\right)$ où $x_{\lambda}$ est le $x$ optimal correspondant à $\lambda$, celui qui minimise $|x-y|^{2}+\lambda g(x)$. Ce $x_{\lambda}$ peut être trouvé en imposant $2(x-y)+\lambda \nabla g(x)=0$. La suite des $\lambda$ produite par l'algorithme doit satisfaire $\lambda_{n+1}=\left(\lambda_{n}+\alpha g\left(x_{\lambda_{n}}\right)\right)_{+}$, où $\alpha>0$ est le pas de l'algorithme de gradient projeté. Ce $\alpha$ doit être suffisamment petit, et éventuellement variable.
+%
+%\begin{itemize}
+%  \item Calcul de $x_{\lambda}$ : pour chaque composante $j$, on doit imposer
+%\end{itemize}
+%
+%$$
+%x_{j}-y_{j}+\lambda \partial_{x_{j}} g(x)=0
+%$$
+%
+%Comme $\partial_{x_{j}} g(x)=3 \operatorname{sign}\left(x_{j}\right) x_{j}^{2}$ (le signe étant celui de $x_{j}$, il est nécessaire que $x_{j}$ ait le même signe que $y_{j}$ ), donc pour $y_{j}>0$ on cherche $x_{j}>0$ tel que $x_{j}-y_{j}+\lambda x_{j}^{2}=0$ et pour $y_{j}<0$ on cherche $x_{j}<0$ tel que $x_{j}-y_{j}-\lambda x_{j}^{2}=0$, ce qui donne
+%
+%$$
+%x_{j}=\frac{-1+\sqrt{1+12 \lambda y_{j}}}{6 \lambda} \text { si } y_{j} \geq 0, \quad x_{j}=\frac{1-\sqrt{1-12 \lambda y_{j}}}{6 \lambda} \text { si } y_{j}<0
+%$$
+%
+%L'algorithme itératif est donc obtenu en partant d'un couple $\left(x^{(0)}, \lambda_{0}\right)$ quelconque et en prenant ensuite
+%
+%$$
+%\begin{aligned}
+%& x_{j}^{(n+1)}=\frac{-1+\operatorname{sign}\left(y_{j}\right) \sqrt{1+12 \lambda_{n}\left|y_{j}\right|}}{6 \lambda_{n}} \quad \text { pour tout } j \in \llbracket 1, d \rrbracket \\
+%& \lambda_{n+1}=\left(\lambda_{n}+\alpha g\left(x^{(n+1)}\right)\right)_{+}
+%\end{aligned}
+%$$
+%
+%\begin{itemize}
+%  \item La suite $x^{(n)}$ obtenue converge alors vers la projection de $y$ sur $K$. La preuve de la convergence est similaire mais plus technique que celle donnée en cours, et sort du cadre du cours.
+%\end{itemize}
+%\section*{1 Optimisation}
+%\subsection*{1.1 Le théorème de Kuhn et Tucker}
+%Exercice 1. On considère le problème
+%
+%$$
+%\max _{g(x) \leq 0} f(x)
+%$$
+%
+%Montrer que, si $x$ est un maximum du problème et la contrainte est qualifiée en $x$, alors il existe $\lambda \leq 0$ tel que
+%
+%$$
+%\nabla f(x)+\lambda \nabla g(x)=0
+%$$
+%
+%Exercice 2. On considère le problème de la boite
+%
+%$$
+%\begin{aligned}
+%& \min _{x_{i} \geq 0}\left(x_{1} x_{2}+2 x_{2} x_{3}+2 x_{1} x_{3}\right) \\
+%& x_{1} x_{2} x_{3}=2
+%\end{aligned}
+%$$
+%
+%\begin{enumerate}
+%  \item Proposer une interprétation du problème.
+%
+%  \item On suppose que le problème admet une solution. Ecrire les conditions nécessaires d'optimalité et calculer cette solution.
+%
+%  \item (difficile) Montrer que le problème admet bien une solution
+%
+%\end{enumerate}
+%
+%Exercice 3. On considère problème
+%
+%$$
+%\max _{x^{3}+y^{3}-3 x y+1=0}(x+y)
+%$$
+%
+%Calculer la solution de ce problème (on admet l'existence d'un maximum).
+%
+%Exercice 4. On considère le problème
+%
+%$$
+%\begin{aligned}
+%& \max _{0 \leq x_{i} \leq 42}\left(x_{1}+x_{2}\right) \\
+%& x_{1}+2 x_{2}+2 x_{3} \leq 72
+%\end{aligned}
+%$$
+%
+%Calculer la solution de ce problème.
+%
+%Exercice 5. On considère le problème
+%
+%$$
+%\begin{aligned}
+%& 0 \leq x^{\max }(3 x+y) \\
+%& 0 \leq y \leq(1-x)^{3}
+%\end{aligned}
+%$$
+%
+%\begin{enumerate}
+%  \item Montrer que le point $(0,1)$ est le seul point vérifiant les conditions nécessaires.
+%
+%  \item Montrer que le point $(1,0)$ est le minimum du problème.
+%
+%\end{enumerate}
+%
+%Exercice 6. Soit $A$ une matrice symétrique de format $n \times n$.
+%
+%\begin{enumerate}
+%  \item Montrer que
+%\end{enumerate}
+%
+%$$
+%m=\min _{\|x\|=1} x^{T} A x
+%$$
+%
+%est la plus petite valeur propre de $A$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Soient $\left\{v_{i}\right\}_{i=1, \ldots, k}$ une famille de vecteurs propres de $A$, deux à deux orthogonaux. Montrer que la quantité
+%\end{enumerate}
+%
+%$$
+%\min _{\|x\|=1,} x^{T} A x
+%$$
+%
+%est une valeur propre de $A$.
+%
+%Exercice 7. Soit $P$ l'hyperplan de $\mathbb{R}^{N}$ d'équation $c^{T} x=d$ (où $c \in \mathbb{R}^{n}, d \in \mathbb{R}$ ). Calculer la projection orthogonale d'un point $y$ de $\mathbb{R}^{n}$ sur $P$, c'est-à-dire le minimum du problème
+%
+%$$
+%\min _{c^{T} x=d} \frac{1}{2}\|x-y\|^{2}
+%$$
+%
+%Exercice 8. Quelles conditions doivent vérifier les réels $p, q, r$ pour que la fonction linéaire $\left(x_{1}, x_{2}, x_{3}, x_{4}\right) \rightarrow x_{1}+p x_{2}+q x_{3}+r x_{4}$ atteigne son maximum sous les contraintes $0 \leq x_{1} \leq x_{2} \leq$ $x_{3} \leq x_{4}$ au point $\left(0,0, \frac{1}{3}, \frac{2}{3}\right)$ ?
+%
+%Exercice 9. Les problèmes suivants ont-ils a priori une unique solution? La (les) calculer.
+%
+%$$
+%\begin{aligned}
+%& \min x^{2}+y^{2}+2 z^{2} \\
+%& x+y \geq 1 \quad y \leq 0 \\
+%& x+2 y+z \geq 0 \quad y \geq x \\
+%& y \leq z \quad x+y+3 \geq 0
+%\end{aligned}
+%$$
+%
+%Exercice 10. Calculer, en fonction du paramètre $u \in \mathbb{R}$, la solution du problème
+%
+%$$
+%\left\{\begin{array}{l}
+%0 \leq x \leq y \leq z \\
+%x+y+z \leq 1
+%\end{array}\right.
+%$$
+%
+%Exercice 11. Déterminer les points vérifiant les conditions nécessaires d'optimalité et trouver la solution du problème si celle-ci existe :
+%
+%$$
+%\left\{\begin{array}{l}
+%\max _{y \leq 0, y \leq x} x^{2}+y \\
+%x+y+3 \geq 0
+%\end{array}\right.
+%$$
+%
+%Exercice 12. Soient $M$ la matrice
+%
+%$$
+%\begin{aligned}
+%& M=\left(\begin{array}{lll}
+%2 & 1 & 1 \\
+%1 & 2 & 1 \\
+%1 & 1 & 2
+%\end{array}\right) \text { et } S \text { l'ensemble convexe } \\
+%& \quad S=\left\{\left(x_{1}, x_{2}, x_{3}\right) \in \mathbb{R}^{3} \mid x_{1}+2 x_{2}+3 x_{3} \leq 1, x_{i} \geq 0 \text { pour } i=1,2,3\right\}
+%\end{aligned}
+%$$
+%
+%Montrer que le problème
+%
+%$$
+%\max _{X \in S} X^{T} M X
+%$$
+%
+%admet une unique solution. La calculer.
+%
+%Ind. L'inverse de $M$ est $M^{-1}=\frac{1}{4}\left(\begin{array}{ccc}3 & -1 & -1 \\ -1 & 3 & -1 \\ -1 & -1 & 3\end{array}\right)$.
+%
+%Exercice 13. On cherche à résoudre le problème
+%
+%
+%\begin{equation*}
+%\min _{(x, y) \in K}(x-2)^{2}+y^{2} \quad \text { où } \quad K=\left\{(x, y) \in \mathbb{R}^{2} \mid 2 x-y^{2} \leq 1 \text { et } x \geq 0\right\} \tag{P}
+%\end{equation*}
+%
+%
+%\begin{enumerate}
+%  \item Montrer que le problème admet au moins une solution.
+%
+%  \item Montrer que la contrainte est qualifiée en tout point.
+%
+%  \item Ecrire les conditions nécessaires d'optimalité du problème.
+%
+%  \item Trouver tous les points satisfaisant les conditions nécessaires d'optimalité.
+%
+%  \item En déduire la (ou les) solution(s) du problème $(\mathcal{P})$.
+%
+%\end{enumerate}
+%
+%\subsection*{1.2 Dualité}
+%Exercice 14. Résoudre par dualité le problème
+%
+%$$
+%\begin{aligned}
+%& \min _{x^{2}+y^{2} \leq 1} \frac{1}{2}\left[(x-2)^{2}+y^{2}+z^{2}\right] \\
+%& y+z \leq 0
+%\end{aligned}
+%$$
+%
+%Exercice 15. Calculer le problème dual de
+%
+%$$
+%\min _{-\log (x)-y \leq 0} x+\frac{1}{2} y^{2}
+%$$
+%
+%Exercice 16. Résoudre par dualité le problème
+%
+%$$
+%\min _{\frac{1}{2} x^{T} A x \leq 1} c^{T} x
+%$$
+%
+%où $A$ est une matrice symétrique définie positive de format $n \times n$, et $c$ un vecteur de $\mathbb{R}^{n}$.
+%
+%Exercice 17. On s'intéresse au problème
+%
+%$$
+%(\mathcal{P}) \quad \min _{C x \leq d} \frac{1}{2} x^{T} A x+b^{T} x
+%$$
+%
+%où $A$ est une matrice $n \times n$ définie positive, $b$ est un vecteur de $\mathbb{R}^{n}, C$ est une matrice de format $l \times n$ et $d$ est un vecteur de $\mathbb{R}^{l}$. L'expression $C x \leq d$ signifie que toute composante de $C x$ est inférieure ou égale à la composante correspondante de $d$. Montrer que le problème dual du problème $(\mathcal{P})$ est le problème suivant
+%
+%$$
+%\max _{\lambda \in \mathbb{R}_{+}^{l}}-\frac{1}{2} \lambda^{T} C A^{-1} C^{T} \lambda-\left(b^{T} A^{-1} C^{T}+d^{T}\right) \lambda
+%$$
+%
+%Exercice 18. On considère $a_{i}(i=1, \ldots, n)$ des réels strictement positifs, et $x$ tel que $\sum_{i=1}^{n} x_{i}^{2} / a_{i}^{2}>$ 1 , c'est-à-dire que $x$ n'appartient pas à l'ellipsoïde
+%
+%$$
+%\mathcal{E}=\left\{u \in \mathbb{R}^{n} \mid \sum_{i=1}^{n} x_{i}^{2} / a_{i}^{2} \leq 1\right\}
+%$$
+%
+%Calculer le problème dual $d(\lambda)$ du problème
+%
+%$$
+%\min _{u \in \mathcal{E}}\|u-x\|^{2}
+%$$
+%
+%Montrer que le maximum de $d(\lambda)$ vérifie
+%
+%$$
+%\sum_{i=1}^{n} \frac{a_{i}^{2} x_{i}^{2}}{\left(a_{i}^{2}+\lambda\right)^{2}}=1
+%$$
+%
+%Exercice 19. Résoudre par dualité le problème
+%
+%$$
+%\min _{\langle s, x\rangle \leq 0} \frac{1}{2}\|x\|^{2}-\langle c, x\rangle
+%$$
+%
+%où $s$ et $c$ sont des vecteurs de $\mathbb{R}^{n}$ non nuls.
+%
+%Exercice 20. On considère le problème
+%
+%$$
+%\min _{A x=b} \frac{1}{2}\|x\|^{2}
+%$$
+%
+%où $A$ est une matrice $m \times n$ et $b$ un vecteur de $\mathbb{R}^{m}$.
+%
+%\begin{enumerate}
+%  \item Quelle est la signification géométrique de ce problème.
+%
+%  \item Calculer le problème dual $(\mathcal{D})$.
+%
+%  \item A quelle condition le problème dual admet-il une unique solution?
+%
+%  \item Calculer dans ce cas cette solution en fonction de $A$ et $b$.
+%
+%\end{enumerate}
+%
+%\subsection*{1.3 Méthodes numériques}
+%\subsection*{1.3.1 Méthodes de pénalisation}
+%Exercice 21 (Méthode de pénalisation intérieure). Soient $f: \mathbb{R}^{d} \rightarrow \mathbb{R}$ et $g: \mathbb{R}^{d} \rightarrow \mathbb{R}$ deux fonctions continues sur $\mathbb{R}^{d}$, strictement convexes avec $g$ coercive. On suppose qu'il existe un point $x_{0}$ tel que $g\left(x_{0}\right)<0$.
+%
+%\begin{enumerate}
+%  \item Montrer que le problème sous contrainte
+%\end{enumerate}
+%
+%$$
+%\min _{x \in K} f(x) \quad \text { où } K:=\left\{x \in \mathbb{R}^{d}: g(x) \leq 0\right\}
+%$$
+%
+%possède une unique solution $\bar{x}$.
+%
+%L'objectif du problème est d'approcher $\bar{x}$ par une méthode de pénalisation. Pour tout $\epsilon>0$, on pose
+%
+%$$
+%J_{\epsilon}(x):=f(x)-\frac{\epsilon}{g(x)} \quad \forall x \in \operatorname{Int}(K)=\left\{x \in \mathbb{R}^{d}: g(x)<0\right\}
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Montrer que $J_{\epsilon}$ possède un unique minimum $x_{\epsilon}$ dans $\operatorname{Int}(K)$.
+%
+%  \item Soit $x \in \operatorname{Int}(K)$. Vérifiez que $J_{\epsilon}(x) \geq J_{\epsilon}\left(x_{\epsilon}\right) \geq f\left(x_{\epsilon}\right)$. En déduire que, si $\tilde{x}$ est une valeur d'adhérence de $\left(x_{\epsilon}\right)$ lorsque $\epsilon \rightarrow 0$, alors $f(x) \geq f(\tilde{x})$.
+%
+%  \item Conclure que $\left(x_{\epsilon}\right)$ tend vers $\bar{x}$ lorsque $\epsilon \rightarrow 0$.
+%
+%  \item On suppose que $f$ et $g$ sont de classe $C^{1}$ sur $\mathbb{R}^{d}$. Ecrire la condition d'optimalité pour $x_{\epsilon}$ et redémontrer l'existence d'un multiplicateur $\lambda \geq 0$ pour $\bar{x}$.
+%
+%  \item Suggérer une méthode numérique d'approximation de $\bar{x}$.
+%
+%\end{enumerate}
+%
+%Exercice 22 (Méthode de pénalisation extérieure). Soient $f: \mathbb{R}^{d} \rightarrow \mathbb{R}$ et $g: \mathbb{R}^{d} \rightarrow \mathbb{R}$ deux fonctions continues sur $\mathbb{R}^{d}$, strictement convexes avec $f$ coercive. On note $\bar{x}$ l'unique solution du problème sous contrainte
+%
+%$$
+%\min _{x \in K} f(x) \quad \text { où } K:=\left\{x \in \mathbb{R}^{d}: g(x) \leq 0\right\}
+%$$
+%
+%L'objectif du problème est d'approcher $\bar{x}$ par une méthode de pénalisation extérieure. Pour tout $\epsilon>0$, on pose
+%
+%$$
+%J_{\epsilon}(x):=f(x)+\frac{1}{\epsilon}(\max \{0, g(x)\})^{2} \quad \forall x \in \mathbb{R}^{d}
+%$$
+%
+%\begin{enumerate}
+%  \item Montrer que $J_{\epsilon}$ possède un unique minimum $x_{\epsilon}$ dans $\mathbb{R}^{d}$.
+%
+%  \item Montrer que la famille $\left(x_{\epsilon}\right)$ est bornée pour $\epsilon \in(0,1)$.
+%
+%  \item Soit $x \in K$. Vérifiez que $J_{\epsilon}(x) \geq J_{\epsilon}\left(x_{\epsilon}\right) \geq f\left(x_{\epsilon}\right)$. En déduire que, si $\tilde{x}$ est une valeur d'adhérence de $\left(x_{\epsilon}\right)$ lorsque $\epsilon \rightarrow 0$, alors $f(x) \geq f(\tilde{x})$.
+%
+%  \item Conclure que $\left(x_{\epsilon}\right)$ tend vers $\bar{x}$ lorsque $\epsilon \rightarrow 0$.
+%
+%  \item On suppose que $f$ et $g$ sont de classe $C^{1}$ sur $\mathbb{R}^{d}$. Vérifier que $J_{\epsilon}$ est de classe $C^{1}$ et suggérer une méthode numérique d'approximation de $\bar{x}$.
+%
+%  \item On suppose que $f$ et $g$ sont de classe $C^{1}$ sur $\mathbb{R}^{d}$ et que la contrainte $K$ est qualifiée. On dit que la pénalisation est exacte si il existe $\epsilon_{0}>0$ tel que $x_{\epsilon}=\bar{x}$ pour tout $\left.\epsilon \in\right] 0, \epsilon_{0}[$. Vérifier que la pénalisation est exacte, si et seulement si, le multiplicateur dans la condition nécessaire d'optimalité pour $\bar{x}$ est nul.
+%
+%  \item Comparer les résultats avec la méthode de pénalisation intérieure de l'exercice précédent.
+%
+%\end{enumerate}
+%
+%Exercice 23 (Méthode de pénalisation exacte). Soient $f: \mathbb{R}^{d} \rightarrow \mathbb{R}$ et $g: \mathbb{R}^{d} \rightarrow \mathbb{R}$ deux fonctions de classe $C^{1}$ sur $\mathbb{R}^{d}$, strictement convexes avec $f$ coercive. On note $\bar{x}$ l'unique solution du problème sous contrainte
+%
+%$$
+%\min _{x \in K} f(x) \quad \text { où } K:=\left\{x \in \mathbb{R}^{d}: g(x) \leq 0\right\}
+%$$
+%
+%On suppose que la contrainte $K$ est qualifiée et on note $\lambda$ le multiplicateur dans la condition nécessaire d'optimalité pour $\bar{x}$.
+%
+%Pour tout $\epsilon>0$, on pose
+%
+%$$
+%J_{\epsilon}(x):=f(x)+\frac{1}{\epsilon}(\max \{0, g(x)\}) \quad \forall x \in \mathbb{R}^{d}
+%$$
+%
+%\begin{enumerate}
+%  \item Montrer que $J_{\epsilon}$ possède un unique minimum $x_{\epsilon}$ dans $\mathbb{R}^{d}$.
+%
+%  \item Montrer que si $\epsilon \in] 0,1 / \lambda\left[\right.$, alors $x_{\epsilon}=\bar{x}$.
+%
+%  \item En pratique, la valeur de $\lambda$ est inconnue et on doit chercher à l'estimer. Montrer que $x_{\epsilon}=\bar{x}$ si $\left.\epsilon \in\right] 0, M^{-1}\left[\right.$ avec $M:=\max _{x \in K}\|\nabla f(x)\| / \min _{x \in \partial K}\|\nabla g(x)\|$.
+%
+%\end{enumerate}
+%
+%\subsection*{1.3.2 Programmation linéaire et algorithme du simplexe}
+%Exercice 24. L'objectif de l'exercice est de montrer qu'on peut mettre tout problème d'optimisation avec critère et contraintes affines sous la forme standard de la programmation linéaire. Soit $C$ une matrice de format $m \times n, a \in \mathbb{R}^{n}$ et $d \in \mathbb{R}^{m}$.
+%
+%\begin{enumerate}
+%  \item On considère le problème
+%\end{enumerate}
+%
+%
+%\begin{equation*}
+%\inf _{x \in K}\langle a, x\rangle \quad \text { où } K:=\left\{x \in \mathbb{R}_{+}^{n}, C x \leq d\right\} \tag{P1}
+%\end{equation*}
+%
+%
+%On définit alors $\tilde{a}=(a, 0) \in \mathbb{R}^{n+m}, \tilde{C}:=\left(C I_{m}\right)$ de format $m \times(n+m)$. Montrer que le problème $(P 1)$ est "équivalent" au problème
+%
+%
+%\begin{equation*}
+%\inf _{(x, y) \in K}\langle\tilde{a},(x, y)\rangle \quad \text { où } K:=\left\{(x, y) \in \mathbb{R}_{+}^{n+m}, \tilde{C}(x, y)=d\right\} \tag{P2}
+%\end{equation*}
+%
+%
+%au sens où la valeur de l'infimum est la même et où l'on peut construire les solutions de l'un à partir des solutions de l'autre.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item On considère le problème
+%\end{enumerate}
+%
+%
+%\begin{equation*}
+%\inf _{x \in K}\langle a, x\rangle \quad \text { où } K:=\left\{x \in \mathbb{R}^{n}, C x=d\right\} \tag{P3}
+%\end{equation*}
+%
+%
+%On pose $\tilde{a}=(a,-a)$ et $\tilde{C}=(C,-C)$. Montrer que le problème ( $P 3)$ est "équivalent" au problème
+%
+%
+%\begin{equation*}
+%\inf _{(x, y) \in K}\langle\tilde{a},(x, y)\rangle \quad \text { où } K:=\left\{(x, y) \in \mathbb{R}_{+}^{2 n}, \tilde{C}(x, y)=d\right\} \tag{P4}
+%\end{equation*}
+%
+%
+%Exercice 25. Soit
+%
+%$$
+%K:=\left\{x=\left(x_{1}, \ldots, x_{5}\right) \in \mathbb{R}_{+}^{5}: x_{1}+x_{2}+x_{3}-x_{4}-x_{5}=1, x_{1}-x_{2}+x_{3}-x_{4}=1\right\}
+%$$
+%
+%Déterminer les sommets de $K$.
+%
+%Exercice 26. On rappelle qu'un point extrémal d'un ensemble convexe fermé $K \subset \mathbb{R}^{n}$ est un point $x$ de $K$ tel que, s'il existe $x^{1}, x^{2} \in K$ et $\left.\lambda \in\right] 0,1\left[\right.$ tels que $x=\lambda x^{1}+\left(1-\lambda x^{2}\right)$, alors $x^{1}=x^{2}=x$.
+%
+%Montrer qu'un ensemble convexe compact $K$ possède toujours un point extrémal. Est-ce encore le cas si $K$ n'est pas compact?
+%
+%(Indication : on pourra considérer le point $x$ de $K$ de norme euclidienne maximale.)
+%
+%Exercice 27. On rappelle que, si $\Gamma$ est une matrice de format $M \times N$, l'ensemble $\left\{\Gamma x, x \in \mathbb{R}_{+}^{N}\right\}$ est un fermé de $\mathbb{R}^{M}$. On considère le problème de programmation linéaire
+%
+%$$
+%(P) \quad \inf _{x \in K}\langle a, x\rangle \quad \text { où } K:=\left\{x \in \mathbb{R}_{+}^{n}, C x=d\right\}
+%$$
+%
+%Montrer que soit l'infimum est $-\infty$, soit le problème admet un minimum. (Indication : on pourra considérer l'ensemble $\left\{(C x,\langle a, x\rangle), x \in \mathbb{R}_{+}^{n}\right\}$.)
+%
+%\section*{2 Programmation dynamique}
+%\subsection*{2.1 Contrôle optimal en temps discret}
+%Exercice 28. Pour $x \geq 0$ et $N \in \mathbb{N}^{*}$, on considère le problème
+%
+%$$
+%W(x):=\inf \left\{\sum_{i=0}^{N-1} u_{i}^{2}, \text { où } u_{i} \geq 0, \sum_{i=0}^{N-1} u_{i}=x\right\}
+%$$
+%
+%On se propose de comparer $W(x)$ par deux méthodes :
+%
+%\begin{enumerate}
+%  \item Calculer $W(x)$ en utilisant les conditions nécessaires de Kuhn et Tucker.
+%
+%  \item Ecrire le problème comme un problème de contrôle à horizon $N$ et utiliser le principe de programmation dynamique. Pour cela,
+%
+%\end{enumerate}
+%
+%(a) Réécrire le problème en posant $U_{n}(x)=[0, x]$ pour $n \leq N-2, U_{N-1}(x)=x, f_{n}(x, u)=$ $x-u, g=0, \ell_{n}(x, u)=u^{2}$.
+%
+%(b) Ecrire la programmation dynamique pour les fonctions valeurs $V_{n}$.
+%
+%(c) En déduire que $V_{n}(x)=x^{2} /(N-n)$.
+%
+%(d) Calculer $W(x)$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item Comparer les deux méthodes.
+%\end{enumerate}
+%
+%Exercice 29. On s'intéresse au problème de croissance optimale décrit par
+%
+%$$
+%\sup _{\left(k_{t}\right)} \sum_{t=0}^{\infty} \beta^{t} \ln \left(k_{t}^{\alpha}-k_{t+1}\right)
+%$$
+%
+%sous les contraintes : $k_{0}=k$ (où $k>0$ est donné), $k_{t+1} \in\left[0, k_{t}^{\alpha}\right]$ pour tout $t \in \mathbb{N}$. Le taux d'actualisation $\beta \in] 0,1[$ et la puissance $\alpha \in] 0,1[$ sont donnés.
+%
+%Pour $k>0$, on note $W(k)$ la valeur de ce problème. L'interprétation économique est que $\left(k_{t}\right)$ représente le capital à l'instant $t$, la différence $k_{t}^{\alpha}-k_{t+1}$ étant la consommation (en gros la différence entre la production $k_{t}^{\alpha}$ et l'investissement $k_{t+1}$ à l'instant $t$ ).
+%
+%\begin{enumerate}
+%  \item Pour $k>0$, soit $v(k)$ la fonction valeur du problème
+%\end{enumerate}
+%
+%$$
+%v(k):=\sup _{\left(k_{t}\right)} \sum_{t=0}^{\infty} \beta^{t} \ln \left(k_{t}^{\alpha}\right)
+%$$
+%
+%sous les mêmes contraintes que pour $W$. Montrer que $v(k)=\frac{\alpha \ln (k)}{1-\alpha \beta}$ et que que $W \leq v$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Montrer que $W$ est solution de l'équation de de point fixe : $f=T f$ avec $T$ l'opérateur défini par
+%\end{enumerate}
+%
+%$$
+%T f(x):=\sup _{y \in\left[0, x^{\alpha}\right]}\left\{\ln \left(x^{\alpha}-y\right)+\beta f(y)\right\}
+%$$
+%
+%pour tout $x>0$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item Pourquoi ne peut on pas affirmer ici directement que $W$ est l'unique solution de l'équation de Bellman?
+%
+%  \item Montrer que $T v=v+c$ avec $c$ une constante négative à déterminer.
+%
+%  \item Calculer les itérées $T^{n} v$ pour $n \in \mathbb{N}$, montrer que cette suite converge vers une limite $v_{\infty}$ que l'on explicitera. Montrer enfin que $T v_{\infty}=v_{\infty}$.
+%
+%  \item Montrer que $W \leq v_{\infty}$.
+%
+%  \item Montrer que $W \geq v_{\infty}$ (plus difficile) et conclure.
+%
+%  \item Montrer que le problème initial admet une solution unique que l'on calculera. On notera $\left(k_{t}^{*}\right)$ cette politique optimale.
+%
+%  \item Etudier la dynamique optimale $\left(k_{t}^{*}\right)$ (monotonie, convergence).
+%
+%\end{enumerate}
+%
+%Exercice 30. Pour $x \geq 0$ et $N \geq 1$ un entier, on définit
+%
+%$$
+%V_{N}(x):=\sup \left\{\prod_{i=0}^{N} x_{i}: x_{i} \geq 0, \sum_{i=0}^{N} x_{i}=x\right\}
+%$$
+%
+%\begin{enumerate}
+%  \item Calculer $V_{1}$
+%
+%  \item Trouver une relation de récurrence entre $V_{N}$ et $V_{N-1}$
+%
+%  \item Montrer que
+%
+%\end{enumerate}
+%
+%$$
+%V_{N}(x)=\frac{x^{N}}{N^{N}}
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{3}
+%  \item En déduire l'inégalité entre la moyenne géométrique et arithmétique
+%\end{enumerate}
+%
+%$$
+%\left(\left|x_{1}\right| \cdots\left|x_{N}\right|\right)^{\frac{1}{N}} \leq \frac{\left|x_{1}\right|+\cdots+\left|x_{N}\right|}{N}
+%$$
+%
+%Et étudier le cas d'égalité.
+%
+%Exercice 31. Résoudre le problème
+%
+%$$
+%\min _{x_{t}} \sum_{t=0}^{2}\left(x_{t}^{2}+t u_{t}^{2}\right)+x_{3}^{2}
+%$$
+%
+%avec $x_{t}$ vérifiant la dynamique $x_{t+1}=x_{t}-u_{t}$ et $x_{0}=1$
+%
+%Exercice 32. Trouver les extrema de
+%
+%$$
+%\sum_{t=0}^{3}\left(t e^{u_{t}}+x_{t}\right)-2 x_{4}
+%$$
+%
+%avec $x_{t}$ vérifiant la dynamique $x_{t+1}=x_{t}+u_{t}$ et $x_{0}=x$ et sous la contrainte $0 \leq u \leq 1$
+%
+%Exercice 33. Résoudre le problème
+%
+%$$
+%\min _{u} \sum_{t=1}^{4}-2 u_{t}-3\left(x_{t}-u_{t}\right)
+%$$
+%
+%avec $x_{t}$ vérifiant la dynamique $x_{t+1}=0.8 u_{t}+0.5\left(x_{t}-u_{t}\right)$ sous la contrainte $0 \leq u$ et $0 \leq(x-u)$
+%
+%Exercice 34. Résoudre le problème
+%
+%$$
+%\min _{u} \sum_{t=0}^{3} \frac{1}{2}\left(x_{t}^{2}+u_{t}^{2}\right)+\frac{1}{2} x_{T}^{2}
+%$$
+%
+%avec $x_{t}$ vérifiant la dynamique $x_{t+1}=x_{t}-u_{t}$ avec $x_{0}=1$
+%
+%Exercice 35. Résoudre le problème
+%
+%$$
+%\max \left(x_{1}+4 x_{2}+2 x_{3}\right)
+%$$
+%
+%avec $x_{1}+x_{2}+x_{3}=1$ et $x_{i} \geq 0$
+%
+%\subsection*{2.2 Calcul des variations}
+%Exercice 36. Ecrire les équations d'Euler associées au problème suivant et en calculer les solutions :
+%
+%$$
+%J_{1}(x)=\int_{0}^{1} 2 t x(t)-x^{2}(t)+3 x^{2}(t) x^{\prime}(t) d t
+%$$
+%
+%et
+%
+%$$
+%J_{2}(x)=\int_{0}^{1} t \sqrt{1+\left(x^{\prime}(t)\right)^{2}} d t
+%$$
+%
+%Exercice 37. Même question pour les problèmes suivants, en tenant compte cette fois des conditions aux extrémités :
+%
+%$$
+%\begin{gathered}
+%J_{1}(x)=\int_{0}^{1}\left(x^{\prime}(t)\right)^{2}+12 t x(t) d t \quad \text { avec } x(0)=2, x(1)=3 \\
+%J_{2}(x)=\int_{0}^{1} x^{\prime}(t)\left(1+(1+t)^{2} x^{\prime}(t)\right) d t \quad \text { avec } x(0)=3, x(1)=2
+%\end{gathered}
+%$$
+%
+%Exercice 38. On considère le problème
+%
+%$$
+%\inf _{x \in C^{1}([0,1]), x(0)=1, x(1)=0} \int_{0}^{1} t \sqrt{1+\left(x^{\prime}(t)\right)^{2}} d t
+%$$
+%
+%(i) Vérifier que, pour tout $x \in C^{1}([0,1]), \int_{0}^{1} t \sqrt{1+\left(x^{\prime}(t)\right)^{2}} d t \geq 1 / 2$.
+%
+%(ii) Montrer que l'infimum est égal à $1 / 2$ (on pourra calculer le critère pour les fonctions de la forme $\left.x_{n}(t)=(1-t)^{n}\right)$.
+%
+%(iii) Montrer que le problème n'a pas de solution.
+%
+%Exercice 39. On considère le problème de calcul des variations (sans condition terminale) :
+%
+%
+%\begin{equation*}
+%\inf _{x \in X, x(0)=A} \int_{0}^{1} L\left(t, x(t), x^{\prime}(t)\right) d t+g(x(1)) \tag{P}
+%\end{equation*}
+%
+%
+%où $X$ est l'ensemble des fonctions de classe $C^{1}$ de $[0,1]$ dans $\mathbb{R}$. Les fonctions $L=L(t, x, p)$ et $g=g(x)$ sont supposés de classe $\mathcal{C}^{1}$ sur $[0,1] \times \mathbb{R} \times \mathbb{R}$ et $\mathbb{R}$ respectivement. On suppose que $x$ est un minimum du problème.
+%
+%(i) Montrer que, pour toute fonction $v:[0,1] \rightarrow \mathbb{R}^{N}$ de classe $C^{1}$ on a
+%
+%$$
+%\int_{0}^{1} \frac{\partial L}{\partial x}\left(t, x(t), x^{\prime}(t)\right) v(t)+\frac{\partial L}{\partial p}\left(t, x(t), x^{\prime}(t)\right) v^{\prime}(t) d t+g^{\prime}(x(1)) v(1)=0
+%$$
+%
+%(ii) Utiliser le lemme de Dubois-Raymond pour démontrer que $x$ vérifie l'équation d'Euler : la fonction $t \rightarrow \frac{\partial L}{\partial p}\left(t, x(t), x^{\prime}(t)\right)$ est de classe $\mathcal{C}^{1}$ sur $[0,1]$ et
+%
+%
+%\begin{equation*}
+%\frac{d}{d t} \frac{\partial L}{\partial p}\left(t, x(t), x^{\prime}(t)\right)=\frac{\partial L}{\partial x}\left(t, x(t), x^{\prime}(t)\right) \quad \forall t \in[0,1] \tag{1}
+%\end{equation*}
+%
+%
+%(iii) En déduire que, pour toute fonction $v:[0,1] \rightarrow \mathbb{R}^{N}$ de classe $C^{1}$ on a $g^{\prime}(x(1)) v(1)=0$.
+%
+%(iv) Montrer alors que $x$ vérifie la "condition de transversalité" $: g^{\prime}(x(1))=0$.
+%
+%(v) On admet que le problème
+%
+%
+%\begin{equation*}
+%\inf _{x \in X, x(0)=1} \int_{0}^{1}\left(x^{\prime}(t)\right)^{2} d t+(x(1))^{2} \tag{P}
+%\end{equation*}
+%
+%
+%admet un minimum. Le déterminer.
+%
+%\subsection*{2.3 Contrôle optimal en temps continu}
+%Exercice 40. On considère le problème de contrôle dans $\mathbb{R}$ :
+%
+%$$
+%V\left(t_{0}, x_{0}\right):=\inf _{u(\cdot)} g(x(T))
+%$$
+%
+%sous la contrainte que $u:\left[t_{0}, T\right] \rightarrow[-1,1]$ est mesurable et que $x(\cdot)$ est l'unique solution de l'EDO
+%
+%$$
+%\left\{\begin{array}{l}
+%\dot{x}(t)=u(t), \quad t \in\left[t_{0}, T\right] \\
+%x\left(t_{0}\right)=x_{0} \in \mathbb{R}
+%\end{array}\right.
+%$$
+%
+%La fonction $g: \mathbb{R} \rightarrow \mathbb{R}$ est supposée continue.
+%
+%\begin{enumerate}
+%  \item Montrer qu'alors la fonction valeur du problème de contrôle est donnée par
+%\end{enumerate}
+%
+%$$
+%V(t, x)=\min _{y \in[x-(T-t), x+(T-t)]} g(y) \quad \forall(t, x) \in[0, T] \times \mathbb{R}
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Montrer que $V$ est continue, mais pas forcément de classe $C^{1}$ sur $[0, T] \times \mathbb{R}$.
+%
+%  \item On suppose que $g$ est convexe et de classe $C^{1}$. Montrer que $V$ est de classe $C^{1}$ sur $[0, T] \times \mathbb{R}$ et vérifie l'équation de Hamilton-Jacobi :
+%
+%\end{enumerate}
+%
+%$$
+%\left\{\begin{array}{l}
+%\left.-\partial_{t} V(t, x)+\left|\frac{\partial V}{\partial x}(t, x)\right|=0 \quad \text { dans }\right] 0, T[\times \mathbb{R} \\
+%V(T, x)=g(x) \quad \text { dans } \mathbb{R}
+%\end{array}\right.
+%$$
+%
+%Exercice 41. On considère une entreprise de pêche qui puise dans une population de poissons dont on note $x(t)$ la taille à la date $t$, si la pêche par unité de temps est notée $v(t)$, l'évolution de $x(t)$ est régie par l'équation différentielle
+%
+%$$
+%\dot{x}(t)=a x(t)-v(t), x(t)=x_{0}
+%$$
+%
+%où le taux de croissance de la population de poissons $a>0$ ainsi que le stock initial de poissons $x_{0}>0$ sont donnés. Le but de l'entreprise de pêche est de maximiser son profit actualisé sur une période $[0, T]$ :
+%
+%$$
+%\int_{0}^{T} e^{-\lambda t}(v(t)-C(v(t))) d t
+%$$
+%
+%où $C$ est une fonction de coût strictement convexe et régulière telle que $C^{\prime}(0)=0$ et $\lim _{v \rightarrow+\infty} C^{\prime}(v)=$ $+\infty$ et $\lambda>0$ est un facteur d'actualisation.
+%
+%\begin{enumerate}
+%  \item Formuler le problème sous la forme d'un problème de calcul des variations.
+%
+%  \item Montrer que le problème possède au plus une solution.
+%
+%  \item Ecrire les conditions d'optimalité.
+%
+%  \item (il sera commode de poser $y(t)=e^{-\lambda t}\left(1-C^{\prime}(a x(t)-\dot{x}(t))\right.$ et de définir la constante $\alpha$ comme la racine de l'équation $\left.C^{\prime}(\alpha)=1\right)$ et calculer la stratégie de pêche optimale.
+%
+%  \item A quelle condition reste-t-il des poissons quel que soit l'horizon $T$ ?
+%
+%\end{enumerate}
+%
+%Exercice 42. On s'intéresse ici au modèle de croissance optimale de Ramsey dans le cas d'un seul secteur de production. Par souci de simplicité on se limitera à un horizon fini $T>0$. On notera $c(t)$ la consommation instantanée d'un ménage représentatif dont la satisfaction est supposée mesurée par la quantité
+%
+%$$
+%\int_{0}^{T} \exp \{-\delta t\} U(c(t)) d t
+%$$
+%
+%où la consommation doit satisfaire la contrainte $c(t) \geq 0$ pour tout $t \in[0, T], \delta>0$ est le taux d'escompte (donné), et la fonction d'utilité $U:[0,+\infty \rightarrow \mathbb{R}$ est supposée strictement concave, croissante et dérivable. On notera par ailleurs $y(t), k(t)$ et $i(t)$ la production, le capital et l'investissement dans l'économie au temps $t$. On suppose les relations suivantes entre les différentes quantités :
+%
+%$$
+%y(t)=c(t)+i(t), i(t)=\dot{k}(t) \text { et } y(t)=f(k(t))
+%$$
+%
+%où $f$ une fonction de production supposée strictement concave, croissante et dérivable.
+%
+%\begin{enumerate}
+%  \item Mettre le modèle sous la forme d'un problème de contrôle optimal, dire quelle est la variable de contrôle et celle d'état.
+%
+%  \item Former le Hamiltonien du problème et écrire les conditions nécessaires fournies par le principe de Pontryagin.
+%
+%  \item Définir la fonction valeur du problème et écrire l'équation de Hamilton-Jacobi associée, ainsi qu'une condition aux limites qu'elle vérifie.
+%
+%  \item Donner une condition suffisante d'optimalité.
+%
+%\end{enumerate}
+%
+%Exercice 43. Pour $x \in \mathbb{R}$ donné, on s'intéresse au problème de contrôle optimal :
+%
+%$$
+%\inf \left\{\int_{0}^{T} u^{2}(s) d s+x(T), \text { où } x(0)=x, \dot{x}(t)=x(t)+u(t), u(t) \in \mathbb{R}\right\}
+%$$
+%
+%\begin{enumerate}
+%  \item Calculer le Hamiltonien $H(t, x, p)$ du problème.
+%
+%  \item Utiliser le principe du maximum de Pontryagin pour trouver les solutions optimales.
+%
+%  \item Ecrire l'équation de Hamilton-Jacobi associée au problème et en donner une solution.
+%
+%  \item En déduire un feedback optimal pour le problème.
+%
+%  \item Résoudre le problème initial en utilisant le formalisme du calcul des variations.
+%
+%\end{enumerate}
+%
+%Exercice 44 (Lien entre l'équation de Hamilton-Jacobi et le principe du maximum). On suppose que la fonction valeur $V$ est de classe $C^{\infty}$ et que $H$ est également de classe $C^{\infty}$. On considère la solution de l'EDO
+%
+%$$
+%\left\{\begin{array}{l}
+%\dot{x}^{*}(t)=\frac{\partial H}{\partial p}\left(t, x^{*}(t), p^{*}(t)\right), \quad t \in[0, T] \\
+%p^{*}(t)=\frac{\partial V}{\partial x}\left(t, x^{*}(t)\right), \quad t \in[0, T] \\
+%x^{*}(0)=x_{0}
+%\end{array}\right.
+%$$
+%
+%Montrer alors que $x^{*}$ est une trajectoire optimale et que le couple $\left(x^{*}, p^{*}\right)$ vérifie le principe du maximum de Pontryagin.
+%
+%Exercice 45 (Problème en horizon infini). Soit $\lambda>0$. Pour $x_{0} \in \mathbb{R}^{N}$ une condition initiale fixée, on considère le problème de contrôle optimal en horizon infini :
+%
+%$$
+%V\left(x_{0}\right):=\inf _{(x, u)} \int_{0}^{+\infty} e^{-\lambda t} L(x(t), u(t)) d t
+%$$
+%
+%sous la contrainte que $u:[0,+\infty[\rightarrow U$ est mesurable et que le couple $(x(\cdot), u(\cdot))$ vérifie l'EDO
+%
+%$$
+%\left\{\begin{array}{l}
+%\dot{x}(t)=f(x(t), u(t)), \quad t \in[0,+\infty[ \\
+%x(0)=x_{0}
+%\end{array}\right.
+%$$
+%
+%On définit le Hamiltonien du système $H: \mathbb{R}^{N} \times \mathbb{R}^{N} \rightarrow \mathbb{R}$ par
+%
+%$$
+%H(x, p):=\sup _{u \in U}\{-\langle p, f(x, u)\rangle-L(x, u)\}
+%$$
+%
+%L'application $L: \mathbb{R}^{N} \times U \rightarrow \mathbb{R}$ est supposée continue et bornée et $f$ vérifie les conditions habituelles.
+%
+%\begin{enumerate}
+%  \item Montrer que $V$ satisfait le principe de programmation dynamique : pour tout $t \geq 0$,
+%\end{enumerate}
+%
+%$$
+%V\left(x_{0}\right)=\inf _{(x, u)} \int_{0}^{t} e^{-\lambda s} L(x(s), u(s)) d s+e^{-\lambda t} V(x(t))
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item On suppose que $V$ est de classe $C^{1}$. Montrer que $V$ est solution de l'équation de HamiltonJacobi
+%\end{enumerate}
+%
+%$$
+%\lambda V(x)+H\left(x, \frac{\partial V}{\partial x}\right)=0, \quad x \in \mathbb{R}^{N}
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item Inversement, on suppose qu'il existe une fonction $W: \mathbb{R}^{N} \rightarrow \mathbb{R}$, de classe $C^{1}$ et bornée, vérifiant
+%\end{enumerate}
+%
+%$$
+%\lambda W(x)+H\left(x, \frac{\partial W}{\partial x}\right)=0, \quad x \in \mathbb{R}^{N}
+%$$
+%
+%On suppose de plus qu'il existe un feedback $\tilde{u}^{*}: \mathbb{R}^{N} \rightarrow U$ continu tel que
+%
+%$$
+%-\left\langle\frac{\partial W}{\partial x}, f\left(x, \tilde{u}^{*}(x)\right)\right\rangle-L\left(x, \tilde{u}^{*}(x)\right)=H\left(x, \frac{\partial W}{\partial x}\right), \quad x \in \mathbb{R}^{N}
+%$$
+%
+%Montrer alors que $W=V$ et que $\tilde{u}^{*}$ est un feedback optimal.
+%
+%\section*{3 Solution de quelques exercices}
+%Certains exercices sont un peu calculatoires et, faute de temps, ne seront pas traités en TD. Les solutions ci-dessous ont pour objectif d'aider le lecteur à s'entraîner à ces calculs.
+%
+%Solution de l'exercice 5 : Après calcul, les candidats pour être solution du problème sont, d'une part, le point non qualifié $(1,0)$ et, d'autre part, le point vérifiant les conditions nécessaires $(0,1)$. L'objectif étant strictement meilleur en $(1,0)$ qu'en $(0,1)$, le maximum est atteint en $(1,0)$, et vaut 3 .
+%
+%Solution de l'exercice 7 : On trouve $x=y-\left[d-c^{T} y\right] c /\|c\|^{2}$.
+%
+%Solution de l'exercice 8: La contrainte est affine donc qualifiée en tout point. Le point $(0,0,1 / 3,2 / 3)$ est un point de maximum si et seulement si $r=q=0$ et $p \leq-1$.
+%
+%Solution de l'exercice 9: 1) La contrainte est fermée et l'objectif est coercif. Il y a donc une solution. De plus, les contraintes sont convexes et l'objectif strictement convexe, donc la solutions est unique et la condition nécessaire d'optimalité est suffisante. Enfin, les contraintes sont affines donc qualifiées en tout point. Le point ( $3 / 4,1 / 4,1 / 4)$ vérifie les conditions nécessaires d'optimalité et est donc l'unique solution.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item La contrainte est compacte et le critère continu, le problème a donc une solution. Après calculs, on montre que celle-ci est unique : $x=y=-1 / 2$, et une valeur de $1 / 4-1 / 2=-1 / 4$.
+%\end{enumerate}
+%
+%Solution de l'exercice 10: L'objectif est continu et la contrainte compacte. Il y a donc au moins une solution. Les solutions sont les points tels que :
+%
+%— si $u>0$ ou $u \leq-1: x=y=0 \leq z \leq 1$. Valeur nulle.
+%
+%\begin{itemize}
+%  \item si $u=0: x=0 \leq y \leq z \leq 1-y$. Valeur nulle.
+%  \item si $-1<u<0: x=\frac{a}{2(1+2 a)}, y=x$ et $z=1-2 x$, où $a=-\left(u+u^{2}\right)$. Valeur : $-\frac{a^{2}}{4(1+2 a)}$.
+%\end{itemize}
+%
+%Solution de l'exercice 11: On trouve comme points vérifiants les CNO : $(0,0),(-1 / 2,-1 / 2)$ et $(-3 / 2,-3 / 2)$, qui sont bien dans $K$, avec des valeurs de l'objectif associées de $0,-1 / 4$ et $3 / 4$. Cependant, le problème n'a pas de solution car, si on prend $y=-1$ et $x \geq 2$, le couple $(x, y)$ vérifie la contrainte, avec un critère $x^{2}-1$ arbitrairement grand lorsque $x \rightarrow+\infty$.
+%
+%Solution de l'exercice 12 : la solution est $(1,0,0)$.
+%
+%Solution de l'exercice 13 : La valeur est 2 , obtenue en $(1,1)$ et en $(1,-1)$.
+%
+%Université Paris Dauphine
+%
+%Master mention Mathématiques appliquées 1ère année
+%
+%\section*{Partiel du 14 mars 2016 "Optimisation et programmation dynamique"}
+%Durée $2 \mathrm{~h}$ - Calculatrice et documents non autorisés
+%
+%Exercice 1. Soit $A$ une matrice réelle de format $n \times n$ et $C$ une matrice réelle de format $m \times n$. On suppose que $A$ est symétrique et semi-définie positive. Soit $d \in \mathbb{R}^{m}$. On considère le problème
+%
+%$$
+%(\mathcal{P}) \quad \min _{x \in K} x^{T} A x \quad \text { où } K:=\left\{x \in \mathbb{R}^{n}, C x=d\right\}
+%$$
+%
+%\begin{enumerate}
+%  \item Soit $\left(x_{k}\right)$ une suite de $\mathbb{R}^{n}$ telle que $\left\|x_{k}\right\| \rightarrow+\infty$. On suppose qu'il existe une constante $\Lambda$ telle que $x_{k}^{T} A x_{k} \leq \Lambda$ et $C x_{k}=d$. Montrer que la suite $\left(v_{k}:=x_{k} /\left\|x_{k}\right\|\right)$ possède une sous-suite qui converge vers un vecteur $v \in \mathbb{R}^{d}$ tel que $v \neq 0, A v=0$ et $C v=0$.
+%\end{enumerate}
+%
+%On suppose, à partir de maintenant, que $\operatorname{Ker}(A) \cap \operatorname{Ker}(C)=\{0\}$ et que l'ensemble $K$ est non vide.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Montrer que le problème $(\mathcal{P})$ admet au moins une solution.
+%
+%  \item Montrer que cette solution est en fait unique.
+%
+%\end{enumerate}
+%
+%(Question plus délicate : on pourra raisonner par l'absurde en montrant que, si $x_{1}$ et $x_{2}$ sont deux solutions, alors $x_{2}-x_{1}$ est dans $\left.\operatorname{Ker}(A) \cap \operatorname{Ker}(C)\right)$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{3}
+%  \item Dans cette question, on suppose que $n=3, m=2$,
+%\end{enumerate}
+%
+%$$
+%A=\left(\begin{array}{lll}
+%1 & 0 & 0 \\
+%0 & 1 & 0 \\
+%0 & 0 & 0
+%\end{array}\right), \quad C=\left(\begin{array}{ccc}
+%1 & 1 & 1 \\
+%1 & 0 & -1
+%\end{array}\right) \quad \text { et } \quad d=\left(\begin{array}{l}
+%1 \\
+%0
+%\end{array}\right)
+%$$
+%
+%Vérifier que le problème possède une unique solution et trouver cette solution par dualité (on justifiera soigneusement cette approche).
+%
+%Exercice 2. Soient $f: \mathbb{R}^{n} \rightarrow \mathbb{R}$ et $g: \mathbb{R}^{n} \rightarrow \mathbb{R}$ deux applications de classe $C^{1}$. On suppose que la fonction $f$ est minorée et on pose
+%
+%$$
+%m:=\inf _{x \in \mathbb{R}^{n}} g(x) \quad \text { (noter que } m \in[-\infty,+\infty[\text { ) }
+%$$
+%
+%Pour tout $t \in \mathbb{R}$ avec $t>m$, on pose :
+%
+%$$
+%K(t):=\left\{x \in \mathbb{R}^{n}, g(x) \leq t\right\} \quad \text { et } \quad v(t):=\inf _{x \in K(t)} f(x)
+%$$
+%
+%On note $(\mathcal{P}(t))$ le problème $\inf _{x \in K(t)} f(x)$.
+%
+%\begin{enumerate}
+%  \item Dans cette question seulement, on suppose que $n=2, f(x, y)=x y, g(x, y)=$ $x^{2}+2 y^{2}$. Calculer $m$ et $v(t)$ pour tout $t>m$.
+%
+%  \item Montrer que la fonction $v$ est décroissante sur $] m, \infty[$.
+%
+%  \item On suppose, dans cette question seulement, que $f$ et $g$ sont convexes sur $\mathbb{R}^{n}$. Montrer que la fonction $v$ est convexe sur $] m, \infty[$.
+%
+%\end{enumerate}
+%
+%A partir de maintenant on suppose que $f$ est coercive :
+%
+%$$
+%\lim _{\|x\| \rightarrow+\infty} f(x)=+\infty
+%$$
+%
+%On suppose aussi que, pour tout $t>m$, la contrainte $K(t):=\left\{x \in \mathbb{R}^{n}, g(x) \leq t\right\}$ est qualifiée.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{3}
+%  \item Soit $t>m$. Montrer que le problème $(\mathcal{P}(t))$ admet au moins un minimum $x_{t} \in K(t)$ et écrire les conditions nécessaires d'optimalité pour un tel minimum (on appellera $\lambda_{t}$ un multiplicateur associé).
+%
+%  \item On suppose, dans cette question, que $v$ est dérivable en un point $t>m$. Soient $x_{t}$ et $\lambda_{t}$ comme dans la question précédente. On supposera que $\lambda_{t}>0$.
+%
+%\end{enumerate}
+%
+%(a) Soit $v \in \mathbb{R}^{n}$ tel que $\left\langle\nabla g\left(x_{t}\right), v\right\rangle<1$. Montrer qu'il existe $\epsilon>0$ tel que, pour tout $h \in] 0, \epsilon\left[, x_{t}+h v\right.$ appartient à $K(t+h)$. En déduire que $v^{\prime}(t) \leq\left\langle\nabla f\left(x_{t}\right), v\right\rangle$.
+%
+%(b) Soit $v \in \mathbb{R}^{n}$ tel que $\left\langle\nabla g\left(x_{t}\right), v\right\rangle>1$. Montrer de façon symétrique que $v^{\prime}(t) \geq\left\langle\nabla f\left(x_{t}\right), v\right\rangle$.
+%
+%(c) En déduire que, pour tout $v \in \mathbb{R}^{n}$ tel que $\left\langle\nabla g\left(x_{t}\right), v\right\rangle=1$, on a $v^{\prime}(t)=\left\langle\nabla f\left(x_{t}\right), v\right\rangle$.
+%
+%(d) Conclure que $v^{\prime}(t)=-\lambda_{t}$.
+%
+%Barême indicatif : Exercice $1=10$ points, Exercice $2=15$ points.
+%
+%Université Paris Dauphine
+%
+%Master mention Mathématiques appliquées lère année
+%
+%\section*{Examen du 23 mai 2016 "Optimisation et programmation dynamique"}
+%Durée $2 \mathrm{~h}$ - Calculatrice et documents non autorisés
+%
+%Exercice 1. On cherche à résoudre le problème :
+%
+%
+%\begin{equation*}
+%\min \left\{x(y-1) \text { où }(x, y) \in \mathbb{R}^{2}, 0 \leq x \leq y\right\} \tag{P}
+%\end{equation*}
+%
+%
+%\begin{enumerate}
+%  \item Montrer que la valeur du minimum est négative ou nulle.
+%
+%  \item En déduire que le problème admet au moins une solution.
+%
+%  \item Calculer la ou les solutions du problème.
+%
+%\end{enumerate}
+%
+%Exercice 2. On considère le problème de contrôle optimal en temps discret
+%
+%$$
+%\sup \left\{\begin{array}{ll}
+%\sum_{n=0}^{N-1} L\left(x_{n}, x_{n+1}\right), & \left(x_{n}\right)_{n=0, \ldots, N} \in[0,1]^{N+1}, x_{0}=x \\
+%x_{n+1} \in\left[0, x_{n}\right] \forall n=0, \ldots, N-1
+%\end{array}\right\}
+%$$
+%
+%où $N \in \mathbb{N}^{*}, x \in[0,1]$ sont fixés et où $L$ est définie par
+%
+%$$
+%L(x, y)=\sqrt{x-y}+\sqrt{y} \quad \text { si } 0 \leq y \leq x \leq 1
+%$$
+%
+%En utilisant le principe de programmation dynamique, montrer que la valeur $V(t, x)$ du problème s'écrit sous la forme $V(t, x)=\alpha_{t} \sqrt{x}$ où l'on donnera $\alpha_{N}$ et où l'on écrira une relation de récurrence entre $\alpha_{t}$ et $\alpha_{t+1}$.
+%
+%Exercice 3. On considère un problème général de calcul des variations
+%
+%$$
+%\begin{aligned}
+%& (\mathcal{P}) \min _{\substack{u \in \mathcal{C}^{1}([a, b]), u(a)=\alpha, u(b)=\beta}} \int_{a}^{b} L\left(t, u(t), u^{\prime}(t)\right) d t \\
+%&
+%\end{aligned}
+%$$
+%
+%où $a, b, \alpha, \beta$ sont des réels donnés, avec $a<b$ et où $L:[a, b] \times \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$ est de classe $\mathcal{C}^{2}$. On rappelle que toute minimum $\bar{u}$ de ce problème vérifie l'équation d'Euler-Lagrange :
+%
+%
+%\begin{equation*}
+%\frac{d}{d t}\left[L_{\xi}\left(t, \bar{u}(t), \bar{u}^{\prime}(t)\right)\right]=L_{\eta}\left(t, \bar{u}(t), \bar{u}^{\prime}(t)\right), \quad \bar{u}(a)=\alpha, \bar{u}(b)=\beta \tag{E}
+%\end{equation*}
+%
+%
+%où on note, pour toute fonction $L=L(t, \eta, \xi), L_{\xi}=\frac{\partial L}{\partial \xi}, L_{\eta}=\frac{\partial L}{\partial \eta}$ et $L_{t}=\frac{\partial L}{\partial t}$.
+%
+%L'objet de cet exercice est d'étudier la réciproque à cette question. Rappelons que, si $(\eta, \xi) \rightarrow L(t, \eta, \xi)$ est une fonction convexe pour tout $t \in[a, b]$, alors la réciproque est vraie : toute solution $\bar{u} \in \mathcal{C}^{1}([a, b])$ de l'équation $(\mathcal{E})$ est solution de $(\mathcal{P})$.
+%
+%\begin{enumerate}
+%  \item On suppose qu'il existe une fonction $\Phi:[a, b] \times \mathbb{R} \rightarrow \mathbb{R}$, de classe $\mathcal{C}^{3}$, telle que $\Phi(a, \alpha)=\Phi(b, \beta)$ et telle que la fonction
+%\end{enumerate}
+%
+%$$
+%\widetilde{L}(t, \eta, \xi)=L(t, \eta, \xi)+\Phi_{\eta}(t, \eta) \xi+\Phi_{t}(t, \eta)
+%$$
+%
+%vérifie : $(\eta, \xi) \rightarrow \widetilde{L}(t, \eta, \xi)$ est une fonction convexe pour tout $t \in[a, b]$.
+%
+%i) Montrer d'abord que toute solution $\bar{u} \in \mathcal{C}^{1}([a, b])$ de l'équation $(\mathcal{E})$ est solution de l'équation d'Euler-Lagrange associée à $\widetilde{L}$.
+%
+%ii) Vérifier que, pour toute fonction $u \in \mathcal{C}^{1}$ telle que $u(a)=\alpha, u(b)=\beta$, on a
+%
+%$$
+%\int_{a}^{b} L\left(t, u(t), u^{\prime}(t)\right) d t=\int_{a}^{b} \widetilde{L}\left(t, u(t), u^{\prime}(t)\right) d t
+%$$
+%
+%iii) En déduire que toute solution $\bar{u} \in \mathcal{C}^{1}([a, b])$ de l'équation $(\mathcal{E})$ est minimum de $(\mathcal{P})$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item On considère à partir de maintenant le cas où $L(t, \eta, \xi)=\frac{1}{2}\left(\xi^{2}-\lambda^{2} \eta^{2}\right)$, où $\left.\lambda \in\right] 0, \pi[$ est un paramètre réel fixé et où $a=0, b=1$ et $\alpha=\beta=0$.
+%\end{enumerate}
+%
+%Trouver la solution $\bar{u}$ de l'équations d'Euler-Lagrange ( $\mathcal{E})$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item On suppose toujours que $\lambda \in] 0, \pi[$. En appliquant la première question avec $\Phi(t, \eta)=$ $\frac{\lambda}{2} \eta^{2} \tan [\lambda(t-1 / 2)]$ (où $\theta \rightarrow \tan (\theta)$ désigne la fonction tangente), montrer que la solution trouvée dans la question précédente est une solution du problème $(\mathcal{P})$.
+%
+%  \item En déduire l'inégalité de Wirtinger :
+%
+%\end{enumerate}
+%
+%$$
+%\int_{0}^{1}\left(u^{\prime}(t)\right)^{2} d t \geq \pi^{2} \int_{0}^{1}(u(t))^{2} d t \quad \text { pour tout } u \in \mathcal{C}^{1}([0,1]) \text { avec } u(0)=u(1)=0
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{4}
+%  \item Montrer que, pour $\lambda>\pi$, on a
+%\end{enumerate}
+%
+%$$
+%\begin{aligned}
+%& \inf _{u \in \mathcal{C}^{1}([0,1]),}^{1} \quad \int_{0}^{1} L\left(t, u(t), u^{\prime}(t)\right) d t=-\infty \\
+%& u(0)=0, u(1)=0
+%\end{aligned}
+%$$
+%
+%Barême indicatif : Exercice $1=5$ points, Exercice $2=5$ points, Exercice $3=10$ points.
+%
+%Université Paris Dauphine
+%
+%Master 1, MMD-MA
+%
+%\section*{Partiel du mars 2017 \\
+% "Optimisation et programmation dynamique"}
+%Durée $2 \mathrm{~h}$ - Calculatrice et documents non autorisés
+%
+%Exercice 1. On cherche à résoudre les problèmes suivants.
+%
+%\begin{enumerate}
+%  \item Premier problème :
+%\end{enumerate}
+%
+%$$
+%\min _{(x, y) \in K}\left(2 x^{2}+y^{2}\right), \text { où } K:=\left\{(x, y) \in \mathbb{R}^{2}: x+2 y=3\right\}
+%$$
+%
+%a) Montrer que le problème admet une solution.
+%
+%b) Montrer que la contrainte est qualifiée en tout point dans $K$.
+%
+%c) Ecrire les conditions nécessaires d'optimalité du problème (Théorème KuhnTucker) et en déduire la solution du problème.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Les mêmes questions pour le deuxième problème :
+%\end{enumerate}
+%
+%$$
+%\max _{(x, y, z) \in K} 3 x+2 y+z, \text { où } K:=\left\{(x, y, z) \in \mathbb{R}^{3}: x^{2}+y^{2}+z^{2}=1, x+y+z \geq 0\right\}
+%$$
+%
+%Exercice 2. Soient $b \in \mathbb{R}^{k}, A$ une matrice de dimension $k \times n$ de rang $k$, où $k \leq n \in \mathbb{N}$. On définit
+%
+%$$
+%K:=\left\{x \in \mathbb{R}^{n}: A x=b\right\}
+%$$
+%
+%On cherche à calculer, pour un point $y \in \mathbb{R}^{n}$, sa projection $x^{*}:=\Pi_{K}(y)$ dans $K$, qui est, par le cours, l'unique solution du problème :
+%
+%$$
+%\min _{x \in K}\|y-x\|^{2}
+%$$
+%
+%\begin{enumerate}
+%  \item Utiliser Théorème de Kuhn-Tucker, montrer qu'il existe un vecteur $\lambda \in \mathbb{R}^{k}$, t.q.
+%\end{enumerate}
+%
+%$$
+%x^{*}+A^{\top} \lambda=y
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Utilisant le fait que $x^{*} \in K$, i.e. $A x^{*}=b$, en déduire que
+%\end{enumerate}
+%
+%$$
+%A A^{\top} \lambda=A y-b
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item En déduire ensuite que
+%\end{enumerate}
+%
+%$$
+%x^{*}=\left(I_{n}-A^{\top}\left(A A^{\top}\right)^{-1} A\right) y+A^{\top}\left(A A^{\top}\right)^{-1} b
+%$$
+%
+%où $I_{n}$ est la matrice identique de dimension $n \times n$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{3}
+%  \item Soit $f: \mathbb{R}^{n} \rightarrow \mathbb{R}$ une fonction convexe de classe $C^{1}$, on considère le problème
+%\end{enumerate}
+%
+%$$
+%\min _{x \in K} f(x)
+%$$
+%
+%Donner un algorithme itérative pour approximer la solution optimale (sans justification de la convergence).
+%
+%Exercice 3. Soient $A_{1}, A_{2}$ deux matrices de dimension $k_{1} \times n$ et $k_{2} \times n, b_{1} \in \mathbb{R}^{k_{1}}, b_{2} \in \mathbb{R}^{k_{2}}$, $f: \mathbb{R}^{n} \rightarrow \mathbb{R}$ une fonction convexe, on admet que
+%
+%$\inf \left\{f(x): A_{1} x=b_{1}, A_{2} x \leq b_{2}\right\}=\sup _{\lambda_{1} \in \mathbb{R}^{k_{1}}, \lambda_{2} \in \mathbb{R}_{+}^{k_{2}}} \inf _{x \in \mathbb{R}^{n}}\left(f(x)+\lambda_{1} \cdot\left(A_{1} x-b_{1}\right)+\lambda_{2} \cdot\left(A_{2} x-b_{2}\right)\right)$.
+%
+%On considère un problème de transport optimal suivant : Soit $E=\{0,1\}$, nous avons deux mesures de probabilité $\mu$ et $\nu$ fixées sur $E$, t.q. $(\mu(\{0\}), \mu(\{1\}))=\left(\mu_{0}, \mu_{1}\right) \in(0,1)^{2}$ et $(\nu(\{0\}), \nu(\{1\}))=\left(\nu_{0}, \nu_{1}\right) \in(0,1)^{2}$ avec $\mu_{0}+\mu_{1}=1$ et $\nu_{0}+\nu_{1}=1$. Soit $f: E \times E \rightarrow \mathbb{R}$ une fonction de coût, on considère tous les vecteurs aléatoires possibles ( $X_{0}, X_{1}$ ) sur $E \times E$ t.q. $X_{0} \sim \mu$ et $X_{1} \sim \nu$ et cherche à résoudre le problème :
+%
+%
+%\begin{equation*}
+%\min \left\{\mathbb{E}\left[f\left(X_{0}, X_{1}\right)\right]: X_{0} \sim \mu, X_{1} \sim \nu\right\} \tag{1}
+%\end{equation*}
+%
+%
+%\begin{enumerate}
+%  \item On sait que la loi jointe d'un vecteur aléatoire $\left(X_{0}, X_{1}\right)$ sur $E \times E$ est complètement caractérisée par $\left(p_{00}, p_{01}, p_{10}, p_{11}\right) \in[0,1]^{4}$ avec $p_{i j}=\mathbb{P}\left[X_{0}=i, X_{1}=j\right], i, j=0,1$. Montrer que le problème (1) pourrait être reformulé :
+%\end{enumerate}
+%
+%$$
+%P:=\inf \left\{p(f): p_{i 0}+p_{i 1}=\mu_{i}, p_{0 j}+p_{1 j}=\nu_{j}, p_{i j} \geq 0, \text { pour } i, j=0,1\right\}
+%$$
+%
+%où $p(f):=\sum_{i, j=0,1} f(i, j) p_{i j}$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item Soient $\phi, \psi: E \rightarrow \mathbb{R}$ deux fonctions définies sur $E$, on introduit
+%\end{enumerate}
+%
+%$$
+%d(\phi, \psi):=\mu(\phi)+\nu(\psi)+\inf _{p_{i j} \geq 0, i, j=0,1}\left(p(f)-\sum_{i, j=0,1} p_{i j}(\phi(i)+\psi(j))\right)
+%$$
+%
+%où $\mu(\phi):=\mu_{0} \phi(0)+\mu_{1} \phi(1)$ et $\nu(\psi):=\nu_{0} \psi(0)+\nu_{1} \psi(1)$.
+%
+%Utilisant la dualité qu'on admet au début de l'énoncé, montrer que
+%
+%$$
+%P=D:=\sup \{d(\phi, \psi): \text { toutes les fonction } \phi, \psi: E \rightarrow \mathbb{R}\}
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item Montrer la dualité finale:
+%\end{enumerate}
+%
+%$$
+%P=\sup \{\mu(\phi)+\nu(\psi): \phi(i)+\psi(j) \leq f(i, j), \forall i, j=0,1\}
+%$$
+%
+%(Remarque : cette dualité est appelé dualité de Kantorovich, qui est vrai pour un espace $E$ beaucoup plus général.)
+%
+%Barême indicatif : Exercice $1: 12$ points, Exercice $2: 6$ points. Exercise $3: 6$ points.
+%
+%Université Paris Dauphine
+%
+%Master 1, MMD-MA
+%
+%\section*{Examen du Mai 2017 \\
+% "Optimisation et programmation dynamique"}
+%Durée $2 \mathrm{~h}$ - Calculatrice et documents non autorisés sauf une fiche A4
+%
+%Exercice 1. Un agent possède une richesse initiale $x_{0} \in \mathbb{R}_{+}$à l'instant 0 , il consomme en temps continu avec le taux $c(t)>0$ en $[0, T]$, où $T=1$. Soit $x(t)$ sa richesse à l'instant $t$, on a alors $x^{\prime}(t)=-c(t)$, où $x^{\prime}(t)$ est la dérivée de la fonction $x(t)$. Dans le cours, un problème de consommation optimale est formulé comme :
+%
+%$$
+%\sup \left\{\int_{0}^{1} e^{-\beta t} u\left(-x^{\prime}(t)\right) d t: x \in C^{1}([0,1], \mathbb{R}), x(0)=x_{0}, x(1)=0\right\}
+%$$
+%
+%où $u: \mathbb{R}_{+} \rightarrow \mathbb{R}$ est une fonction d'utilité. Supposons que le problème admet une solution optimale $x_{*}$ t.q. $-x_{*}^{\prime}(t)>0, t \in[0,1]$.
+%
+%\begin{enumerate}
+%  \item En utilisant le résultat du calcul des variations, donner la condition nécessaire (Equation d'Euler) satisfaite par $x_{*}$.
+%
+%  \item Supposons que $u(z):=z^{\gamma} / \gamma$ avec une constant $\gamma \in(0,1)$, montrer que la condition nécessaire dans la question précédente est équivalente à
+%
+%\end{enumerate}
+%
+%$$
+%(1-\gamma) x_{*}^{\prime \prime}(t)+\beta x_{*}^{\prime}(t)=0
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item Déterminer $x_{*}(t)$ en résolvant l'EDO ci-dessus avec les conditions aux bords $x_{*}(0)=$ $x_{0}$ et $x_{*}(1)=0$.
+%\end{enumerate}
+%
+%Exercice 2. Soit $T>0, x=\left(x_{1}, x_{2}\right) \in \mathbb{R}^{2}$ et $c=\left(c_{1}, c_{2}\right) \neq(0,0)$. On considère le problème de maximisation suivant :
+%
+%$$
+%\inf _{u \in \mathcal{U}}\left\{c_{1} y_{1}(T)+c_{2} y_{2}(T)\right\}
+%$$
+%
+%où $\left(y_{1}, y_{2}\right)$ est solution de
+%
+%$$
+%y_{k}^{\prime}(t)=u_{k}(t), \quad y_{k}(0)=x_{k}, \quad k=1,2, \quad t \in[0, T]
+%$$
+%
+%et $\mathcal{U}$ est l'ensemble de processus de contrôle à valeur $U:=\left\{\left(u_{1}, u_{2}\right) \in \mathbb{R}^{2}: u_{1}^{2}+u_{2}^{2}=1\right\}$.
+%
+%\begin{enumerate}
+%  \item a) Donner le pré-Hamiltonien du problème $\underline{H}(t, x, p, u)$.
+%\end{enumerate}
+%
+%b) Montrer que si $p \neq 0$, le Hamiltonien est donné par
+%
+%$$
+%H(t, x, p)=\underline{H}\left(t, x, p,-\frac{p}{|p|}\right), \quad \text { avec } \quad|p|:=\sqrt{p_{1}^{2}+p_{2}^{2}}
+%$$
+%
+%c) Donner les conditions nécessaires d'optimalité dans le principe de Pontryagin.
+%
+%d) Déterminer la solution $\left(y^{*}, p^{*}\right)=\left(\left(y_{1}^{*}, y_{2}^{*}\right),\left(p_{1}^{*}, p_{2}^{*}\right)\right)$ en résolvant le système issu des conditions nécessaires ci-dessus.
+%
+%e) Calculer le contrôle associé $u^{*}=\left(u_{1}^{*}, u_{2}^{*}\right)$, et la valeur $J\left(u^{*}\right):=c_{1} y_{1}^{*}(T)+c_{2} y_{2}^{*}(T)$ associée.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item a) Enoncer le principe de la programmation dynamique pour ce problème de contrôle optimal.
+%\end{enumerate}
+%
+%b) Enoncer l'équation HJB pour le problème de contrôle optimal.
+%
+%c) Déterminer une solution de l'équation HJB.
+%
+%d) Calculer un contrôle optimal "feedback".
+%
+%e) En déduire que $\left(u_{1}^{*}, u_{2}^{*}\right)$ trouvé par le principe de Pontryaguin est un contrôle optimal.
+%
+%Exercice 3. On considère un problème de finance en temps discret $t=0,1$. A l'instant $t=0$, le prix d'un actif $S_{0}=s_{0}$ est une constante fixée. A l'instant $t=1$, le prix $S_{1}$ de l'actif a $n$ possibilités de valeur $x_{1}, \cdots, x_{n}$, i.e. $S_{1} \in\left\{x_{1}, \cdots, x_{n}\right\}$. Supposons que
+%
+%$$
+%n \geq 2 \quad \text { et } \quad x_{1} \leq s_{0} \leq x_{n}
+%$$
+%
+%Un modèle financier est une distribution de $S_{1}$ sous laquelle son espérance vaut $S_{0}$. Notons
+%
+%$$
+%\mathcal{M}:=\left\{\left(p_{1}, \cdots, p_{n}\right) \in \mathbb{R}_{+}^{n}: \sum_{k=1}^{n} p_{k}=1 \text { et } \sum_{k=1}^{n} x_{k} p_{k}=s_{0}\right\}
+%$$
+%
+%Soit $g:\left\{x_{1}, \cdots, x_{n}\right\} \rightarrow \mathbb{R}$ la fonction payoff d'une option dérivée, on considère deux problèmes financiers : le problème primal $P$ est la valeur maximale d'espérance du payoff $g\left(S_{1}\right)$ sous tous les modèles (ou toutes les distributions de $S_{1}$ ), i.e.
+%
+%$$
+%P=\sup _{\left(p_{1}, \cdots, p_{n}\right) \in \mathcal{M}} \sum_{k=1}^{n} g\left(x_{k}\right) p_{k}
+%$$
+%
+%le problème dual est le coût minimal qui permet de sur-répliquer l'option $g\left(S_{1}\right)$ par une stratégie de trading $\operatorname{sur}\left(S_{0}, S_{1}\right)$, i.e.
+%
+%$$
+%D=\inf _{(y, H) \in \mathcal{D}} y, \text { où } \mathcal{D}:=\left\{(y, H) \in \mathbb{R} \times \mathbb{R}: y+H\left(x_{k}-s_{0}\right) \geq g\left(x_{k}\right), \forall k=1, \cdots, n\right\}
+%$$
+%
+%Montrer la dualité $P=D$ et qu'il existe une solution $\left(p_{1}^{*}, \cdots, p_{n}^{*}\right)$ et $\left(y^{*}, H^{*}\right)$ pour les deux problèmes d'optimisation $P$ et $D$.
+%
+%Barême indicatif : Exercice $1: 6$ points, Exercice $2: 10$ points. Exercice $3: 4$ points.
+%
+%Université Paris Dauphine
+%
+%Master 1, MMD-MA
+%
+%Partiel du mars 2018
+%
+%"Optimisation et programmation dynamique"
+%
+%Durée $2 \mathrm{~h}$ - Calculatrice et documents non autorisés
+%
+%Exercice 1. On cherche à résoudre le problème suivant :
+%
+%$\max _{(x, y, z) \in K} 2 x+3 y+2 z$, où $K:=\left\{(x, y, z) \in \mathbb{R}^{3}: x^{2}+y^{2}+z^{2}=1, x+y+z \geq 0\right\}$.
+%
+%\begin{enumerate}
+%  \item Montrer que le problème admet une solution.
+%
+%  \item Montrer que la contrainte est qualifiée en tout point dans $K$.
+%
+%  \item Ecrire les conditions nécessaires d'optimalité du problème (Théorème Kuhn-Tucker) et en déduire la solution du problème.
+%
+%\end{enumerate}
+%
+%Exercice 2. On considère un problème motivé par une application de la méthode de stratification de Monte-Carlo. Soient $X$ et $\left(X_{k}\right)_{1<k<K}$ des variables aléatoires, telles que $\mathbb{E}[X]=\sum_{k=1}^{K} p_{k} \mathbb{E}\left[X_{k}\right]$, où $p_{k}>0$ et $\sum_{k=1}^{K} p_{k}=1$. Pour estimer la valeur de $\mathbb{E}[X]$, on simule $n_{k}$ copies i.i.d. $\left(X_{k, i}\right)_{i=1, \cdots, n_{k}}$ de la variable $X_{k}$, et propose l'estimateur
+%
+%$$
+%\widehat{U}:=\sum_{k=1}^{K}\left(p_{k} \frac{1}{n_{k}} \sum_{i=1}^{n_{k}} X_{k, i}\right)
+%$$
+%
+%Il est évident que l'effort de simulation et de calcul de cet estimateur est $\sum_{k=1}^{K} n_{k}$. Pour optimiser le comportement de l'estimateur, on chercher à minimiser la variance de $\widehat{U}$ parmi tous les choix de $n_{k}$ sous contrainte de l'effort total $\sum_{k=1}^{K} n_{k}=n$ pour un $n$ fixé. Le problème d'optimisation est donc
+%
+%$$
+%\widehat{V}:=\inf \left\{\sum_{k=1}^{K} \frac{p_{k}^{2} \sigma_{k}^{2}}{n_{k}}: n_{k}>0, \sum_{k=1}^{K} n_{k}=n\right\}
+%$$
+%
+%où $n, p_{k}, \sigma_{k}^{2}:=\operatorname{Var}\left[X_{k}\right]$ sont des constantes fixées. Ensuite, notons $q_{k}:=\frac{n_{k}}{n}$, on peut reformuler le problème :
+%
+%$$
+%\widehat{V}=\inf _{q}\left\{\sum_{k=1}^{K} \frac{p_{k}^{2} \sigma_{k}^{2}}{q_{k}}: \sum_{k=1}^{K} q_{k}=1, q_{k}>0, k=1, \cdots, K\right\}
+%$$
+%
+%Enfin, on suppose que $p_{k}>0$ et $\sigma_{k}>0$ pour $k=1, \cdots, K$.
+%
+%\begin{enumerate}
+%  \item Rappelons que $\sum_{k=1}^{K} p_{k}=1$. Montrer que $\widehat{V} \leq \widehat{V}_{0}:=\sum_{k=1}^{K} p_{k} \sigma_{k}^{2}$.
+%
+%  \item Soit $\varepsilon:=\min _{1 \leq k \leq K} \frac{p_{k}^{2} \sigma_{k}^{2}}{V_{0}}$, montrer que le problème de $\widehat{V}$ est équivalent à
+%
+%\end{enumerate}
+%
+%
+%\begin{equation*}
+%\widehat{V}=\inf \left\{\sum_{k=1}^{K} \frac{p_{k}^{2} \sigma_{k}^{2}}{q_{k}}: \sum_{k=1}^{K} q_{k}=1, q_{k} \geq \varepsilon / 2, k=1, \cdots, K\right\} \tag{1}
+%\end{equation*}
+%
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item Montrer qu'il existe une solution optimale $\left(q_{k}^{*}\right)_{1 \leq k \leq K}$ pour le Problème (1).
+%
+%  \item Soit $q^{*}=\left(q_{k}^{*}\right)_{1 \leq k \leq K}$ une solution optimale, montrer que $q_{k}^{*}>\varepsilon / 2$ et que la contrainte du Problème (1) est qualifiée en $q^{*}$.
+%
+%  \item En utilisant le théorème de Kuhn et Tucker, montrer qu'il existe $\lambda \in \mathbb{R}$, tel que
+%
+%\end{enumerate}
+%
+%$$
+%\frac{\partial}{\partial q_{k}} G(q, \lambda)=0, \quad \forall k=1, \cdots, K, \quad \text { où } G(q, \lambda):=\sum_{k=1}^{K} \frac{p_{k}^{2} \sigma_{k}^{2}}{q_{k}}+\lambda\left(\sum_{k=1}^{K} q_{k}-1\right)
+%$$
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{5}
+%  \item Calculer $\left(q_{k}^{*}\right)_{1 \leq k \leq K}$ explicitement.
+%\end{enumerate}
+%
+%Exercice 3. Soit $f: \mathbb{R}^{n} \rightarrow \mathbb{R}$ une fonction de classe $C^{1}$, telle que $\nabla f$ est continu, borné. Supposons qu'il existe un point $x^{*} \in \mathbb{R}^{n}$, tel que
+%
+%
+%\begin{equation*}
+%\left(x-x^{*}\right) \cdot \nabla f(x)>0, \quad \forall x \neq x^{*} \tag{2}
+%\end{equation*}
+%
+%
+%On utilise l'algorithme de gradient suivant pour approcher $x^{*}$ : fixer un $x_{0} \in \mathbb{R}^{n}$ arbitraire et puis itérer ainsi :
+%
+%$$
+%x_{k+1}=x_{k}-\gamma_{k+1} \nabla f\left(x_{k}\right), \quad \forall k \geq 0
+%$$
+%
+%Ici $\left(\gamma_{k}\right)_{k \geq 0}$ est une suite de constantes positives telles que
+%
+%$$
+%\sum_{k=0}^{\infty} \gamma_{k}^{2}<\infty, \quad \text { et } \quad \sum_{k=0}^{\infty} \gamma_{k}=\infty
+%$$
+%
+%L'objectif de cet exercise est de montrer que $x_{k} \rightarrow x^{*}$ lorsque $k \rightarrow \infty$.
+%
+%\begin{enumerate}
+%  \item En utilisant la condition (2), montrer que $\left|x_{k+1}-x^{*}\right|^{2} \leq\left|x_{k}-x^{*}\right|^{2}+\gamma_{k+1}^{2}\left|\nabla f\left(x_{k}\right)\right|^{2}$.
+%
+%  \item Notons
+%
+%\end{enumerate}
+%
+%$$
+%v_{n}:=\left|x_{n}-x^{*}\right|^{2}-\sum_{k=1}^{n} \gamma_{k}^{2}\left|\nabla f\left(x_{k-1}\right)\right|^{2}
+%$$
+%
+%Montrer que $\left(v_{n}\right)_{n \geq 1}$ est une suite décroissante et bornée inférieurement. En déduire que la limite $\ell:=\lim _{n \rightarrow \infty}\left|x_{n}-x^{*}\right|^{2}$ existe.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item On va prouver que $\ell=0$ par contradiction. Supposons que $\ell>0$.
+%\end{enumerate}
+%
+%a) Montrer que
+%
+%$$
+%\eta:=\inf _{\ell / 2 \leq\left|x-x^{*}\right| \leq 2 \ell}\left(x-x^{*}\right) \cdot \nabla f(x)>0
+%$$
+%
+%b) Rappelons que par la définition de $\ell$, il existe une constante $N$ telle que $\ell / 2 \leq$ $\left|x_{n}-x^{*}\right| \leq 2 \ell$ pour tout $n \geq N$. En déduire que
+%
+%$$
+%\sum_{n \geq 1} \gamma_{n}\left(x_{n-1}-x^{*}\right) \cdot \nabla f\left(x_{n-1}\right)=\infty
+%$$
+%
+%Université Paris Dauphine
+%
+%Master 1, MMD-MA
+%
+%\section*{Examen du Mai 2018 "Optimisation et programmation dynamique"}
+%Durée $2 \mathrm{~h}$ - Calculatrice et documents non autorisés (sauf une feuille A4 recto-verso)
+%
+%Exercice 1. Résoudre le problème d'optimisation suivant:
+%
+%$$
+%\max \left\{\sum_{i=0}^{2} L_{i}\left(x_{i}, x_{i+1}\right): x_{i+1} \in \Gamma_{i}\left(x_{i}\right)\right\}
+%$$
+%
+%où
+%
+%$$
+%x_{0}=3 ; \quad\left\{\begin{array} { l } 
+%{ L _ { 0 } ( x _ { 0 } , x _ { 1 } ) = \operatorname { l o g } ( 1 + x _ { 1 } ^ { 2 } ) - x _ { 0 } x _ { 1 } ^ { 2 } - 6 x _ { 1 } ^ { 4 } , } \\
+%{ L _ { 1 } ( x _ { 1 } , x _ { 2 } ) = 2 ( x _ { 1 } x _ { 2 } ) ^ { 2 } } \\
+%{ L _ { 2 } ( x _ { 2 } , x _ { 3 } ) = 4 x _ { 2 } x _ { 3 } - 3 x _ { 3 } ^ { 2 } }
+%\end{array} \quad \left\{\begin{array}{l}
+%\Gamma_{0}\left(x_{0}\right)=\left[1, \sqrt{x_{0}}\right] \\
+%\Gamma_{1}\left(x_{1}\right)=\left[-\sqrt{3}\left|x_{1}\right|,\left|x_{1}\right|\right] \\
+%\Gamma_{2}\left(x_{2}\right)=\mathbb{R}
+%\end{array}\right.\right.
+%$$
+%
+%Exercice 2. On considère le problème suivant :
+%
+%$$
+%v\left(x_{0}\right):=\max _{u \in \mathcal{U}} \sum_{t=0}^{\infty} \beta^{t} L\left(x_{t+1}\right)
+%$$
+%
+%où $\mathcal{U}$ est l'ensemble de tous les processus $\left(u_{t}\right)_{t \geq 0}$ à valeur dans $[-1,1]$, et la dynamique du process contrôlé $\left(x_{t}\right)_{t \geq 0}$ est donnée par $x_{t+1}=f\left(x_{t}, u_{t}\right)$, avec
+%
+%$$
+%f\left(x_{t}, u_{t}\right):=\left(x_{t}-1\right) \vee u_{t} \wedge\left(x_{t}+1\right):=\max \left(\left(x_{t}-1\right), \min \left(u_{t},\left(x_{t}+1\right)\right)\right)
+%$$
+%
+%et
+%
+%$$
+%L(x):=-x \mathbf{1}_{\{x \in[-1,0]\}}+2 x \mathbf{1}_{\{x \in(0,1]\}}
+%$$
+%
+%\begin{enumerate}
+%  \item Ecrire le principe de la programmation dynamique vérifié par la fonction valeur $v$. La solution est elle unique? Continue?
+%
+%  \item Pour $\beta>\frac{1}{2}$, montrer que $v(x)=\frac{2}{1-\beta}+\min (0,2 x)$ et donner le contrôle optimal.
+%
+%  \item Determiner $v$ et le contrôle optimal dans le cas $\beta=\frac{1}{4}$.
+%
+%\end{enumerate}
+%
+%Exercice 3. Soient $a, b, c, d$ des fonctions continues et strictement positives, définies sur $[0,1]$, on considère le problème de minimisation suivant :
+%
+%$$
+%\inf _{u \in \mathcal{U}} J(u) \text { avec } J(u):=\int_{0}^{T}\left(c(t) x^{2}(t)+d(t) u^{2}(t)\right) d t
+%$$
+%
+%où $\mathcal{U}$ est l'ensemble de processus de contrôle $(u(t))_{t \in[0, T]}$ à valeur dans $U:=\mathbb{R}$, et $x(t)$ est la solution de
+%
+%$$
+%x(0):=x_{0}, \quad \frac{d x(t)}{d t}=a(t) x(t)+b(t) u(t), \quad t \in[0, T]
+%$$
+%
+%\begin{enumerate}
+%  \item a) Donner le pré-Hamiltonien du problème $\underline{H}(t, x, p, u)$.
+%\end{enumerate}
+%
+%b) Calculer le Hamiltonien $H(t, x, p)$.
+%
+%c) Soit $u^{*}(t)$ est un contrôle optimal et $x^{*}(t)$ la solution optimale, donner les conditions nécessaires d'optimalité dans le principe de Pontryagin.
+%
+%Ces conditions nécessaires portent sur une couple de fonctions $\left(x^{*}(t), p(t)\right)$.
+%
+%d) Montrer que la couple $\left(x^{*}(t), p(t)\right)$ est donnée par
+%
+%$$
+%\left(\begin{array}{c}
+%x^{*}(t) \\
+%p(t)
+%\end{array}\right)=\exp \left(\int_{0}^{t} A(s) d s\right)\left(\begin{array}{c}
+%x_{0} \\
+%p(0)
+%\end{array}\right)
+%$$
+%
+%avec une matrice $A(s)$ de dimension $2 \times 2$.
+%
+%Expliciter la matrice $A(s)$.
+%
+%e) Supposons que $a \equiv 0, b \equiv 1$ et $c \equiv d \equiv \frac{1}{2}$, montrer que la couple $\left(x^{*}(t), p(t)\right)$ est donnée par
+%
+%$$
+%\left\{\begin{array} { l } 
+%{ x ^ { * } ( t ) = x _ { 0 } \operatorname { c o s h } ( t ) - p ( 0 ) \operatorname { s i n h } ( t ) } \\
+%{ p ( t ) = - x _ { 0 } \operatorname { s i n h } ( t ) + p ( 0 ) \operatorname { c o s h } ( t ) , }
+%\end{array} \quad \text { avec } \left\{\begin{array}{l}
+%\sinh (t)=\left(e^{t}-e^{-t}\right) / 2 \\
+%\cosh (t)=\left(e^{t}+e^{-t}\right) / 2
+%\end{array}\right.\right.
+%$$
+%
+%En utilisant la condition vérifiée par $p(T)$ dans les conditions nécessaires, calculer $p(0)$.
+%
+%f) Dans le context de la question e), calculer le contrôle optimal $u^{*}$ et calculer la valeur $J\left(u^{*}\right)$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{1}
+%  \item L'approche de la programmation dynamique :
+%\end{enumerate}
+%
+%On suppose dans la suite que $a \equiv 0, b \equiv 1$ et $c \equiv d \equiv \frac{1}{2}$.
+%
+%a) Enoncer le principe de la programmation dynamique pour ce problème de contrôle optimal.
+%
+%b) Enoncer l'équation HJB pour le problème de contrôle optimal.
+%
+%c) Supposons que la solution d'HJB est donnée par $u(t, x)=\rho(t) x^{2}$, en déduire une EDO vérifiée par $\rho(t)$. Résoudre l'EDO sur $\rho(t)$ et en déduire une solution de l'équation HJB.
+%
+%d) Calculer un contrôle optimal "feedback".
+%
+%e) En déduire que $u^{*}$ trouvé par le principe de Pontryaguin est un contrôle optimal.
+%
+%Barême indicatif : Exercice $1: 4$ points, Exercice $2: 6$ points. Exercise $3: 10$ points.
+%
+%\section*{Examen Partiel du 19 Mars 2019}
+%\begin{itemize}
+%  \item Durée : 2 heures
+%  \item Les documents de cours, calculatrices, téléphones et ordinateurs sont interdits.
+%  \item Une rédaction claire et précise sera cruciale pour avoir tous les points.
+%  \item Le barême est orientatif.
+%\end{itemize}
+%
+%\section*{Exercice 1: Projection translatée $(1+2=3$ points/22).}
+%Soit $K$ un convexe fermé non vide de $\mathbb{R}^{n}$.
+%
+%\begin{enumerate}
+%  \item Rappeler la définition de l'opérateur de projection sur $K$, que l'on notera $P_{K}$.
+%
+%  \item Soit $v$ un vecteur de $\mathbb{R}^{n}$. Montrer que
+%
+%\end{enumerate}
+%
+%$$
+%P_{v+K}(x)=v+P_{K}(x-v), \quad \forall x \in \mathbb{R}^{n}
+%$$
+%
+%Exercice 2: Solution d'un problème d'optimisation $(2+3=5$ points/22).
+%
+%On considère le problème d'optimisation à deux variables $x=\left(x_{1}, x_{2}\right) \in \mathbb{R}^{2}$ suivant :
+%
+%$$
+%\min _{\substack{x_{2} \leq 1 \\ x_{1}+x_{2} \geq-1}} x_{1}^{2}-3 x_{1} x_{2}+x_{2}^{2}
+%$$
+%
+%\begin{enumerate}
+%  \item Montrer, sans la calculer, que le problème admet au moins une solution.
+%
+%  \item Calculer une solution du problème en utilisant les conditions d'optimalité (dont on justifiera l'utilisation).
+%
+%\end{enumerate}
+%
+%Exercice 3: Dualité (4 points/22). Résoudre par duallité le problème suivant
+%
+%$$
+%\min _{\substack{x_{2} \leq 1 \\ x_{1}+x_{2} \geq-1}} x_{1}^{2}-x_{1} x_{2}+x_{2}^{2}
+%$$
+%
+%Pour cela, on pourra prouver que
+%
+%$$
+%\mathcal{G}(\lambda)=\min _{x \in \mathbb{R}^{2}} \mathcal{L}(x, \lambda)=-\frac{\lambda_{1}^{2}}{3}-\lambda_{2}^{2}+\lambda_{1} \lambda_{2}-\lambda_{1}-\lambda_{2}
+%$$
+%
+%\section*{Exercice 4: Problème (10 points/22).}
+%Soit un ensemble de $n$ fonctions d'une variable $\left(f_{1}, \ldots, f_{n}\right)$ définies sur un intervalle $I \subset \mathbb{R}$, et soit la fonction de $n$ variables définie sur $I^{n}$ par
+%
+%$$
+%f\left(x_{1}, \ldots, x_{n}\right)=f_{1}\left(x_{1}\right)+\cdots+f_{n}\left(x_{n}\right)
+%$$
+%
+%\begin{enumerate}
+%  \item Montrer que si chaque $f_{i}$ est strictement convexe, alors $f$ est aussi strictement convexe.
+%
+%  \item On suppose dans toute la suite que les $f_{i}$ sont des fonctions continues strictement convexes définies sur $I=] 0,+\infty\left[\right.$ et telles que $\lim _{t \rightarrow 0} f_{i}(t)=+\infty$.
+%
+%\end{enumerate}
+%
+%(a) Montrer que le problème de minimisation
+%
+%
+%\begin{equation*}
+%\min _{\substack{x_{1}, \ldots, x_{n}>0 \\ \sum_{i=1}^{n} x_{i} \leq 1}} f\left(x_{1}, \ldots, x_{n}\right) \tag{0.1}
+%\end{equation*}
+%
+%
+%est équivalent au problème
+%
+%
+%\begin{equation*}
+%\min _{\substack{x_{1}, \ldots, x_{n} \geq \varepsilon \\ \sum_{i=1}^{n} x_{i} \leq 1}} f\left(x_{1}, \ldots, x_{n}\right) \tag{0.2}
+%\end{equation*}
+%
+%
+%lorsque $\varepsilon>0$ est suffisamment petit.
+%
+%(b) Montrer qu'il existe une unique solution au problème (0.2), qui est aussi l'unique solution de (0.1) lorsque $\varepsilon>0$ est suffisamment petit. On note $\left(x_{1}^{*}, \ldots, x_{n}^{*}\right)$ sa solution.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{2}
+%  \item On suppose en plus que le fonctions $f_{i}$ sont dérivables et strictement décroissantes.
+%\end{enumerate}
+%
+%(a) Montrer que lorsque $\varepsilon>0$ est suffisamment petit, la seule contrainte active dans le problème (0.2) est $x_{1}+\cdots+x_{n} \leq 1$, c'est à dire que l'on a $x_{1}^{*}+\cdots+x_{n}^{*}=1$ et $x_{i}^{*}>\varepsilon$.
+%
+%(b) Montrer que les $f^{\prime}\left(x_{i}^{*}\right)$ sont tous égaux.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{3}
+%  \item On considère les cas particuliers
+%\end{enumerate}
+%
+%(i) $f_{i}(t)=-p_{i} \log (t)$
+%
+%(ii) $f_{i}(t)=p_{i} / t$
+%
+%où les $p_{i}$ sont des nombres strictement positifs. Montrer que les résultats obtenus s'appliquent à ces deux cas et donner l'expression de la solution $\left(x_{1}^{*}, \ldots, x_{n}^{*}\right)$ en fonction de $\left(p_{1}, \ldots, p_{n}\right)$.
+%
+%\begin{enumerate}
+%  \setcounter{enumi}{4}
+%  \item Calculer la solution du problème suivant dans $\mathbb{R}^{3}$
+%\end{enumerate}
+%
+%$$
+%\max _{\substack{x, y, z>0 \\ x+y+z \leq 1}} x^{3} y^{4} z^{5}
+%$$
+%
+%\section*{Examen du 27 Mai 2019}
+%\begin{itemize}
+%  \item Durée : 2 heures
+%  \item Feuille A4 recto avec résultats du cours autorisée.
+%  \item Autres documents (livres, poly de cours, calculatrices, téléphones et ordinateurs) interdits.
+%  \item Une rédaction claire et précise sera cruciale pour avoir tous les points.
+%  \item Le barême est orientatif.
+%\end{itemize}
+%
+%Exercice 1: Optimisation statique (5 points /20).
+%
+%On considère le problème de minimisation sur $\mathbb{R}^{n}$ suivant :
+%
+%\begin{center}
+%\includegraphics[width=4.cm]{images/img5.jpg}
+%%\includegraphics[max width=\textwidth]{2024_04_26_1e7a751361b16706a3e7g-28}
+%\end{center}
+%
+%\begin{enumerate}
+%  \item Montrer, sans la calculer, que le problème admet au moins une solution. [1 pt]
+%
+%  \item Montrer que le minimum vaut $-\sqrt{n}$ et qu'il est atteint en $2^{n}$ points. On pourra pour cela utiliser les conditions d'optimalité (dont on justifiera l'utilisation). [4 pt]
+%
+%\end{enumerate}
+%
+%Exercice 2: Programmation dynamique en temps discret (6 points /20).
+%
+%Résoudre le problème d'optimisation suivant :
+%
+%$$
+%\max \left\{\sum_{i=0}^{2} L_{i}\left(x_{i}, x_{i+1}\right): x_{i+1} \in \Gamma_{i}\left(x_{i}\right)\right\}
+%$$
+%
+%où
+%
+%$$
+%x_{0} \geq 0, \quad\left\{\begin{array} { l l } 
+%{ L _ { 0 } ( x _ { 0 } , x _ { 1 } ) } & { = - ( x _ { 1 } - x _ { 0 } ) ^ { 3 } } \\
+%{ L _ { 1 } ( x _ { 1 } , x _ { 2 } ) } & { = x _ { 1 } x _ { 2 } ^ { 2 } - \frac { 1 } { 2 } x _ { 2 } ^ { 3 } } \\
+%{ L _ { 2 } ( x _ { 2 } , x _ { 3 } ) } & { = 2 x _ { 2 } ^ { 2 } x _ { 3 } - 2 x _ { 3 } ^ { 2 } x _ { 2 } }
+%\end{array} \quad \left\{\begin{array}{l}
+%\Gamma_{0}\left(x_{0}\right)=\left[1 / 2,1+x_{0}\right] \\
+%\Gamma_{1}\left(x_{1}\right)=\left[1 / 3, x_{1}\right] \\
+%\Gamma_{2}\left(x_{2}\right)=\left[-3,2 x_{2}\right]
+%\end{array}\right.\right.
+%$$
+%
+%Pour chaque $x_{0} \geq 0$, donner l'ensemble des politiques $\left(x_{1}, x_{2}, x_{3}\right)$ optimales.
+%
+%Exercice 3: Calcul des variations (3 points /20).
+%
+%On cherche à résoudre
+%
+%$$
+%\inf _{x \in \mathcal{A}} \int_{0}^{1}\left(\dot{x}^{2}(t)+4 x^{2}(t)+16 t x(t)\right) \mathrm{d} t
+%$$
+%
+%avec
+%
+%$$
+%\mathcal{A}:=\left\{x \in \mathcal{C}^{1}([0,1], \mathbb{R}): x(0)=1, x(1)=-2\right\}
+%$$
+%
+%\begin{enumerate}
+%  \item Écrire l'équation d'Euler-Lagrange associée au problème. [1 pt]
+%
+%  \item Trouver la ou les solutions du problème. [2 pt]
+%
+%\end{enumerate}
+%
+%Exercice 4: Contrôle optimal (6 points /20).
+%
+%Soit $T>0$. On considère le problème de minimisation suivant
+%
+%$$
+%\inf _{u \in \mathcal{U}} J(u), \quad \text { avec } \quad J(u):=\int_{0}^{T}\left(\frac{3}{2} x^{2}(t)+\frac{1}{2} u^{2}(t)\right) \mathrm{d} t-\frac{1}{2} x^{2}(T)
+%$$
+%
+%où $\mathcal{U}$ est l'ensemble de processus de contrôle $(u(t))_{t \in[0,1]}$ à valeurs dans $U=\mathbb{R}$, et $x(t)$ est la solution de
+%
+%$$
+%\begin{cases}\dot{x}(t) & =x(t)+u(t) \\ x(0) & =x_{0}\end{cases}
+%$$
+%
+%\begin{enumerate}
+%  \item Calculer le Hamitonien du système $H(t, x, p)$. $[\mathbf{1} \mathbf{~ p t}]$
+%
+%  \item Soit $u^{*}(t)$ un contrôle optimal et $x^{*}(t)$ une solution optimale. Donner les conditions nécessaires d'optimalité par le principe de Pontryagin. On rappelle que ces conditions portent sur le couple $\left(x^{*}, p^{*}\right)$ où $p^{*}$ peut être vu comme un état adjoint à $x^{*}$. [1 pt]
+%
+%  \item Résoudre ce système. $[\mathbf{2} \mathbf{~ p t}]$
+%
+%  \item En déduire le contrôle optimal $u^{*}$ ainsi que la valeur $J\left(u^{*}\right)$. [1 pt]
+%
+%  \item Expliquer en quelques lignes comment aborder le problème par l'approche de la programmation dynamique. [1 pt]
+%
+%\end{enumerate}
+%\section*{Exercice 1 : Moindres carrés linéaires}
+%On considère un jeu de données de la forme $\left\{\left(\boldsymbol{a}_{i}, b_{i}\right)\right\}_{i=1}^{m}$, où chaque $\boldsymbol{a}_{i}$ est un vecteur de $\mathbb{R}^{n}$ et chaque $b_{i}$ appartient à $\mathbb{R}$. On cherche un modèle linéaire qui explique les données, que l'on obtient en considérant le problème :
+%
+%
+%\begin{equation*}
+%\underset{\boldsymbol{x} \in \mathbb{R}^{n}}{\operatorname{minimiser}} f(\boldsymbol{x}):=\frac{1}{2}\|\boldsymbol{A} \boldsymbol{x}-\boldsymbol{b}\|^{2}=\frac{1}{2} \sum_{i=1}^{m}\left(\boldsymbol{a}_{i}^{\mathrm{T}} \boldsymbol{x}-b_{i}\right)^{2} \tag{1}
+%\end{equation*}
+%
+%
+%où $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ et $\boldsymbol{b} \in \mathbb{R}^{m}$ concatènent les données, c'est-à-dire que
+%
+%$$
+%\boldsymbol{A}=\left[\begin{array}{c}
+%\boldsymbol{a}_{1}^{\mathrm{T}} \\
+%\vdots \\
+%\boldsymbol{a}_{n}^{\mathrm{T}}
+%\end{array}\right], \quad \boldsymbol{b}=\left[\begin{array}{c}
+%b_{1} \\
+%\vdots \\
+%b_{n}
+%\end{array}\right]
+%$$
+%
+%Ce problème est un des plus classiques en analyse de données; sa fonction objectif est de classe $\mathcal{C}^{2}$, et on peut montrer qu'il possède toujours au moins une solution.
+%
+%a) Supposons que $\boldsymbol{x}^{*}$ vérifie $\boldsymbol{A} \boldsymbol{x}^{*}=\boldsymbol{b}$ (c'est donc une solution du système linéaire $\boldsymbol{A} \boldsymbol{x}=\boldsymbol{b})$. Justifier que $\boldsymbol{x}^{*}$ est alors un minimum global du problème.
+%
+%b) Le gradient de $f$ en $\boldsymbol{x} \in \mathbb{R}^{n}$ est donné par $\nabla f(\boldsymbol{x})=\boldsymbol{A}^{\mathrm{T}}(\boldsymbol{A} \boldsymbol{x}-\boldsymbol{b})$. Si $\boldsymbol{x}^{*}$ est un minimum local de $f$, que vaut $\nabla f\left(\boldsymbol{x}^{*}\right)$ ?
+%
+%c) La matrice hessienne de $f$ en $\boldsymbol{x} \in \mathbb{R}^{n}$ est donnée par $\nabla^{2} f(\boldsymbol{x})=\boldsymbol{A}^{\mathrm{T}} \boldsymbol{A}$. Elle est donc constante et définie par les données du problème.
+%
+%i) On a toujours $\boldsymbol{A}^{\mathrm{T}} \boldsymbol{A} \succeq \mathbf{0}$. Quelle propriété sur $f$ cela implique-t-il ?
+%
+%ii) On suppose que $\boldsymbol{A}^{\mathrm{T}} \boldsymbol{A} \succeq \mu \boldsymbol{I}_{n}$ avec $\mu>0$. Dans ce cas, que peut-on dire de $\nabla^{2} f(\boldsymbol{x})$ pour tout $\boldsymbol{x}$ ? Qu'en déduit-on sur l'ensemble des solutions du problème (1)?
+%
+%\section*{Exercice 2 : Fonction convexe}
+%Soit la fonction $q: \mathbb{R}^{n} \rightarrow \mathbb{R}$ définie par $q(\boldsymbol{x})=\frac{1}{4}\|\boldsymbol{x}\|^{4}$. Cette fonction est de classe $\mathcal{C}^{2}$, et pour tout $\boldsymbol{x} \in \mathbb{R}^{n}$, on a :
+%
+%$$
+%\nabla q(\boldsymbol{x})=\|\boldsymbol{x}\|^{2} \boldsymbol{x}, \quad \nabla^{2} q(\boldsymbol{x})=2 \boldsymbol{x} \boldsymbol{x}^{\mathrm{T}}+\|\boldsymbol{x}\|^{2} \boldsymbol{I}_{n}
+%$$
+%
+%a) En utilisant sa matrice hessienne, montrer que la fonction $q$ est convexe. Quelle conséquence cela a-t-il sur ses minima?
+%
+%b) Montrer que le vecteur nul $\mathbf{0}_{\mathbb{R}^{n}}$ est un minimum local. Satisfait-il la condition suffisante à l'ordre 2 ?
+%
+%c) En fonction de la réponse à la question précédente, la fonction peut-elle alors être fortement convexe?
+%
+%\section*{Exercice 3 : Fonctions quasi-convexes}
+%Une fonction $f: \mathbb{R}^{n} \rightarrow \mathbb{R}$ est dite quasi-convexe si
+%
+%
+%\begin{equation*}
+%\forall \boldsymbol{x}, \boldsymbol{y} \in \mathbb{R}^{n}, \forall t \in[0,1], \quad f(t \boldsymbol{x}+(1-t) \boldsymbol{y}) \leq \max \{f(\boldsymbol{x}), f(\boldsymbol{y})\} \tag{2}
+%\end{equation*}
+%
+%
+%Toute fonction convexe est quasi-convexe, mais la réciproque est fausse.
+%
+%On s'intéresse ici aux solutions du problème
+%
+%
+%\begin{equation*}
+%\underset{\boldsymbol{x} \in \mathbb{R}^{n}}{\operatorname{minimiser}} f(\boldsymbol{x}) \tag{3}
+%\end{equation*}
+%
+%
+%où l'on suppose que $f$ est quasi-convexe et de classe $\mathcal{C}^{2}$.
+%
+%a) Donner les conditions d'optimalité nécessaires à l'ordre 1 et à l'ordre 2 pour le problème (3).
+%
+%b) Comme $f$ est quasi-convexe, on a la propriété suivante :
+%
+%
+%\begin{equation*}
+%\forall \boldsymbol{x} \in \mathbb{R}^{n}, \forall \boldsymbol{v} \in \mathbb{R}^{d}, \quad \boldsymbol{v}^{\mathrm{T}} \nabla f(\boldsymbol{x})=0 \Rightarrow \boldsymbol{v}^{\mathrm{T}} \nabla^{2} f(\boldsymbol{x}) \boldsymbol{v} \geq 0 \tag{4}
+%\end{equation*}
+%
+%
+%Soit $\boldsymbol{x}^{*}$ un point stationnaire d'ordre 1 . Justifier que $\boldsymbol{x}^{*}$ est aussi un point stationnaire d'ordre 2.
+%
+%\section*{Solutions des exercices}
+%\section*{Solutions de l'exercice 1}
+%a) Si $\boldsymbol{A} \boldsymbol{x}^{*}=\boldsymbol{b}$, alors on a
+%
+%$$
+%f\left(\boldsymbol{x}^{*}\right)=\frac{1}{2}\left\|\boldsymbol{A} \boldsymbol{x}^{*}-\boldsymbol{b}\right\|^{2}=\frac{1}{2}\|\mathbf{0}\|^{2}=0
+%$$
+%
+%Or la fonction $f$ est toujours positive ou nulle; on a ainsi
+%
+%$$
+%\forall \boldsymbol{x} \in \mathbb{R}^{n}, f(\boldsymbol{x}) \geq 0=f\left(\boldsymbol{x}^{*}\right)
+%$$
+%
+%Cette propriété correspond à la définition d'un minimum global, d'où l'on conclut que $\boldsymbol{x}^{*}$ est bien un minimum global du problème.
+%
+%b) Si $\boldsymbol{x}^{*}$ est un minimum local du problème (1) et donc de $f$, alors on a $\nabla f\left(\boldsymbol{x}^{*}\right)=\mathbf{0}$. C'est la condition d'optimalité nécessaire à l'ordre 1 .
+%
+%i) Si $\boldsymbol{A}^{\mathrm{T}} \boldsymbol{A} \succeq \mathbf{0}$, alors on a $\nabla^{2} f(\boldsymbol{x}) \succeq \mathbf{0}$ pour tout $\boldsymbol{x}$ : c'est une caractérisation de la convexité pour une fonction de classe $\mathcal{C}^{2}$, et l'on en conclut donc que $f$ est convexe.
+%
+%ii) Comme dans la question précédente, le fait que $\boldsymbol{A}^{\mathrm{T}} \boldsymbol{A} \succeq \mu \boldsymbol{I}_{n}$ signifie que $\nabla^{2} f(\boldsymbol{x}) \succeq \mu \boldsymbol{I}_{n}$ pour tout $\boldsymbol{x} \in \mathbb{R}^{n}$. C'est une caractérisation de la convexité forte, d'où l'on conclut que $f$ est $\mu$-fortement convexe. Par conséquent, la solution du problème (on sait qu'il en existe au moins une d'après l'énoncé) est unique.
+%
+%\section*{Solutions de l'exercice 2}
+%a) Pour tous $x \in \mathbb{R}^{n}$ et $\boldsymbol{v} \in \mathbb{R}^{n}$, on a en utilisant la linéarite des produits scalaires et produits matrice-vecteur :
+%
+%$$
+%\begin{aligned}
+%\boldsymbol{v}^{\mathrm{T}} \nabla^{2} q(\boldsymbol{x}) \boldsymbol{v} & =\boldsymbol{v}^{\mathrm{T}}\left(2 \boldsymbol{x} \boldsymbol{x}^{\mathrm{T}}+\|\boldsymbol{x}\|^{2} \boldsymbol{I}_{n}\right) \boldsymbol{v} \\
+%& =\boldsymbol{v}^{\mathrm{T}}\left(2 \boldsymbol{x} \boldsymbol{x}^{\mathrm{T}} \boldsymbol{v}+\|\boldsymbol{x}\|^{2} \boldsymbol{v}\right) \\
+%& =2 \boldsymbol{v}^{\mathrm{T}} \boldsymbol{x} \boldsymbol{x}^{\mathrm{T}} \boldsymbol{v}+\|\boldsymbol{x}\|^{2} \boldsymbol{v}^{\mathrm{T}} \boldsymbol{v} \\
+%& =2\left(\boldsymbol{x}^{\mathrm{T}} \boldsymbol{v}\right)^{2}+\|\boldsymbol{x}\|^{2} \boldsymbol{v}^{\mathrm{T}} \boldsymbol{v} \\
+%& =2\left(\boldsymbol{x}^{\mathrm{T}} \boldsymbol{v}\right)^{2}+\|\boldsymbol{x}\|^{2}\|\boldsymbol{v}\|^{2} \\
+%& \geq 0
+%\end{aligned}
+%$$
+%
+%Par conséquent, pour tout $\boldsymbol{x} \in \mathbb{R}^{n}$, la matrice hessienne $\nabla^{2} q(\boldsymbol{x})$ est semi-définie positive : on a $\nabla^{2} q(\boldsymbol{x}) \succeq \mathbf{0}$. On en déduit que la fonction $q$ est convexe, et donc que tous ses minima locaux sont globaux (elle ne possède ainsi que des minima globaux).
+%
+%b) Puisque $q$ est convexe, il y a équivalence entre minimum local et minimum global. Or, on a
+%
+%$$
+%q(\boldsymbol{x})=\frac{1}{4}\|\boldsymbol{x}\|^{4} \geq 0=q\left(\mathbf{0}_{\mathbb{R}^{n}}\right)
+%$$
+%
+%Le vecteur nul $\mathbf{0}_{\mathbb{R}^{n}}$ est donc un minimum global de $q$. Pour satisfaire la condition suffisante d'optimalité à l'ordre 2, il faudrait avoir $\nabla^{2} q(\boldsymbol{x}) \succ \mathbf{0}$; or, on trouve en remplaçant dans l'expression donnée dans l'énoncé que
+%
+%$$
+%\nabla^{2} q\left(\mathbf{0}_{\mathbb{R}^{x}}\right)=\mathbf{0}
+%$$
+%
+%qui n'est pas définie positive mais uniquement semi-définie positive : par conséquent, le vecteur nul ne vérifie pas la condition suffisante d'optimalité. Remarque: cela ne contredit pas le fait que $\mathbf{0}$ est un minimum global.
+%
+%c) Si la fonction était fortement convexe, on aurait $\nabla^{2} q(\boldsymbol{x}) \succeq \mu \boldsymbol{I}_{n} \succ \mathbf{0}$ pour tout $\boldsymbol{x}$, et donc en particulier pour le vecteur nul. Ce n'est pas le cas, et on enclut donc que cette fonction n'est pas fortement convexe.
+%
+%\section*{Solutions de l'exercice 3}
+%a) Il s'agit d'une question de cours. La condition nécessaire d'optimalité à l'ordre 1 s'énonce comme suit : si $\boldsymbol{x}^{*} \in \mathbb{R}^{n}$ est un minimum local de $f$, alors $\nabla f\left(\boldsymbol{x}^{*}\right)=\mathbf{0}$. La condition nécessaire d'optimalité à l'ordre 2 est plus précise encore : si $\boldsymbol{x}^{*} \in \mathbb{R}^{n}$ est un minimum local de $f$, alors
+%
+%$$
+%\nabla f\left(\boldsymbol{x}^{*}\right)=\mathbf{0} \quad \text { et } \quad \nabla^{2} f\left(\boldsymbol{x}^{*}\right) \succeq \mathbf{0}
+%$$
+%
+%b) Puisque $x^{*}$ est un point stationnaire d'ordre 1, il vérifie la condition d'optimalité nécessaire à l'ordre 1 : on a donc $\nabla f\left(\boldsymbol{x}^{*}\right)=\mathbf{0}$. Par conséquent, on a
+%
+%$$
+%\forall \boldsymbol{v} \in \mathbb{R}^{d}, \quad \boldsymbol{v}^{\mathrm{T}} \nabla f\left(\boldsymbol{x}^{*}\right)=\boldsymbol{v}^{\mathrm{T}} \mathbf{0}=0
+%$$
+%
+%La première partie de l'implication (4) est donc vraie pour $\boldsymbol{x}^{*}$ et pour tout vecteur $\boldsymbol{v}$. On en déduit donc que la seconde partie de l'implication l'est aussi, c'est-à-dire que l'on a :
+%
+%$$
+%\boldsymbol{v}^{\mathrm{T}} \nabla^{2} f\left(\boldsymbol{x}^{*}\right) \boldsymbol{v} \geq 0 \forall \boldsymbol{v} \in \mathbb{R}^{n}
+%$$
+%
+%qui correspond à $\nabla^{2} f\left(\boldsymbol{x}^{*}\right) \succeq \mathbf{0}$. Par conséquent, $\boldsymbol{x}^{*}$ vérifie la condition nécessaire d'optimalité à l'ordre 2 : c'est donc bien un point stationnaire d'ordre 2.
+
+\end{document}

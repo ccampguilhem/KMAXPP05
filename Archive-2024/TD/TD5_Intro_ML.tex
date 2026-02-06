@@ -1,0 +1,97 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -2.54cm
+\textwidth 17cm
+\textheight 27cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+%
+\DeclareMathOperator{\logit}{logit}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L FLEX}
+\hfill 2023--2024\\
+\noindent Introduction au Machine Learning 
+\vspace{1cm}
+
+\begin{center}
+{\bf\large Feuille d'exercice 5} \\
+{\it Introduction aux processus gaussiens}
+\end{center}
+%
+\section{Mise en jambes}
+\noindent
+Soit $\left(X_t\right)_{t \in \BBr}$ un processus Gaussien réel, centré, de covariance $c$. Montrer que le processus $\left(Y_t\right)_{t \in \BBr}$ construit à partir de $\left(X_t\right)_{t \in \BBr}$ est un processus Gaussien dont on déterminera la covariance dans les cas suivants~:
+\begin{enumerate}
+\item $Y_t=X_{a t+b}, t \in \BBr$, où $a, b$ sont deux réels fixés;
+\item $Y_t=a X_t+b, t \in \BBr$, où $a, b$ sont deux réels fixés;
+\item $Y_t=X_{t^2}, t \in \BBr$.
+\end{enumerate}
+\section{Bruit blanc}
+\noindent
+On considère l'application $c$ définie par $c(s, t)=\mathbf{1}_{\{s=t\}}, s, t \in \BBr$.
+\begin{enumerate}
+\item Montrer que $c$ est semi-définie positive.
+\item On considère $\left(X_t\right)_{t \in\BBr}$ un processus Gaussien centré de covariance $c$. Montrer que si $s \neq t, X_t$ et $X_s$ sont indépendantes.
+\end{enumerate}
+%
+\section{Fonction caractéristique}
+\noindent
+\begin{enumerate}
+\item Soit $c(s, t)=\cos (t-s), s, t \in \BBr$. Montrer que $c$ est une application semi-définie positive.
+\item On considère $Z$ une v.a. réelle et $\phi$ sa fonction caractéristique. Montrer l'équivalence~:
+\begin{enumerate}
+\item $Z$ est à loi symétrique.
+\item $\phi$ est une fonction réelle paire.
+\end{enumerate}
+%
+\item On suppose $Z$ de loi symétrique. Montrer que la fonction $\Gamma(s, t)=\phi(t-s), s, t \in\BBr$, est symétrique et semi-définie positive.
+\item Dans cette question, $Z$ suit une loi de Cauchy de paramètre $\beta$. Expliciter $\Gamma$. Soit $\left(X_t\right)_{t \in \BBr}$ un processus Gaussien centré de covariance $\Gamma$. Montrer que $\left(X_t\right)_{t \in\BBr}$ est un processus stationnaire et que l'inégalité suivante est vérifiée pour tout $s, t \in\BBr$~:
+$$
+\mathrm{E}\left[\left(X_t-X_s\right)^2\right] \leq 2 \beta|t-s|
+$$
+\end{enumerate}
+\section{Vecteur gaussien}
+\begin{enumerate}
+\item  Soit $(X, Y, Z)$ un vecteur gaussien centré, et de matrice de covariance $\left(\begin{array}{ccc}1 & 0 & -1 \\ 0 & 5 & 3 \\ -1 & 3 & 4\end{array}\right)$. Calculer 
+$$\mathbb{E}(Y \mid X, Z).$$
+%
+\item 
+ Soit $(X, Y)$ un vecteur gaussien centré, et de matrice de covariance $\left(\begin{array}{cc}4 / 3 & -1 \\ -1 & 1\end{array}\right)$. Calculer $\mathbb{E}(X \mid Y-X)$.
+%
+\item  Soit $(X, Y)$ un vecteur gaussien centré, et de matrice de covariance $\Gamma=\left(\begin{array}{ll}a & c \\ c & b\end{array}\right)$ avec $b$ non nul. Calculer la loi conditionnelle de $X$ sachant $Y=y$.
+%
+\end{enumerate}
+%
+\section{Just a simple Kriging}
+\noindent
+Sur $[0,1]$, on considère la fonction 
+$f(x)=\exp(-x)\sin(2\pi x)$. On considère le processus gaussien $(X_t)$ centré de noyau de covariance $\BBe(X_t X_s)=\inf(t,s),\;(t,s\in [0,1])$. On observe $f$ sur les points $1/4$ et $3/4$. Tracer sur un même graphique la fonction $f$ et sa prédiction obtenue par la méthode gaussienne. 
+\end{document}

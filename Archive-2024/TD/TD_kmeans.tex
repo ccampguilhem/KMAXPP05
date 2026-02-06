@@ -1,0 +1,110 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\newcommand\norm[1]{\lVert#1\rVert} % commande pour norme
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{calrsfs}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{float} 
+\usepackage{dsfont}
+
+\title{TD kmeans}
+\author{B Deporte}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+TD k-means
+\end{abstract}
+
+\section{Exercice 1 - partitions Voronoï}
+
+a) calculer et tracer le diagramme de Voronoï associé aux sites $(x_{i}, y_{j}) \in \mathbb{R}^{2}$ avec $x_{i} = i, 0 \leq i \leq n, i \in \mathbb{N}, n \in \mathbb{N}^{*}$ et $y_{j} = j, 0 \leq j \leq m, j \in \mathbb{R}, m \in \mathbb{N}^{*}$
+\par
+b) calculer et tracer le diagramme de Voronoï associé au sites d'affixe $z_{i} = e^{i\frac{2\pi}{n}}, 0 \leq i \leq n-1$ pour $n \in \mathbb{N}^{*}, n \geq 2$
+\par
+c) calculer le diagramme de Voronoï associé à trois sites quelconques distincts deux à deux $(x_{1},y_{1}), (x_{2},y_{2}), (x_{3},y_{3})$ dans $\mathbb{R}^{2}$
+\par
+d) construire géométriquement le diagramme de Voronoï associé à quatre points $A, B, C, D$ du plan.
+
+\section{Exercice 2 - k-means en 1D}
+
+On considère le dataset de points de $\mathbb{R}$ : $\mathcal{X} = \{1,2,9,12,20\}$.
+\\
+a) Appliquer k-means avec les valeurs de $k$ et les centroïds de départ suivants :
+\begin{itemize}
+    \item $k=2, \mu_{1}=1, \mu_{2}=20$
+    \item $k=3, \mu_{1}=1, \mu_{2}=12, \mu_{3}=20$
+    \item $k=4, \mu_{1}=1, \mu_{2}=9, \mu_{3}=12, \mu_{4}=20$
+\end{itemize}
+\par
+b) On veut comparer la qualité de ces groupements. Pour ce faire, on commence par utiliser l'inertie intra-cluster.
+\begin{itemize}
+    \item Calculer l'inertie intra-cluster pour chacun des regroupements précédents.
+    \item Avec ce critère, quel serait le meilleur regroupement possible ? Est-ce pertinent ?
+\end{itemize}
+\par
+c) Même question avec le "silhouette score". (On rappelle que le "silhouette score" est la moyenne des "silhouette coefficients" des points du dataset, et le "silhouette coefficient" d'un point est $(b-a)/max(a,b)$ avec $a$ distance moyenne intra-cluster, et $b$ distance moyenne au cluster voisin le plus proche).
+\par
+d) On rajoute à l'inertie un terme $2kN\log{N}$ qui va pénaliser les modèles complexes ($k$ élevé). Calculer la valeur du nouveau critère pour les 3 regroupements. Conclure.
+
+
+\section{Exercice 3 - k-means 1D avec distance L1}
+On considère ici le dataset de points de $\mathbb{R}$ : $\mathcal{X} = \{2,5,8,10,11,18,20\}$.
+\\
+On veut regrouper les données de $\mathcal{X}$ en 3 clusters, avec k-means, en utilisant cette fois la distance $d(a,b) = \vert a-b \vert$
+\par
+a) Appliquer k-means en prenant comme centroïds initiaux 8, 10 et 11. Donner le résultat final et le nombre d'itérations nécessaires.
+\par
+b) Quelle serait une bonne stratégie d'initialisation des centroïds ?
+\par
+c) Mettre en oeuvre l'intialisation du b) et appliquer k-means. Conclure.
+
+\section{Exercice 4 - Vers l'algorithme EM}
+L'algorithme du k-means assigne de façon certaine (cad avec probabilité 1) une classe $j \in \{1,..,k\}$ à chacun des points du dataset. 
+\par
+On prend ici un point de vue différent : on va chercher à estimer plutôt la probabilité qu'un point $x_{i}$ appartienne à la classe $j$, en faisant intervenir une variable aléatoire discrète $z_{i}$.
+\par
+Plus formellement, on considère comme d'habitude un dataset $\mathcal{X}=\{x_{1},...,x_{i},...,x_{n}\}$, et l'on spécifie une distribution de probabilité jointe $p(x_{i}, z_{i})$ qui est la probabilité que $x_{i}$ appartienne à la classe $z_{i} \in \{1,...,k\}$, par :
+\begin{align}
+    p(x_{i}, z_{i}) &= p(x_{i}\vert z_{i})p(z_{i}) \\
+    z_{i} &\sim Multinomial(\phi), \phi_{j} \geq 0, \sum_{j=1}^{k} \phi_{j}=1, \phi_{j}=p(z_{i}=j) \\
+    x_{i}\vert z_{i}&=j \sim \mathcal{N}(\mu_{j}, \Sigma_{j})
+\end{align}
+Chaque $x_{i}$ se voit affecté la classe $z_{i}$ qui prend la valeur $j$ avec la probabilité $\phi_{j}$. Une fois affecté à la classe $z_{i}=j$, $x_{i}$ est tiré au hasard de la distribution Gaussienne $\mathcal{N}(\mu_{j}, \Sigma_{j})$.
+\par
+Ce modèle est le modèle GMM (pour Gaussian Mixture Model).
+\par
+a) Montrer que le log de vraisemblance des données est :
+\[
+\mathcal{L}(\phi,\mu,\Sigma) = \sum_{i=1}^{n}\log\sum_{z_{i}=1}^{k}p(x_{i}\vert z_{i};\mu,\Sigma)p(z_{i};\phi)
+\]
+Peut-on déterminer analytiquement les paramètres optimaux $\phi, \mu, \Sigma$ en annulant les dérivées partielles de $\mathcal{L}$  ?
+\par
+b) Si on suppose maintenant les $z_{i}$ connus, montrer que la vraisemblance devient :
+\[
+\mathcal{L}(\phi,\mu,\Sigma) = \sum_{i=1}^{n}\left( \log p(x_{i}\vert z_{i}; \mu,\Sigma) + \log p(z_{i};\phi) \right)
+\]
+\par
+c) Montrer alors que les paramètres optimaux sont :
+\begin{align}
+    \phi_{j} &= \frac{1}{n} \sum_{i=1}^{n} \mathds{1}_{z_{i}=j} \\
+    \mu_{j} &= \frac{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}x_{i}}{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}} \\
+    \Sigma_{j} &= \frac{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}(x_{i}-\mu_{j})(x_{i}-\mu_{j})^{T}}{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}}
+\end{align}
+\par
+d) Proposer un algorithme itératif
+
+\end{document}

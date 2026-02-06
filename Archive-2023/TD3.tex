@@ -1,0 +1,197 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage[export]{adjustbox}
+\graphicspath{ {./images/} }
+
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+
+
+\theoremstyle{definition}
+\newtheorem{exo}{Exercice}
+
+
+\title{Machine learning \hspace{20pt} L3 \\
+TD n° 3}
+\author{Joachim Bona-Pellissier \\ Université Paul Sabatier}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+\centerline{\sc K-moyennes}
+
+
+\begin{exo}
+On considère un ensemble de points de l'espace $x^{(i)}$, pour $1 \leq i \leq n$. On cherche à effectuer une tâche de clustering : on fixe un nombre $k$ de clusters, $1 \leq k \leq n$. Le but est d'assigner à chaque point $x^{(i)}$ un cluster $c(x^{(i)}) \in \lb 1, k \rb$. 
+
+On va utiliser l'algorithme des k-moyennes. Pour construire les $k$ clusters, on utilise $k$ centres de masse $\mu_1, \dots, \mu_k$ dont la position évolue au cours du temps. On procède comme suit :
+\begin{itemize}
+\item Initialisation : on fixe les centres $\mu_1, \dots, \mu_k$ initiaux en choisissant $k$ points au hasard dans le jeu de données. (Remarque : d'autres manières d'initialiser l'algorithme sont possibles).
+\item Jusqu'à convergence, ou bien jusqu'à avoir atteint un nombre limite fixé d'itérations, on répète les deux étapes suivantes :
+\begin{enumerate}
+\item Pour tout $i \in \lb 1, n \rb$, on assigne à $x^{(i)}$ le cluster $j$ dont le centre $\mu_j$ est le plus proche de $x^{(i)}$ :
+\[c(x^{(i)})  : = \argmin_{j \in \lb 1, k \rb} \|x^{(i)} - \mu_j \|^2 \]
+S'il y a plusieurs centres qui sont les plus proches, on en choisit arbitrairement un.
+\item  On définit alors, pour tout $j \in \lb 1 , k \rb$, le nouveau centre $\mu_j$ comme le barycentre du cluster $j$. On note $C_j = \{ x^{(i)}, c(x^{(i)}) = i \}$ l'ensemble des points appartenant au cluster $j$, et on note $|C_j|$ le cardinal de $C_j$. On définit alors
+\[\mu_j : = \frac{1}{|C_j|} \sum_{\substack{1 \leq i \leq n \\ x^{(i)} \in C_j}} x^{(i)}. \]
+\end{enumerate}
+La convergence a lieu quand, à une itération de l'algorithme donnée, aucun point ne voit son cluster changer par rapport à l'itération précédente.
+\end{itemize}
+
+Une illustration de l'algorithme des $k$ moyennes est présentée ci-dessous (source : Christophe Chesneau) :
+
+
+\includegraphics[scale=0.4, center]{k-means}
+
+Application: Dans une étude industrielle, on a étudié 2 caractères : $X_{1}$ et $X_{2}$, sur 6 individus $\omega_{1}, \ldots, \omega_{6}$. Les données recueillies sont :
+
+\begin{center}
+\begin{tabular}{|c||c|c|}
+\hline
+ & $X_{1}$ & $X_{2}$ \\
+\hline\hline
+$\omega_{1}$ & -2 & 2 \\
+\hline
+$\omega_{2}$ & -2 & -1 \\
+\hline
+$\omega_{3}$ & 0 & -1 \\
+\hline
+$\omega_{4}$ & 2 & 2 \\
+\hline
+$\omega_{5}$ & -2 & 3 \\
+\hline
+$\omega_{6}$ & 3 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+  \item Réaliser à la main l'algorithme des k-moyennes pour $k=2$ en prenant comme centres initiaux les points $\mu_{1}^{0}$ de coordonnées $(-1,-1)$ et $\mu_{2}^{0}$ de coordonnées $(2,3)$.
+  
+  \item Sur un graphique représenter les points, les centres finaux et les deux cellules de Voronoï associées à ces deux centres.
+  
+  Rappel : étant donné $N \in \mathbb{N}^*$ et un ensemble de centres $\mu_1, \dots, \mu_k \in \RR^N$, la cellule de Voronoï associée à $\mu_i$ est définie par 
+  \[V_i = \{ x \in \RR^N \ | \  \forall j \in \lb 1 , k \rb, j \neq i, \quad \| x - \mu_i \| \leq \| x - \mu_j \| \}.\]
+  
+  \item Recommencer en partant cette fois des centres initiaux, $\mu_{1}^{0}$ de coordonnées $(-1,2)$ et $\mu_{2}^{0}$ de coordonnées $(1,1)$. 
+  
+  \item A nouveau tracer les points, les centres et les deux cellules de Voronoï obtenues.
+\end{enumerate}
+
+\end{exo}
+
+\begin{exo}
+On considère la liste de points du plan suivants :
+$A_1=(2,10), A_2=(2,5), A_3=(8,4), A_4=(5,8), A_5=(7,5), A_6=(6,4), A_7=(1,2), A_8=(4,9)$.
+
+Supposons qu'on initialise l'algorithme en prenant pour centres initiaux les points $A_1, A_4$ et $A_7$. On commence par effectuer une seule boucle de l'algorithme (c'est-à-dire une seule fois les étapes $1$ et $2$ décrites à l'exercice 1).
+\begin{enumerate}
+\item Déterminer les clusters obtenus.
+\item Déterminer les nouveaux centres des clusters.
+\item Représenter sur un graphe d'axes $[0,10] \times [0,10]$ les points avec un symbole différent en fonction de leur cluster. Représenter les centres de masse des clusters. Représenter les cellules de Voronoï générées par ces centres.
+\item Effectuer les boucles suivantes de l'algorithme k-means. Combien d'itérations sont nécessaires pour converger ?
+\end{enumerate}
+\end{exo}
+
+\begin{exo}[Loss et k-means]
+L'objectif de l'algorithme k-means est de minimiser la distance des points aux centres des clusters qui leur correspondent. On peut formaliser ça comme minimiser la fonction de perte 
+\begin{equation}\label{discrete}L = \sum_{i=1}^n \|x^{(i)} - \mu_{c(x^{(i)})}\|^2
+\end{equation}
+
+\begin{enumerate}
+\item On suppose les centres fixés : $\mu_1, \dots, \mu_k \in \RR^n$, et on cherche à attribuer les clusters de manière à minimiser $L$. On a donc, pour tout $i$, $c(x^{(i)}) \in \{ \mu_1, \dots, \mu_k \}$. Quel choix de clusters $c(x^{(i)})$ minimise $L$ ? Quelle étape de l'algorithme retrouve-t-on ?
+\item On suppose maintenant les clusters $c(x^{(i)})$ fixés, et on cherche à fixer les centres pour minimiser $L$. On peut réécrire $L$ comme ceci (en faisant apparaître les $\mu_j$ comme variables de $l$) :
+\[L(\mu_1, \dots, \mu_k) = \sum_{j = 1}^k \sum_{\substack{1 \leq i \leq n \\ x^{(i)} \in C_j}} \| x_i - \mu_j \|^2.\]
+Calculer, pour $1 \leq j \leq k$, le gradient $\nabla_{\mu_j} L$ de $L$ par rapport à la variable (vectorielle) $\mu_j$.
+\item On admet que $L$ possède un minimiseur global. Quelle liste de centres $(\mu_1, \dots, \mu_k)$ minimise $L$ ? Que retrouve-t-on ?
+\item Bonus : Même sans supposer l'existence d'un minimiseur global, qu'est-ce qui nous garantit qu'un élément qui annule le gradient de $L$ en est un ? 
+\end{enumerate}
+\end{exo}
+
+\begin{exo}
+On peut généraliser l'algorithme des k-moyennes au cas continu. Au lieu de considérer une liste finie d'échantillons $x^{(i)}$, on considère une densité de probabilité $p_X$ sur l'espace $\RR^N$. On suppose par simplicité que $p_X$ est à support compact : il existe $S \subset \RR^N$ compact tel que pour tout $x \not\in S$, $P_X(x) = 0$. Pour tout $x \in \RR^N$, on associe un cluster $c(x) \in \lb 1,  k \rb$. De même qu'avant, on veut trouver des centres $\mu_j$ pour séparer l'espace en $k$ clusters. On considère la fonction de perte suivante, qui est l'analogue continu de la fonction de perte \eqref{discrete} :
+\[L = \int_{\RR^N} \|x - \mu_{c(x)} \|^2 p_X(x) dx.\]
+De même que dans le cas discret, on peut réécrire cela en séparant les clusters. En notant $\Theta_j = \{ x \in \RR^N, c(x) = j \} $, on a :
+\begin{equation}\label{L(mu_j)} L = \sum_{j=1}^k \int_{x \in \Theta_j} \| x - \mu_j \|^2 p_X(x) dx. \end{equation}
+
+\begin{enumerate}
+\item On suppose les $\mu_j$ fixés, et on cherche à choisir les clusters $\Theta_j$. Montrer que la distribution qui minimise $L$ revient à prendre pour $\Theta_1, \dots, \Theta_k$ les cellules de Voronoi engendrées par $\mu_1, \dots, \mu_k$.
+\item On suppose cette fois les clusters $\Theta_1, \dots, \Theta_k$ fixés. Soit $j \in \lb 1, k \rb$. En partant de  l'expression \eqref{L(mu_j)}, montrer qu'on peut dériver $L$ par rapport à $\mu_j$. (On cherchera à appliquer le théorème de dérivation d'une intégrale à paramètre).
+\item En déduire que la famille $(\mu_1, \dots, \mu_k)$ qui minimise $L$ vérifie, pour tout $j \in \lb 1, k \rb$ :
+\[\mu_j = \frac{\int_{\Theta_j} x p_X(x) dx}{\int_{\Theta_j} p_X(x) dx}.\]
+L'expression de $\mu_j$ obtenue correspondent donc au centre de masse de $\Theta_j$ par rapport à la densité $p_X$.
+\item En déduire un équivalent de l'algorithme des k-moyennes décrit dans l'exercice 1, mais dans le cas continu. Cet algorithme porte le nom d'algorithme de Lloyd.
+
+\end{enumerate}
+\end{exo}
+
+\begin{exo}
+ On se place dans $\RR^2$. On considère les figures suivantes : 
+\begin{itemize}
+\item[a)] Le rectangle $[-2,2] \times [-1,1]$, dont les sommets sont les points de coordonnées $(-2,-1), (2, -1), (2,1), (-2,1)$.
+\item[b)] Le disque de centre $(0,0)$ et de rayon $1$.
+\item[c)] Le polygone (plein) dont les sommets ont les coordonnées suivantes : $(-1,-3), (2, -3), (2,0), (0.5, 2), (-1,0)$.
+\end{itemize}
+\begin{enumerate}
+\item Calculer l'aire de chacune de ces figures. En déduire les densités associées aux distributions de probabilités uniformes sur chacune des figures ?
+\item On considère des variables aléatoires $X$, $Y$, $Z$ qui ont ces distributions respectives. Calculer leurs espérances. On notera dorénavant $p_X$, $p_Y$ et $p_Z$ les densités de probabilité associées à ces variables aléatoires.
+\item On considère les $4$ points de l'espace de coordonnées suivantes : $A_1 : (-1,-0.5), A_2 : (1, -0.5), A_3 : (1, 0.5), A_4 : (-1, 0.5)$. Quelles sont les cellules de Voronoï $\Theta_i$ associées aux $4$ points $A_i$ ? Représenter graphiquement les cellules $\Theta_i$.
+\item On considère les clusters définis par ces cellules. Pour chacune des trois distributions $p_X, p_Y$ et $p_Z$, quelle est la "masse" contenue dans chaque cluster?
+\item Pour chaque distribution, calculer le centre de masse de chaque cluster. Dans le cas de $X$ cela veut dire calculer, pour tout $i \in \lb 1 , 4 \rb$,
+\[E \left[ X | X \in \Theta_i \right] = \frac{\int_{\Theta_i} x p_X(x) dx}{\int_{\Theta_i} p_X(x) dx}.\]
+Faire le calcul équivalent pour $Y$ et $Z$.
+\end{enumerate}
+
+On veut maintenant faire de la quantification discrète à $4$ éléments sur les distributions de probabilité $p_X$, $p_Y$ et $p_Z$.
+
+Pour un ensemble de points $P_i$, $1 \leq i \leq 4$, on définit la fonction 
+\[\fonction{\Phi_P}{\RR^2}{\{P_1, \dots, P_4\}}{x}{P_{\argmin_i \| x - P_i \|^2}},\] 
+qui à un point $x \in \RR^2$ associe le point $P_i$ le plus proche de $x$.
+
+Le but est de minimiser l'erreur 
+\[E \left[ \| X - \phi_P(X) \|^2 \right] \]
+(et similairement pour les variables $Y$ et $Z$).
+
+Si on note $V_i$ les cellules de Voronoï engendrées par les $P_i$, on rappelle le critère d'optimalité suivant :
+\[\forall i \in \lb 1, 4 \rb, \qquad P_i =  E \left[ X | \Phi_P(X) = P_i \right]. \]
+En d'autres termes, pour tout $i \in \lb 1 , 4 \rb$, la cellule de Voronoï associée au point $P_i$ a pour centre de masse $P_i$.
+
+\begin{enumerate}
+\setcounter{enumi}{5}
+\item Les points $A_1, 1 \leq i \leq 4$ munis des poids $1/4$ chacun constituent-ils une quantification optimale pour $p_X$ ? 
+\item Même question pour $p_Y$. Que peut-on choisir à la place comme points pour obtenir une quantification optimale ?
+\item Même question pour $p_Z$.
+
+\end{enumerate}
+\end{exo}
+
+
+
+\end{document}

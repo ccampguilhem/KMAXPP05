@@ -1,0 +1,99 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -2.54cm
+\textwidth 17cm
+\textheight 27cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+%
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator{\re}{Re}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L FLEX}
+\hfill 2023--2024\\
+\noindent Introduction au Machine Learning 
+\vspace{1cm}
+
+\begin{center}
+{\bf\large \'Epreuve Finale du 14 Mai 2024} \\
+{\it Durée 1h30. Les notes de cours et les calculatrices sont autorisées}
+\end{center}
+%
+
+\section{Prédiction gausienne}
+%
+\noindent
+Soit, pour $x\in\BBr$, $f(x)=\frac{1}{2}\exp(-|x|)$.
+On pose, pour $t\in\BBr$, 
+$$\phi(t):=\int_{-\infty}^{+\infty}\cos(tx)f(x)\mbox{d}x.$$
+\begin{enumerate}
+\item Montrer que $\phi(t)=(1+t^2)^{-1}$. Indication, montrer d'abord l'identité
+$$\int_{-\infty}^{+\infty}\cos(tx)f(x)\mbox{d}x=
+\re\left(\int_{0}^{+\infty}\exp(itx)e^{-x}\mbox{d}x\right).$$
+\item Soit pour $t,s\in\BBr$, $K_1(s,t)=\cos(t-s)$ et 
+$K_2(s,t)=\phi(t-s)$.
+Montrer que $K_1$ est bien une fonction de covariance. En déduire que c'est aussi le cas pour $K_2$.
+\item On considère un vecteur gaussien 
+$\begin{pmatrix}
+X\\
+Y\\
+Z
+\end{pmatrix}$ de moyenne $\begin{pmatrix}
+1\\
+1\\
+1
+\end{pmatrix}$ et de matrice de variance covariance,
+$$\Gamma=\begin{pmatrix}
+K_2(0,0) & K_2(0,1) & K_2(0,2) \\
+ K_2(1,0) & K_2(1,1)) & K_2(1,2) \\
+ K_2(2,0) & K_2(2,1)) & K_2(2,2)
+\end{pmatrix}$$
+\begin{enumerate}
+\item On observe $Y$, calculer explicitement en fonction de $Y$, le prédicteur optimal $\widehat{X}$ de $X$?
+\item On observe $Y$ et $Z$, calculer explicitement en fonction de $(Y,Z)$, le prédicteur optimal $\widehat{\widehat{X}}$ de $X$?
+\end{enumerate}
+\end{enumerate}
+\section{Back to the future}
+\noindent
+Soit $\mathcal{C}$ le carré $[-1,1]\times [-1,1]$ du plan. On considère le trois points du plan suivants~: $A=\begin{pmatrix}
+-1\\0
+\end{pmatrix}$, $B=\begin{pmatrix}
+1\\0
+\end{pmatrix}$ et $C=\begin{pmatrix}
+0\\-1
+\end{pmatrix}$. Soit pour $x\in\mathcal{C}$, $Y(x)\in\{-1,1\}$ un label que l'on souhaite prédire. On sait que $Y(A)=Y(B)=1$ et $Y(C)=-1$.
+\begin{enumerate}
+\item Dessiner dans $\mathcal{C}$ les cellules de Voronoï associées aux trois points $A,B,C$. On expliquera avec clarté comment cette partition de $\mathcal{C}$ a été obtenue. 
+\item Soit $\widehat{Y}$ (respectivement $\widehat{\widehat{Y}}$),  le prédicteur au $1$ (respectivement au $3$),  plus proche voisin qui utilise l'échantillon d'apprentissage $A,B,C$. Représenter graphiquement sur $\mathcal{C}$, avec des couleurs et sur deux schémas différents, les prédicteurs $\widehat{Y}$ et $\widehat{\widehat{Y}}$. On expliquera avec soin la construction des schémas.
+\item On s'intéresse  maintenant au classifieur bâti sur $A,B,C$ à l'aide de la méthode SVM. On note $\widehat{\widehat{\widehat{Y}}}$ le prédicteur ainsi obtenu. Représenter graphiquement sur $\mathcal{C}$, avec des couleurs le prédicteur $\widehat{\widehat{\widehat{Y}}}$.  On expliquera avec soin la construction du schéma.
+\end{enumerate}
+
+\end{document}

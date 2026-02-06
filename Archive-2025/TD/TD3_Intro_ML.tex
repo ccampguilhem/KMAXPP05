@@ -1,0 +1,260 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{dsfont}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -1.54cm
+\textwidth 17cm
+\textheight 22cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+
+\newcommand{\w}{\boldsymbol{w}}
+\newcommand{\x}{\boldsymbol{x}}
+\newcommand{\p}{\boldsymbol{p}}
+
+%
+\DeclareMathOperator{\logit}{logit}
+%\DeclareMathOperator{\min}{min}
+
+% blackboard math symbols
+\usepackage{graphicx}
+\usepackage{subcaption}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L FLEX}
+\hfill 2023--2024\\
+\noindent Introduction au Machine Learning 
+\vspace{1cm}
+
+\begin{center}
+{\bf\large Feuille d'exercice 4} \\
+{\it Classification}
+\end{center}
+%
+
+\section{SVM 1}
+
+On considère une SVM optimisée à partir d'une base d'apprentissage $\{(\x_1, y_1), \ldots, (\x_n, y_n)\}$, avec $y_i \in \{-1, 1\}$. On désigne par $w^\ast$ le vecteur normal à l'hyperplan optimal. En considérant la contrainte sur la marge fonctionnelle 
+\begin{align*}
+	\min_{i \in (1, \ldots, N)} y_i(\w^{\ast T} \x_i +b^\ast ) = 1,
+\end{align*}
+déduire une égalité par classe, puis en déduire l'expression de $b^\ast$.
+
+\section{SVM 2}
+Construire la solution SVM en dimension $2$ dans les configurations suivantes~:
+\begin{enumerate}
+\item On dispose de $2$ points d'apprentissage (l'un est de la classe $1$ et l'autre de la classe $-1$).
+%
+\item On dispose de $3$ points d'apprentissage (l'un est de la classe $1$ et les deux autres de la classe $-1$).
+%
+\end{enumerate}
+
+
+\section{Transformation non-linéaire}
+
+On considère un problème de classification à deux classes illustré sur la Fig. \ref{fig:non_linear_case}. Proposer une transformation $\phi : \mathbb{R}^2 \longrightarrow \mathbb{R}^3$ telle que les données soient linéairement séparables dans $\mathbb{R}^3$.
+
+\begin{figure}[h]
+	\center
+	\includegraphics[width=0.3\textwidth]{non_linear_case.pdf}
+	\caption{Problème de classification en 2D à deux classes} \label{fig:non_linear_case}
+\end{figure}
+
+\section{SVM à marge poreuse}
+
+On rappelle la formulation du problème d'optimisation de la SVM à marge poreuse :
+\begin{align*}
+		\min_{\w, b, \xi} & \:\: \frac{1}{2} \w^T\w + C \sum_{i=1}^N \xi_i \\
+	\mbox{s.t.} &  \:\: \forall i \in \{1, \ldots, N\}, y^{(i)}(\w^T \x^{(i)} + b) \geq 1 - \xi_i \\ 
+	 &  \:\: \forall i \in \{1, \ldots, N\}, \xi_i \geq 0
+\end{align*}
+ainsi que la définition d'un problème d'optimisation quadratique sous contraintes linéaires :
+\begin{align*}
+	\min_{\boldsymbol{\theta} \in \mathbb{R}^{D}} & \:\:\:\: \frac{1}{2}\boldsymbol{\theta}^T Q \boldsymbol{\theta} + \p^T\boldsymbol{\theta} \\
+	\mbox{s.t.} & \:\:\:\: A\boldsymbol{\theta} \geq \boldsymbol{c}
+\end{align*}
+\begin{enumerate}
+	\item En déduire l'expression de $Q$, $\p$, $A$ et $\boldsymbol{c}$.
+	\item La figure \ref{fig:marge_poreuse} représente deux hyperplans séparateurs. Selon vous, lequel généralise, a priori, le mieux ?
+	\item Donner les valeurs de $\xi_1, \xi_2, \xi_3, \xi_4$ pour les deux SVM.
+\end{enumerate}
+
+\begin{figure}[h]
+	\center
+	\begin{subfigure}{0.3\textwidth}
+		\center
+		\includegraphics[width=\textwidth]{marge_poreuse_1.pdf}
+		\caption{SVM 1}
+	\end{subfigure}
+	\hspace{1cm}
+	\begin{subfigure}{0.3\textwidth}
+		\center
+		\includegraphics[width=\textwidth]{marge_poreuse_2.pdf}
+		\caption{SVM 2}
+	\end{subfigure}
+	\caption{Illustration de deux hyperplans séparateurs pour un même problème de classification.} \label{fig:marge_poreuse}
+\end{figure}
+
+\section{Noyaux}
+%
+Soit $K$ une fonction paire définie sur $\BBr^d$. $K$ est dit être un noyau de type positif si, et seulement si, pour toutes collections finies de points distincts de $\BBr^d$, $(x_i)_{i=1\cdots n}$, la matrice de Gram $(K(x_i-x_j))$ est définie positive.
+\begin{enumerate}
+\item Soit $U_1, U_2$ des variables aléatoires indépendantes  de loi uniformes sur $\{-1,1\}$. On pose, pour $t\in\BBr$, $Z_t=U_1\cos(t)+U_2\sin(t)$. Montrer que, pour $t;t'\in\BBr$,  $\mathrm{Cov(Z_t, Z_{t'})}$ est un noyau de type non négatif.  
+\item  Montrez que si $K$ et $K^{\prime}$ sont deux noyaux de type positif alors~:
+\begin{enumerate}
+\item $c K$ est un noyau pour $c \in \mathbb{R}^{+}$
+\item $K+K^{\prime}$ est un noyau ;
+%\item $K K^{\prime}$ est un noyau;
+%\item$\left(1+\left\langle x, x^{\prime}\right\rangle\right)^d$ est un noyau.
+\end{enumerate}
+
+\end{enumerate} 
+%
+\section{Voisins}
+\noindent
+Soit $\mathcal{R}$ la région du plan définie par
+$$\mathcal{R}:=\left\{\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}\in\mathbb{R}^2:\;  0\leq x_1\leq 1,\;
+0\leq x_2\leq x_1^2
+\right\}.$$
+\begin{enumerate}
+\item Tracer dans le plan d'axes $x_1$ (abscisses), $x_2$ (ordonnées) la courbe $x_2=x_1^2$.
+\item  Le point $\begin{pmatrix}
+1/2\\
+1/8
+\end{pmatrix}$ appartient-il à $\mathcal{R}$?
+\item Représenter la région $\mathcal{R}$.
+\item On suppose que l'on souhaite apprendre la variable $Y=\mathbf{1}_{\mathcal{R}}$ à l'aide des 4 points d'apprentissage
+$\begin{pmatrix}
+1/2\\
+1/8
+\end{pmatrix}$, $\begin{pmatrix}
+1/4\\
+0
+\end{pmatrix}$
+$\begin{pmatrix}
+1/2\\
+3/4
+\end{pmatrix}$ et $\begin{pmatrix}
+3/4\\
+1
+\end{pmatrix}$.
+On considère les deux points de validation
+$\begin{pmatrix}
+1/3\\
+1/27
+\end{pmatrix}$
+et $\begin{pmatrix}
+1/3\\
+1/3
+\end{pmatrix}$. Pour l'échantillon de validation déterminer les prédictions au 1 et aux 3 plus proches voisins. 
+\end{enumerate}
+
+%
+\section{Courbe ROC}
+
+On considère un classifieur clf entraîné sur une base d'apprentissage $\Xtr, \ytr$. Ce classifieur est muni d'une fonction de prédiction des probabilités. 
+On dispose d'un échantillon de test
+\[\Xts = 
+\begin{pmatrix}
+x^{(1)} \\
+x^{(2)} \\
+x^{(3)} \\
+x^{(4)} \\
+x^{(5)}
+\end{pmatrix}
+, \qquad  \yts = \begin{pmatrix}
+0 \\
+0 \\
+1 \\
+0 \\
+1 
+\end{pmatrix}.
+\]
+Le classifieur clf prédit les probabilités suivantes sur $\Xts$~:
+\[p(\Xts) =
+\begin{pmatrix}
+p(x^{(1)}) \\
+p(x^{(2)}) \\
+p(x^{(3)}) \\
+p(x^{(4)}) \\
+p(x^{(5)})
+\end{pmatrix}
+=
+\begin{pmatrix}
+0.8 \\
+0.1 \\
+0.5 \\
+0.4 \\
+0.9 
+\end{pmatrix}.\]
+De façon classique, pour $x \in \BBr^d$ donné, la classe prédite par clf est $\hat{y}(x) = 1$ si $p(x) \geq 0.5$ et $\hat{y}(x) = 0$ sinon. 
+\begin{enumerate}
+\item Construire la matrice de confusion pour $\Xts$.
+\item On fait maintenant varier le seuil de classification $\lambda$, et on prédit $\hat{y}(x) = 1$ si $p(x) \geq \lambda$ et $0$ sinon. Tracer la courbe du taux de vrais positifs (proportion d'exemples parmi ceux dont la vraie classe est $1$ qui ont été classés comme $1$ par le classifieur) en fonction de $\lambda \in [0,1]$. Tracer ensuite la courbe du taux de faux positifs (proportion d'exemples parmi ceux dont la vraie classe est $0$ qui ont été classés comme $1$ par le classifieur).
+\item Tracer la courbe ROC. Où se situe le classifieur pour $\lambda = 0.5$ sur cette courbe ? 
+\end{enumerate}
+
+\section{Vers l'algorithme EM}
+L'algorithme du $k$-means assigne de façon certaine (cad avec probabilité 1) une classe $j \in \{1,..,k\}$ à chacun des points du dataset. 
+\par
+On prend ici un point de vue différent~: on va chercher à estimer plutôt la probabilité qu'un point $x_{i}$ appartienne à la classe $j$, en faisant intervenir une variable aléatoire discrète $z_{i}$.
+\par
+Plus formellement, on considère comme d'habitude un dataset $\mathcal{X}=\{x_{1},...,x_{i},...,x_{n}\}$, et l'on spécifie une distribution de probabilité jointe $p(x_{i}, z_{i})$ qui est la probabilité que $x_{i}$ appartienne à la classe $z_{i} \in \{1,...,k\}$, par~:
+\begin{align}
+    p(x_{i}, z_{i}) &= p(x_{i}\vert z_{i})p(z_{i}) \\
+    z_{i} &\sim Multinomial(\phi), \phi_{j} \geq 0, \sum_{j=1}^{k} \phi_{j}=1, \phi_{j}=p(z_{i}=j) \\
+    x_{i}\vert z_{i}&=j \sim \mathcal{N}(\mu_{j}, \Sigma_{j})
+\end{align}
+Chaque $x_{i}$ se voit affecté la classe $z_{i}$ qui prend la valeur $j$ avec la probabilité $\phi_{j}$. Une fois affecté à la classe $z_{i}=j$, $x_{i}$ est tiré au hasard de la distribution Gaussienne $\mathcal{N}(\mu_{j}, \Sigma_{j})$.
+\par
+Ce modèle est le modèle GMM (pour Gaussian Mixture Model).
+\begin{enumerate}
+\item Montrer que le log de vraisemblance des données est~:
+\[
+\mathcal{L}(\phi,\mu,\Sigma) = \sum_{i=1}^{n}\log\sum_{z_{i}=1}^{k}p(x_{i}\vert z_{i};\mu,\Sigma)p(z_{i};\phi)
+\]
+Peut-on déterminer analytiquement les paramètres optimaux $\phi, \mu, \Sigma$ en annulant les dérivées partielles de $\mathcal{L}$  ?
+\item Si on suppose maintenant les $z_{i}$ connus, montrer que la vraisemblance devient :
+\[
+\mathcal{L}(\phi,\mu,\Sigma) = \sum_{i=1}^{n}\left( \log p(x_{i}\vert z_{i}; \mu,\Sigma) + \log p(z_{i};\phi) \right)
+\]
+\item Montrer alors que les paramètres optimaux sont~:
+\begin{eqnarray*}
+ \phi_{j} &=& \frac{1}{n} \sum_{i=1}^{n} \mathds{1}_{z_{i}=j} \\
+    \mu_{j} &=&\frac{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}x_{i}}{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}} \\
+    \Sigma_{j} &=& \frac{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}(x_{i}-\mu_{j})(x_{i}-\mu_{j})^{T}}{\sum_{i=1}^{n} \mathds{1}_{z_{i}=j}}
+\end{eqnarray*}
+\item Proposer un algorithme itératif.
+\end{enumerate}
+
+%
+\end{document}

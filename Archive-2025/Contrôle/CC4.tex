@@ -1,0 +1,107 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -2.54cm
+\textwidth 17cm
+\textheight 27cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+%
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator{\re}{Re}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L3 FLEX}
+\hfill 2024--2025\\
+\noindent Introduction au Machine Learning 
+\vspace{1cm}
+
+\begin{center}
+{\bf\large \'Epreuve de seconde chance du 5 juin 2025} \\
+{\it Durée 1h30. Les notes de cours et les calculatrices sont autorisées. \\ Dans toute l'épreuve, la distance utilisée est la distance euclidienne classique.}
+\end{center}
+
+\section*{Rappel de cours}
+
+\noindent
+L'ensemble $\{S_1, \ldots, S_K\}$ est une partition de $E$ si $\bigcup\limits_{i=1}^{K} S_i = E, \:\: S_i \bigcap S_j = \emptyset \mbox{ pour tout } i \neq j, \mbox{ et } S_i \neq \emptyset \mbox{ pour tout } i.$ Une partition de Voronoï est une partition telle que, pour un dictionnaire de points $\{c_1, \ldots, c_K\}$, où $c_k \in E$, pour tout $i$, pour tout $x \in S_i$, et pour tout $j \neq i$, $d(x, c_i) \leq d(x, c_j)$.
+
+\section{Partition de Voronoï et modèles de classification}
+\noindent
+Soit $\mathcal{C}$ le carré $[-1,1]\times [-1,1]$ du plan. On considère le trois points du plan suivants~: $A=\begin{pmatrix}
+-1\\0
+\end{pmatrix}$, $B=\begin{pmatrix}
+1\\0
+\end{pmatrix}$ et $C=\begin{pmatrix}
+0\\1
+\end{pmatrix}$. Soit pour $x\in\mathcal{C}$, $Y(x)\in\{-1,1\}$ un label que l'on souhaite prédire. On sait que $Y(A)=Y(C)=1$ et $Y(B)=-1$.
+\begin{enumerate}
+\item Dessiner dans $\mathcal{C}$ les cellules de Voronoï associées aux trois points $A,B,C$. On expliquera avec clarté comment cette partition de $\mathcal{C}$ a été obtenue. 
+\item Soit $\widehat{Y}$ (respectivement $\widehat{\widehat{Y}}$),  le prédicteur au $1$ (respectivement au $3$),  plus proche voisin qui utilise l'échantillon d'apprentissage $A,B,C$. Représenter graphiquement sur $\mathcal{C}$, avec des couleurs et sur deux schémas différents, les prédicteurs $\widehat{Y}$ et $\widehat{\widehat{Y}}$. On expliquera avec soin la construction des schémas.
+\item On s'intéresse  maintenant au classifieur bâti sur $A,B,C$ à l'aide de la méthode SVM. On note $\widehat{\widehat{\widehat{Y}}}$ le prédicteur ainsi obtenu. Représenter graphiquement sur $\mathcal{C}$, avec des couleurs le prédicteur $\widehat{\widehat{\widehat{Y}}}$.  On expliquera avec soin la construction du schéma.
+\item On s'intéresse  maintenant au classifieur bâti sur $A,B,C$ à l'aide d'un arbre de décision. Représenter cet arbre en précisant et en justifiant le critère de séparation. Représenter graphiquement sur $\mathcal{C}$, avec des couleurs le prédicteur obtenu.
+\end{enumerate}
+
+\section{Régression}
+
+\noindent
+Soit $n$ un entier naturel non nul. Pour $i = 1, \ldots, n$, on considère des variables indépendantes $\epsilon_i$. On suppose que les variables $\epsilon_i$ sont centrées et de même variance $\sigma_\ast^2$.
+Soit $m^\ast$ un paramètre inconnu, pour $i = 1, \ldots, n$, on observe $Y_i = m^\ast + \epsilon_i$. L'objectif est d'estimer le paramètre inconnu $m^\ast$.
+\begin{enumerate}
+	\item Pour $m \in \mathbb{R}$, on considère la fonction de perte
+	\begin{align*}
+		L_2(m) = \sum_{i=1}^n (Y_i - m)^2.
+	\end{align*}
+	\begin{itemize}
+		\item[(a)] Montrer que $L_2$ possède un unique minimum sur $\mathbb{R}$ en $\hat{m}_0$ ($\hat{m}_0 = \argmin_{m} L_2(m)$).
+		\item[(b)] Montrer que $\hat{m}_0$ est sans biais ($\mathbb{E}[\hat{m}_0] = m^\ast$).
+		\item[(c)] Montrer que son risque quadratique $r_2(\hat{m}_0, m^\ast):=\mathbb{E}[(\hat{m}_0 - m^\ast)^2]$ vaut $\mbox{Var}(\hat{m}_0) = \frac{\sigma_{\ast^2}}{n}$.
+	\end{itemize}
+	\item Pour $\lambda > 0$ fixé, on considère maintenant la version \textit{LASSO} de la perte $L_2$ :
+	\begin{align*}
+		L_2^{LASSO}(m, \lambda) = \sum_{i=1}^n (Y_i - m)^2 + 2n\lambda |m|.
+	\end{align*}
+	\begin{itemize}
+		\item[(a)] Montrer que le minimiseur de $L_2^{LASSO}(m, \lambda)$ est
+		\begin{align*}
+			\hat{m}_\lambda = \begin{cases}
+				\hat{m}_0 - \lambda \mbox{ si } \hat{m}_0 > 0 \mbox{ et } \hat{m}_0 - \lambda > 0, \\
+				\hat{m}_0 + \lambda \mbox{ si } \hat{m}_0 < 0 \mbox{ et } \hat{m}_0 + \lambda < 0, \\
+				0 \mbox{ sinon.}
+			\end{cases}
+		\end{align*}
+		\item[(b)] Quelle est votre intuition sur cet estimateur ? Dans quelle circonstance pensez-vous qu'il peut être judicieux de l'utiliser ?
+	\end{itemize}
+
+\end{enumerate}
+
+\end{document}

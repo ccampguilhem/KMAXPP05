@@ -1,0 +1,109 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -1.54cm
+\textwidth 17cm
+\textheight 23cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+%
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L3 FLEX}
+\hfill 2024--2025\\
+\noindent Introduction au Machine Learning 
+\hfill Prénom\hspace{2cm} Nom\\
+\vspace{1cm}
+
+\begin{center}
+{\bf\large \'Epreuve du 20 mars 2025} \\
+{\it Durée 30 minutes. Les notes de cours et les calculatrices sont autorisées. Composer directement sur le sujet.}
+\end{center}
+%
+\section*{Régression Linéaire et Régularisation Ridge}
+
+On considère le problème de régression linéaire sous sa forme matricielle, avec des variables explicatives $\boldsymbol{X}$ de dimensions $N \times D$, et des variables à prédire $\boldsymbol{y}$ de dimension $N$. On rappelle que l'estimation des paramètres du modèle linéaire, notés $\boldsymbol{\beta}$, par la méthode des moindres carrés avec la régularisation Ridge consiste à résoudre le problème d'optimisation suivant : 
+\begin{align*}
+	\min_{\boldsymbol{\beta}} \|\boldsymbol{y} - \boldsymbol{X} \boldsymbol{\beta}\|_2^2 + \lambda \|\boldsymbol{\beta}\|_2^2
+\end{align*}
+où $\lambda \geq 0$ est un coefficient qui contrôle la régularisation Ridge.
+
+\begin{enumerate}
+	\item Donner l'expression de l'estimation des moindres carrés $\hat{\boldsymbol{\beta}}$ quand $\lambda = 0$.
+	\item Donner l'expression de $\hat{\boldsymbol{\beta}} = \argmin_{{\boldsymbol{\beta}}} \|\boldsymbol{\beta}\|_2^2$.
+	\item Donner l'expression de l'estimation des moindres carrés $\hat{\boldsymbol{\beta}}$ quand $\lambda > 0$.
+	\item Dans quelles conditions la régularisation Ridge est-elle utile ?
+\end{enumerate}
+
+\section*{Machine à vecteurs de support (SVM)}
+
+On considère la base d'apprentissage $\{(\boldsymbol{x}^{(1)}, -1), (\boldsymbol{x}^{(2)}, -1), (\boldsymbol{x}^{(3)}, +1), (\boldsymbol{x}^{(4)}, +1)\}$, constituée de $N = 4$ échantillons, illustrée sur la Fig. \ref{fig:svm}. On optimise une SVM dont l'hyperplan séparateur optimal est défini par son vecteur normal, noté $\boldsymbol{w}^\ast$, et l'ordonnée à l'origine, notée $b^\ast$. On rappelle la formulation de l'optimisation de la SVM régularisée :
+\begin{align*}
+	\min_{\boldsymbol{w}, b, \boldsymbol{\xi}} & \:\: \frac{1}{2} \boldsymbol{w}^T\boldsymbol{w} + C \sum_{i=1}^N \xi_i \\
+	\mbox{s.c.} &  \:\: \forall i \in \{1, \ldots, N\}, y^{(i)}(\boldsymbol{w}^T \boldsymbol{x}^{(i)} + b) \geq 1 - \xi_i \\ 
+	 &  \:\: \forall i \in \{1, \ldots, N\}, \xi_i \geq 0
+\end{align*}
+où $C > 0$ est le coefficient de régularisation.
+
+\begin{figure}[ht]
+	\center
+	\includegraphics[width=0.25\textwidth]{svm.pdf}
+	\caption{Illustration des données d'apprentissage} \label{fig:svm}
+\end{figure}
+
+\begin{enumerate}
+	\item Tracer l'hyperplan optimal, noté $\mathcal{H}_1$, pour classer ces données.
+	\item Donner les valeurs de $\xi_i$, pour $i \in (1, \ldots, 4)$.
+	\item Mêmes questions en retirant $\boldsymbol{x}^{(3)}$ de la base d'apprentissage. On désigne l'hyperplan par $\mathcal{H}_2$.
+	\item Mêmes questions en rajoutant $\boldsymbol{x}^{(3)}$ et en retirant $\boldsymbol{x}^{(4)}$ à la base d'apprentissage.  On désigne l'hyperplan par $\mathcal{H}_3$.
+\end{enumerate}
+
+\section*{Inférence sur le coefficient directeur d'un modèle linéaire simple}
+
+On a optimisé un modèle de régression linéaire simple à partir d'un échantillon de $N$ données $\{(x^{(i)}, y^{(i)}) \vert i \in (1, \ldots, N)\}$. On note l'estimation du coefficient directeur $\hat{\theta}_1$, tandis que le vrai coefficient directeur, inconnu, est noté $\theta_1$. On formule l'hypothèse nulle $\mathcal{H}_0 : \{\theta_1 = 0\}$ selon laquelle il n'y a pas de relation linéaire entre la variable explicative $x$ et la variable à expliquer $y$, et l'hypothèse alternative $\mathcal{H}_1 : \{\theta_1 \neq 0\}$ selon laquelle il y a une relation linéaire. A partir de l'hypothèse de normalité des erreurs, on a construit une statistique $T_N$ qui, sous l'hypothèse $\mathcal{H}_0$, suit une loi de Student à $N - 2$ degrés de liberté, notée $St(N-2)$. La réalisation de cette statistique est égale à 1.75. 
+
+\begin{enumerate}
+	\item En prenant un risque de 5\%, peut-on rejeter l'hypothèse nulle ? Ou conserve-t-on l'hypothèse nulle ?
+\end{enumerate}
+
+\begin{table}[h]
+\caption{Quelques valeurs du quantile $Q^{St}_{N-2}$ de la loi de Student à N - 2 degrés de liberté.}
+\center
+\begin{tabular}{|l|ccccccc|}
+	\hline
+	{$\boldsymbol{\alpha}$} & 0.5 & 0.75 & 0.9 & 0.95 & 0.975 & 0.99 & 0.995 \\ \hline
+	$\boldsymbol{Q^{St}_{N-2}(\alpha)}$ & 0 & 0.683 & 1.31 & 1.7 & 2.04 & 2.46 & 2.75 \\ \hline
+\end{tabular}
+\end{table}
+
+\end{document}

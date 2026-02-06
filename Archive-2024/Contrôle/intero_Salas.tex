@@ -1,0 +1,91 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -2.54cm
+\textwidth 17cm
+\textheight 27cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+%
+\DeclareMathOperator{\logit}{logit}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L FLEX}
+\hfill 2023--2024\\
+\noindent Introduction au Machine Learning 
+\hfill Prénom\hspace{2cm} Nom\\
+\vspace{1cm}
+
+\begin{center}
+{\bf\large \'Epreuve du 25 avril 2024} \\
+{\it Durée 30 minutes. Les notes de cours et les calculatrices sont autorisées. Composer directement sur le sujet.}
+\end{center}
+%
+\section*{Classifieur Logistique}
+\noindent
+On rappelle que la fonction arc-tangente notée $\arctan$ est la fonction réciproque de la fonction tangente sur $]-\frac{\pi}{2},\frac{\pi}{2}[$. Pour $t\in\BBr$, on définit la fonction $\sigma$ par
+$\sigma(t)=\frac{1}{2}+\frac{\arctan(t)}{\pi}$. 
+On considère le classifieur binaire par régression arc-tangente $\hat{y} : \BBr \rightarrow \{0,1\}$, de paramètres $\beta = 0.5$ et $\alpha = -0.5$, défini par
+$$\hat{y} (x) = \begin{cases} 1 & \mbox{si } \sigma(\alpha +  \beta x ) \geq 1/2 \\ 0 & \mbox{sinon,} \end{cases}$$
+On considère l'échantillon $\Xts, \yts$ suivant :
+
+\[\Xts = 
+\begin{pmatrix}
+x^{(1)} \\
+x^{(2)} \\
+x^{(3)} \\
+x^{(4)} 
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2\\
+0\\
+0.5\\
+2
+\end{pmatrix} \qquad \yts = \begin{pmatrix}
+0 \\
+0 \\
+1 \\
+1 
+\end{pmatrix}.
+\]
+
+\begin{enumerate}
+\item Montrer que l'on peut calculer $\hat{y}$ par la règle suivante~: 
+$$\hat{y} (x) = \begin{cases} 1 & \mbox{si } \alpha +  \beta x  \geq 0 \\ 0 & \mbox{sinon.} \end{cases}$$
+\item Prédire les classes $\hat{y} (x^{(i)})$ pour $1 \leq i \leq 4$, puis calculer le taux d'erreur sur $\Xts$.
+\item Le seuil de probabilités par défaut du classifieur par régression logistique est $1/2$, mais on peut le faire varier en définissant pour un seuil $\lambda \in [0,1]$ le classifieur 
+\[\hat{y}_{\lambda} (x) = \begin{cases} 1 & \text{si } \sigma(\alpha + \beta x  ) \geq \lambda \\ 0 & \text{sinon.} \end{cases}\]
+%
+Trouver un seuil $\lambda \in [0,1]$ tel que le taux d'erreur associé à $\hat{y}_\lambda$ sur $\Xts$ soit nul.
+\end{enumerate}
+
+
+%
+\end{document}

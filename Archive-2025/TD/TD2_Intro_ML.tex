@@ -1,0 +1,428 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{stmaryrd}
+%\usepackage[latin1]{inputenc}
+\setlength{\oddsidemargin}{-0.54cm}
+\topmargin -2.54cm
+\textwidth 17cm
+\textheight 27cm
+\newcommand{\BBr}{\mathbb{R}}
+\newcommand{\BBn}{\mathbb{N}}
+\newcommand{\BBp}{\mathbb{P}}
+\newcommand{\BBe}{\mathbb{E}}
+\newcommand{\Xn}{X_{n}}
+\newcommand{\XXn}{X_{1},\ldots,\Xn}
+\newcommand{\usn}{\frac{1}{n}}
+\newcommand{\ust}{\frac{1}{3}}
+\newcommand{\prs}[2] {\langle{#1},{#2}\rangle}
+\newcommand{\Xtr}{X_{\text{train}}}
+\newcommand{\Xts}{X_{\text{test}}}
+\newcommand{\ytr}{y_{\text{train}}}
+\newcommand{\yts}{y_{\text{test}}}
+\newcommand{\lb}{\llbracket}
+\newcommand{\rb}{\rrbracket}
+%
+\DeclareMathOperator{\logit}{logit}
+%
+\newcommand{\fonction}[5]{
+ #1: \begin{array}{rcl}
+	  #2 & \longrightarrow & #3 \\
+     #4 & \longmapsto & #5 \end{array}
+    }
+%
+\begin{document}
+\noindent {\sc L FLEX}
+\hfill 2024--2025\\
+\noindent Introduction au Machine Learning 
+\vspace{1cm}
+
+\begin{center}
+{\bf\large Feuille d'exercice 2} \\
+{\it Régression logistique}
+\end{center}
+%
+
+\section{Fonction logistique}
+
+On considère la fonction logistique 
+	\[\sigma : t \mapsto \frac{e^t}{1 + e^t}.\]
+
+\begin{enumerate}
+	\item 
+	Montrer que $\sigma$ est croissante sur $\BBr$ et qu'on a $\lim_{t \rightarrow + \infty} \sigma (t) = 1$, $\lim_{t \rightarrow - \infty} \sigma(t) = 0$.
+	Quel type de fonction est $\sigma$ ?
+	\item Montrer que la fonction logistique possède la symétrie suivante : 
+	\[\forall t \in \BBr, \qquad \sigma(-t) = 1 - \sigma(t).\]
+	\item En déduire que $\sigma(0) = \frac{1}{2}$ puis que 
+	\[\sigma(t)\geq 1/2 \quad  \Longleftrightarrow \quad t \geq 0 .\]
+	\item Tracer approximativement la courbe de $\sigma$ sur $\BBr$. 
+\end{enumerate}
+	On cherche à construire un classifieur qui prend en entrée $x \in \BBr$ et qui le classifie en la classe $0$ ou la classe $1$. Ce classifieur va être paramétré par $\alpha , \beta  \in \mathbb{R}$. La classe associée à l'entrée $x$ sera $1$ si $C_{\alpha,\beta} (x) \geq 1/2$ et $0$ sinon, en définissant
+\[
+C_{\alpha,\beta} (x) = \sigma( \alpha + \beta x) 
+=
+\frac{
+e^{ \alpha + \beta x }
+}{
+1 + 
+e^{ \alpha + \beta x }
+}.
+\]
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+	\item Pour $\alpha = 0$ et $\beta = 1$, quels $x$ sont classés en $0$ et  quels $x$ sont classés en $1$ ?
+	\item Même question pour $\alpha = 1$ et $\beta = -1$. 
+	\item Pour un $x \neq 0$ et $\alpha \in \mathbb{R}$ fixés, lorsque $\beta$ devient assez grand ($\beta \to + \infty$), comment est classé $x$ ? Même question lorsque $\beta \to -\infty$. 
+\end{enumerate}
+
+
+
+\section{Classifieur Logistique}
+
+On considère le classifieur binaire par régression logistique $\hat{y} : \BBr^3 \rightarrow \{0,1\}$, de paramètres $\beta = (1,3,-1)$ et $\alpha = 0$, défini par
+$$\hat{y} (x) = \begin{cases} 1 & \mbox{si } \sigma(\alpha + \langle \beta, x \rangle ) \geq 1/2 \\ 0 & \mbox{sinon,} \end{cases}$$
+où $\langle \beta, x \rangle = \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3$. On considère l'échantillon $\Xts, \yts$ suivant :
+
+\[\Xts = 
+\begin{pmatrix}
+x^{(1)} \\
+x^{(2)} \\
+x^{(3)} \\
+x^{(4)} 
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & -2 & 0 \\
+1 & 0 & 2 \\
+-1 & -1 & -2 \\
+-1 & 2 & -3 
+\end{pmatrix} \qquad \yts = \begin{pmatrix}
+0 \\
+1 \\
+0 \\
+1 
+\end{pmatrix}.
+\]
+
+\begin{enumerate}
+\item Prédire les classes $\hat{y} (x^{(i)})$ pour $1 \leq i \leq 4$, puis calculer le taux d'erreur sur $\Xts$.
+\item Le seuil de probabilités par défaut du classifieur par régression logistique est $1/2$, mais on peut le faire varier en définissant pour un seuil $\lambda \in [0,1]$ le classifieur 
+\[\hat{y}_{\lambda} (x) = \begin{cases} 1 & \text{si } \sigma(\alpha + \langle \beta, x \rangle ) \geq \lambda \\ 0 & \text{sinon.} \end{cases}\]
+
+ Trouver un seuil $\lambda \in [0,1]$ tel que le taux d'erreur associé à $\hat{y}_\lambda$ sur $\Xts$ soit nul.
+\end{enumerate}
+
+
+\section{Régression logistique}
+Dans le modèle logistique, on cherche à expliquer une variable binaire $Y$, qui vaut 0 ou 1, à partir d'une vecteur de variables explicatives $X \in \BBr^d$. Pour cela, on aimerait utiliser une régression linéaire mais celle-ci permet d'expliquer des variables $Y$ continues, pas binaires. Pour se ramener au cas continu, plutôt que de prédire directement la classe $Y \in \{0,1\}$, on pourrait prédire, pour $X=x$, la probabilité $\pi(x)=\mathbb{P}(Y=1 \mid X=x)$. Celle-ci prend des valeurs continues, qui sont comprises entre $0$ et $1$. La régression est plutôt adaptée à la prédiction de valeurs sur $\BBr$, donc on va se servir d'une fonction croissante qui transforme l'intervalle $]0,1[$ en $\BBr$.
+
+\begin{enumerate}
+\item On considère la fonction
+\[\fonction{\logit}{]0,1[}{\BBr}{\pi}{\ln \frac{\pi}{1 - \pi}.}\]
+Montrer que la fonction logit est croissante et qu'on a $\lim_{\pi \rightarrow 0} \logit (\pi) = - \infty$, $\lim_{\pi \rightarrow 1} \logit(\pi) = + \infty $.
+\end{enumerate}
+
+La variable $\logit(\pi(x))$ prend donc ses valeurs dans $\BBr$. On va pouvoir l'exprimer en fonction de $x$ sous la forme d'une régression linéaire :
+\begin{equation}\label{regression logit}\logit(\pi(x)) = \beta_0 + \langle \beta, x \rangle .
+\end{equation}
+
+\begin{enumerate}
+\setcounter{enumi}{1}
+\item Pour $x \in \BBr^d$ donné, on peut donc utiliser \eqref{regression logit} puis prédire $Y = 1$ lorsque $\pi(x) \geq 1/2$ et $Y=0$ sinon. Montrer qu'on retrouve alors le classifieur $C_{\beta_0, \beta}$ de l'exercice 1.
+\end{enumerate}
+
+On s'intéresse maintenant à l'ajustement de 
+$(\beta_0, \beta) \in \BBr \times \BBr^d$. On considère un ensemble d'apprentissage $\Xtr = (x^1, \dots, x^n), \ytr = (y^1, \dots, y^n)$, avec, pour tout $i \in \lb 1, n \rb$, $x^i \in \BBr^d$ et $y^i \in \{0,1 \}$. Une idée pourrait être d'ajuster $(\beta_0, \beta)$ à partir de \eqref{regression logit} comme dans une régression linéaire classique. Problème : pour chaque $x^i$, on ne dispose pas d'une probabilité $\pi^i \in [0,1]$ mais d'une classe $y^i \in \{0,1\}$. On pourrait considérer que $y^i = 1$ revient à avoir une probabilité $\pi^i = 1$ que la classe associée à l'exemple $x^i$ soit égale à $1$. Cependant $\logit(\pi)$ n'est pas défini pour $\pi =0$ ou $\pi = 1$, donc cela ne résout pas notre problème.
+
+On va procéder différemment et revenir à la méthode du maximum de vraisemblance. Pour simplifier les écritures, on se débarrasse de $\beta_0$ (on peut toujours se ramener à ce cas-là) et on considère donc
+\[\mathbb{P}(Y=1 | X = x) = \frac{e^{\langle \beta, x \rangle}}{1 + e^{\langle \beta, x \rangle}}. \]
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item A l'aide de $\Xtr, \ytr$, exprimer la vraisemblance, puis la log vraisemblance du modèle en fonction de $\beta$.
+\item Montrer que s'il existe, l'estimateur du maximum de vraisemblance vérifie l'équation vectorielle
+\begin{equation}\label{equation EMM}\sum_{i=1}^n y^i x^i = \sum_{i=1}^n \frac{e^{\langle \beta, x^i \rangle}}{1 + e^{\langle \beta, x^i \rangle}} x^i. \end{equation}
+\item Dans cette question, on s'intéresse au cas où $X$ est une variable binaire, qui prend ses valeurs dans $\{0,1\}$. A partir des occurrences de $\Xtr, \ytr$, on a construit le tableau de contingence suivant, avec $n_{11} + n_{12} + n_{21} + n_{22} = n$ :
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & $\mathrm{X}=0$ & $\mathrm{X}=1$ \\
+\hline
+$\mathrm{Y}=0$ & $n_{11}$ & $n_{12}$ \\
+\hline
+$\mathrm{Y}=1$ & $n_{21}$ & $n_{22}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Montrer que l'estimateur du maximum de vraisemblance est donné par $\hat{\beta}_{0}=\log \left(n_{21} / n_{11}\right)$ et $\hat{\beta}_{1}=\log \left(\left(n_{11} n_{22}\right) /\left(n_{12} n_{21}\right)\right)$. On pourra écrire $\tilde{x}^i = (1, x^i) \in \BBr^2, \tilde{\beta} = (\beta_0, \beta) \in \BBr^2$ et utiliser \eqref{equation EMM}.
+\end{enumerate}
+
+
+
+\section{Logistique le retour}
+
+On considère une variable binaire $Y \sim B(p)$ où $p \in[0,1]$ et une variable quantitative réelle $X$. On suppose que la loi de $X$ sachant que $Y=0$ est $\mathcal{N}\left(\mu_{0}, \sigma^{2}\right)$ et que la loi de $X$ sachant que $Y=1$ est $\mathcal{N}\left(\mu_{1}, \sigma^{2}\right)$. On note $\pi(x)=P(Y=1 \mid X=x)$.
+
+\begin{enumerate}
+  \item Montrer que $\pi(x)=e^{a+b x} /\left(1+e^{a+b x}\right)$ pour des constantes $a$ et $b$ que l'on explicitera en fonction des paramètres de l'énoncé.
+
+  \item Etant donné l'observation d'un échantillon $\left(X_{i}, Y_{i}\right), i=1, \ldots, n$, de couples indépendants distribués comme $(X, Y)$, quel modèle est-il naturel d'utiliser pour modéliser $\pi(x)$. Comment peut-on estimer les paramètres?
+
+  \item On suppose a présent que la loi de $X$ sachant que $Y=0$ est $\mathcal{N}\left(\mu_{0}, \sigma_{0}^{2}\right)$ et la loi de $X$ sachant que $Y=1$ est $\mathcal{N}\left(\mu_{1}, \sigma_{1}^{2}\right)$, où $\sigma_{0} \neq \sigma_{1}$. Montrer qu'un modèle logistique est toujours approprié pour modéliser $\pi(x)$.
+
+\end{enumerate}
+
+
+\section{Vraisemblance}
+On considère un modèle logistique visant à expliquer la variable binaire $Y$ à partir d'une variable explicative réelle $X$. On modélise la probabilité $\pi(x) = \mathbb{P}(Y=1 | X = x)$ sous la forme
+\[\pi(x) = \frac{e^{\beta_0 + \beta x }}{1 + e^{\beta_0 + \beta x}},\]
+avec $(\beta_0, \beta) \in \BBr^2$.
+\begin{enumerate}
+\item On considère l'échantillon suivant
+\[
+\Xtr = \begin{pmatrix}
+x_{1} \\
+x_{2} \\
+x_{3} 
+\end{pmatrix}
+=
+ \begin{pmatrix}
+0 \\
+1 \\
+2 
+\end{pmatrix} \qquad 
+\ytr = \begin{pmatrix}
+y_{1} \\
+y_{2} \\
+y_{3} 
+\end{pmatrix}
+=
+ \begin{pmatrix}
+1 \\
+1 \\
+0
+\end{pmatrix}
+\]
+Existe-t-il existe un couple $(\beta_0, \beta) \in \BBr^2$ tel que le classifieur $\hat{y}$ associé ait un taux d'erreur de classification nul sur $(\Xtr, \ytr)$ ? Justifier sans calcul.
+\item Montrer qu'il existe une suite $(\beta_0^{(n)}, \beta^{(n)})$ telle que 
+\begin{align*}
+\beta_0^{(n)} + \beta^{(n)} x_1 \underset{n \rightarrow \infty}{\longrightarrow} + \infty \\
+\beta_0^{(n)} + \beta^{(n)} x_2 \underset{n \rightarrow \infty}{\longrightarrow} + \infty \\
+\beta_0^{(n)} + \beta^{(n)} x_3 \underset{n \rightarrow \infty}{\longrightarrow} - \infty
+\end{align*}
+\item En déduire que le maximum de vraisemblance n'existe pas dans ce cas-là.
+\item On considère dorénavant l'échantillon
+\[
+\Xtr = \begin{pmatrix}
+x_{1} \\
+x_{2} \\
+x_{3} 
+\end{pmatrix}
+=
+ \begin{pmatrix}
+0 \\
+1 \\
+2
+\end{pmatrix} \qquad 
+\ytr = \begin{pmatrix}
+y_{1} \\
+y_{2} \\
+y_{3} 
+\end{pmatrix}
+=
+ \begin{pmatrix}
+1 \\
+0 \\
+1 
+\end{pmatrix}
+\]
+Existe-t-il existe un couple $(\beta_0, \beta) \in \BBr^2$ tel que le classifieur $\hat{y}$ associé ait un taux d'erreur de classification nul sur $(\Xtr, \ytr)$ ? Justifier sans calcul.
+\item Écrire la vraisemblance $V(\beta_0, \beta)$ puis la log vraisemblance $\ln V(\beta_0, \beta)$ associées à $\Xtr, \ytr$.
+\item On admet que le maximum de vraisemblance $(\hat{\beta}_0, \hat{\beta})$ existe. Le calculer. 
+\item Le modèle est-il pertinent dans ce cas-là ?
+\item Afin d'améliorer les performances de la régression logistique, on décide d'ajouter la variable $X^2$ au modèle. On a donc maintenant $d=2$, et $\beta \in \BBr^2$. L'échantillon $\Xtr$ augmenté de cette manière devient
+\[ \Xtr^{aug} = \begin{pmatrix}
+x_{1} & x_{1}^2 \\
+x_{2} & x_{2}^2 \\
+x_{3} & x_{3}^2
+\end{pmatrix} = \begin{pmatrix}
+0 & 0\\
+1 & 1 \\
+2 & 4
+\end{pmatrix}  \]
+Représenter les points $(x_i, x_i^2)$ de $\Xtr^{aug}$ sur un graphique. Montrer qu'il existe un couple $(\beta_0, \beta) \in \BBr \times \BBr^2$ tel que le taux d'erreur sur $\Xtr^{aug}, \ytr$ soit nul, puis que le maximum de vraisemblance n'existe pas. 
+\end{enumerate}
+
+
+
+\section{Courbe ROC}
+
+On considère un classifieur clf entraîné sur une base d'apprentissage $\Xtr, \ytr$. Ce classifieur est muni d'une fonction de prédiction des probabilités. 
+On dispose d'un échantillon de test
+\[\Xts = 
+\begin{pmatrix}
+x^{(1)} \\
+x^{(2)} \\
+x^{(3)} \\
+x^{(4)} \\
+x^{(5)}
+\end{pmatrix}
+, \qquad  \yts = \begin{pmatrix}
+0 \\
+0 \\
+1 \\
+0 \\
+1 
+\end{pmatrix}.
+\]
+Le classifieur clf prédit les probabilités suivantes sur $\Xts$ :
+\[p(\Xts) =
+\begin{pmatrix}
+p(x^{(1)}) \\
+p(x^{(2)}) \\
+p(x^{(3)}) \\
+p(x^{(4)}) \\
+p(x^{(5)})
+\end{pmatrix}
+=
+\begin{pmatrix}
+0.8 \\
+0.1 \\
+0.5 \\
+0.4 \\
+0.9 
+\end{pmatrix}.\]
+De façon classique, pour $x \in \BBr^d$ donné, la classe prédite par clf est $\hat{y}(x) = 1$ si $p(x) \geq 0.5$ et $\hat{y}(x) = 0$ sinon. 
+\begin{enumerate}
+\item Construire la matrice de confusion pour $\Xts$.
+\item On fait maintenant varier le seuil de classification $\lambda$, et on prédit $\hat{y}(x) = 1$ si $p(x) \geq \lambda$ et $0$ sinon. Tracer la courbe du taux de vrais positifs (proportion d'exemples parmi ceux dont la vraie classe est $1$ qui ont été classés comme $1$ par le classifieur) en fonction de $\lambda \in [0,1]$. Tracer ensuite la courbe du taux de faux positifs (proportion d'exemples parmi ceux dont la vraie classe est $0$ qui ont été classés comme $1$ par le classifieur).
+\item Tracer la courbe ROC. Où se situe le classifieur pour $\lambda = 0.5$ sur cette courbe ? 
+\end{enumerate}
+
+\section{Roc around the Roc}
+
+
+On considère un classifieur clf entraîné sur une base d'apprentissage $\Xtr, \ytr$. Ce classifieur est muni d'une fonction de prédiction des probabilités. 
+On dispose d'un échantillon de test
+\[\Xts = 
+\begin{pmatrix}
+x^{(1)} \\
+x^{(2)} \\
+x^{(3)} \\
+x^{(4)} \\
+x^{(5)} \\
+x^{(6)} \\
+x^{(7)}
+\end{pmatrix}
+, \qquad  \yts = \begin{pmatrix}
+0 \\
+0 \\
+1 \\
+0 \\
+1 \\
+1 \\
+1
+\end{pmatrix}.
+\]
+Le classifieur clf prédit les probabilités suivantes sur $\Xts$ :
+\[p(\Xts) =
+\begin{pmatrix}
+p(x^{(1)}) \\
+p(x^{(2)}) \\
+p(x^{(3)}) \\
+p(x^{(4)}) \\
+p(x^{(5)}) \\
+p(x^{(6)}) \\
+p(x^{(7)})
+\end{pmatrix}
+=
+\begin{pmatrix}
+0.8 \\
+0.1 \\
+0.5 \\
+0.4 \\
+0.9 \\
+0.3 \\
+0.7
+\end{pmatrix}.\]
+
+Tracer la courbe ROC.
+
+\section{Last Roc}
+On considère un problème de classification binaire avec les données suivantes.
+\[\Xtr = 
+\begin{pmatrix}
+x^{(1)} \\
+x^{(2)} \\
+x^{(3)} \\
+x^{(4)} \\
+x^{(5)}\\
+x^{(6)}
+\end{pmatrix} = \begin{pmatrix}
+0 & 0 \\
+0 & 2 \\
+2 & 2 \\
+1 & 0 \\
+-1 & -2\\
+1 & -2
+\end{pmatrix}
+, \qquad  \ytr = \begin{pmatrix}
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+0
+\end{pmatrix}.
+\]
+
+\[\Xts = 
+\begin{pmatrix}
+x^{(7)} \\
+x^{(8)} \\
+x^{(9)} \\
+x^{(10)} \\
+x^{(11)}\\
+x^{(12)} \\
+x^{(13)}
+\end{pmatrix} = \begin{pmatrix}
+-1 & -1 \\
+-1 & 1 \\
+1 & -1 \\
+1 & 1 \\
+1 & 2\\
+2 & -1 \\
+2 & 1
+\end{pmatrix}
+, \qquad  \yts = \begin{pmatrix}
+1 \\
+1 \\
+0 \\
+1\\
+0 \\
+0 \\
+0
+\end{pmatrix}.
+\]
+On entraîne sur $\Xtr, \ytr$ un classifieur {\bf lr} par régression logistique, et on obtient les paramètres suivants : 
+\[\beta_0 = 0.5, \quad \beta = (-1,  1).\]
+On considère aussi un classifieur {\bf knn} par $3$-plus proches voisins.
+\begin{enumerate}
+\item Déterminer, pour chaque élément de $\Xts$, les probabilités prédites par chaque classifieur d'être dans la classe $1$.
+\item Tracer la courbe ROC des deux classifieurs.
+\item On définit l'AUC comme l'aire sous la courbe ROC. On cherche à ce qu'elle soit la plus élevée possible (une AUC de $1$ correspondant au classifieur parfait). Calculer l'AUC pour les deux classifieurs, en utilisant la méthode des rectangles. Comparer les deux classifieurs.
+\end{enumerate}
+
+
+
+
+%
+\end{document}
