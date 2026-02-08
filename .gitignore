@@ -30,7 +30,7 @@ env/
 *.lot
 
 # Fichiers PDF
-*.pdf
+# *.pdf
 
 ### --- SYSTÈME & IDE --- ###
 # Windows / macOS / Linux
