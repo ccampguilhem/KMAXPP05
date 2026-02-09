@@ -120,19 +120,23 @@ Les réponses de l'exercice 1 peuvent être utilisées pour les questions de cet
 
 \begin{enumerate}
 	\item Quelle application $\Phi: \mathcal{X} \to \tilde{\mathcal{X}} \subseteq \mathbb{R}^2$ permet-elle de calculer la probabilité pour l'observation $i$ sous la forme $\sigma(\tilde{x}^{(i)} \beta)$ où $\sigma$ est la fonction logistique. Quelle est la matrice de design $\tilde{X}$ pour ce problème de classification ?
-	\item Vérifier que la probabilité de la loi de Bernoulli pour la variable aléatoire $Y^{(i)}$ peut s'écrire $P(Y^{(i)} = y^{(i)}) = \left( p^{(i)} \right)^{y^{(i)}} \left(1 - p^{(i)}\right)^{\left(1 - y^{(i)}\right)}$
+	\item Vérifier que la probabilité de la loi de Bernoulli pour la variable aléatoire $Y^{(i)}$ peut s'écrire $P(Y^{(i)} = y^{(i)}) = \left( p^{(i)} \right)^{y^{(i)}} \left(1 - p^{(i)}\right)^{\left(1 - y^{(i)}\right)}$.
 	\item Pour une valeur fixe de $\beta$, quelle est la vraisemblance sur $\mathcal{D}$ selon les variables aléatoires de Bernoulli introduites ci-dessus ?
 	\item Calculer la log-vraisemblance négative moyenne sur $\mathcal{D}$. Sous quelle autre dénomination usuelle cette quantité est-elle aussi connue ?
-	\item Quelle condition doit satisfaire $\hat{\beta}$ pour être la meilleure estimation de ce problème de régression logistique ?
-	\item On rappelle que $\tilde{x}^{(i)}$ est le vecteur ligne de l'observation $i$ dans l'espace augmenté $\tilde{\mathcal{X}}$. On pose ${t^{(i)} = \tilde{x}^{(i)} \beta = \beta_0 + \beta_1 x^{(i)}}$. Démontrer que $\displaystyle \frac{d t^{(i)}}{d\beta} = \tilde{x}^{(i)T}$
+	\item Quelle condition doit satisfaire $\beta$ pour être la meilleure estimation de ce problème de régression logistique ?
+	\item On rappelle que $\tilde{x}^{(i)}$ est le vecteur ligne de l'observation $i$ dans l'espace augmenté $\tilde{\mathcal{X}}$. On pose ${t^{(i)} = \tilde{x}^{(i)} \beta = \beta_0 + \beta_1 x^{(i)}}$. Démontrer que $\displaystyle \frac{d t^{(i)}}{d\beta} = \tilde{x}^{(i)T}$.
 	\item Démontrer que $\displaystyle \frac{d}{d t^{(i)}}  \ln{\left[\sigma\left(t^{(i)}\right)\right]} = 1 - \sigma\left(t^{(i)}\right)$. 
-	\item En déduire que $\displaystyle \frac{d}{d \beta}  \ln{\left[\sigma\left(\tilde{x}^{(i)} \beta\right)\right]} = \left[1 - \sigma\left(\tilde{x}^{(i)} \beta\right) \right] \tilde{x}^{(i)T}$
-	\item Démontrer que $\displaystyle \frac{d}{d t^{(i)}}  \ln{\left[1 - \sigma\left(t^{(i)}\right)\right]} = - \sigma\left(t^{(i)}\right)$
-	\item En déduire que $\displaystyle \frac{d}{d \beta}  \ln{\left[1 - \sigma\left(\tilde{x}^{(i)} \beta\right)\right]} = - \sigma\left(\tilde{x}^{(i)} \beta\right) \tilde{x}^{(i)T}$	
+	\item En déduire que $\displaystyle \frac{d}{d \beta}  \ln{\left[\sigma\left(\tilde{x}^{(i)} \beta\right)\right]} = \left[1 - \sigma\left(\tilde{x}^{(i)} \beta\right) \right] \tilde{x}^{(i)T}$.
+	\item Démontrer que $\displaystyle \frac{d}{d t^{(i)}}  \ln{\left[1 - \sigma\left(t^{(i)}\right)\right]} = - \sigma\left(t^{(i)}\right)$.
+	\item En déduire que $\displaystyle \frac{d}{d \beta}  \ln{\left[1 - \sigma\left(\tilde{x}^{(i)} \beta\right)\right]} = - \sigma\left(\tilde{x}^{(i)} \beta\right) \tilde{x}^{(i)T}$.
 	\item Démontrer que le gradient de la log-vraisemblance négative moyenne par rapport à $\beta$ est égal à $\displaystyle -\frac{1}{n} \sum_{i=1}^n \left( y^{(i)} - \sigma(\tilde{x}^{(i)} \beta)\right) \tilde{x}^{(i)T}$.
-	\item Démontrer que ce même gradient peut s'écrire sous la forme suivant: $\displaystyle -\frac{1}{n} \tilde{X}^T \left( Y - \sigma(\tilde{X} \beta)\right)$
-	\item On fixe $\beta = \begin{pmatrix}-90 \\ 1\end{pmatrix}$. On pourrait calculer que le gradient de la log-vraisemblance négative moyenne est à peu près égal à $\begin{pmatrix}0,22 \\ 20,4\end{pmatrix}$. Qu'en déduire de cette valeur de $\beta$ ?
-	\item En gardant la même valeur de $\beta$, quel est le poids à partir duquel le classifieur va prédire une classe $1$ ? En gardant $\beta_1 = 1$, quelle serait une meilleure alternative pour $\beta_0$ afin d'obtenir un meilleur classifieur ?
+	\item Démontrer que ce même gradient peut s'écrire sous la forme suivante: $\displaystyle -\frac{1}{n} \tilde{X}^T \left( Y - \sigma(\tilde{X} \beta)\right)$.
+	\item On fixe $\beta = \begin{pmatrix}-90 \\ 1\end{pmatrix}$. On pourrait calculer que le gradient de la log-vraisemblance négative moyenne est à peu près égal à $\begin{pmatrix}0,22 \\ 20,4\end{pmatrix}$. Que déduire de cette valeur de $\beta$ ?
+	\item En gardant la même valeur de $\beta$, quel est le poids à partir duquel le classifieur va prédire une classe $1$ ? En gardant $\beta_1 = 1$, quelle serait une meilleure alternative pour $\beta_0$ afin d'obtenir un meilleur classifieur ? Justifier votre choix pour cette alternative.
+	\item La figure ci-dessous permet de visualiser le logarithme base 10 de la norme du gradient. Le $\beta = \begin{pmatrix}-90 \\ 1\end{pmatrix}$ de la question précédente est représenté. En prenant $\beta_1 = 1.0$ quelle valeur de $\beta_0$ permet de minimiser le gradient ? Quelle information cette visualisation du gradient apporte-t-elle?
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{gradient.png}
+	\end{center}
 \end{enumerate}
 	
 \end{document}
