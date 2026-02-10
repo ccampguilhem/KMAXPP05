@@ -1,0 +1,1603 @@
+%\documentclass[10pt]{beamer}  % pour la présentation
+\documentclass[10pt,handout]{beamer}  % pour les notes de cours
+
+
+\usetheme{Antibes}
+\usecolortheme{whale}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{mini frames}{} % Supprime les petits cercles dans le header
+\setbeamertemplate{items}[triangle]
+\setbeamercolor{itemize item}{fg=black}
+\setbeamercolor{itemize subitem}{fg=gray}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, positioning}
+\usepackage{nicematrix}
+
+
+\title{Apprentissage Automatique - L3 - KMAXPP05}
+\subtitle{Chapitre 1 : Bases de l'apprentissage}
+\author{Cédric Campguilhem}
+\institute[]{
+	Airbus Operations \\
+	\href{mailto:cedric.campguilhem@airbus.com}{\texttt{cedric.campguilhem@airbus.com}}
+}
+\date{2025-2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%=============================================================================================================
+
+\section[Introduction]{Introduction}
+
+\subsection[Organisation du cours]{Organisation du cours}
+
+\begin{frame}{Organisation du cours}
+	Le cours est organisé autour de:
+	\begin{itemize}
+		\item Cours magistraux: 20 heures (2h x 10 sessions)
+		\item Travaux dirigés: 16 heures (2h x 8 sessions)
+		\item Travaux pratiques: 20 heures (2h x 10 sessions)
+	\end{itemize}
+	\vspace{0.5cm}
+	Les créneaux horaires suivants seront utilisés:
+	\begin{itemize}
+		\item Mardi 15h45 - 17h45: TD / TP
+		\item Mardi 18h - 20h: Contrôles
+		\item Jeudi 13h30 - 15h30: Cours / TP
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Évaluations}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\textbf{Item} & \textbf{\%} & \textbf{Durée} & \textbf{Format} & \textbf{Date} \\
+		\hline
+		CC1 & 33\% & 30 min & En cours, QCM & 19/03 \\
+		\hline
+		CC2 & 34\% & 1h30 & Conditions d'examen & 19/05 \\
+		\hline
+		TD \& TP & 33\% & - & Présence, oral, projet & - \\
+		\hline
+		CC3 & - & 1h30 & Conditions d'examen & 11/06 \\
+		\hline
+	\end{tabular} \\
+	\vspace{0.5cm}
+	Note: Le contrôle CC2 sera réalisé sur le créneau du mardi de 18h à 20h.
+\end{frame}
+
+\begin{frame}{Plan}
+	\begin{itemize}
+		\item Bases de l'apprentissage [6h]
+		\begin{itemize}
+			\item Introduction
+			\item Typologie des problèmes d'apprentissage
+			\item Problématiques de l'apprentissage artificiel
+			\item Modèles linéaires
+			\item Validation d'algorithme d'apprentissage
+		\end{itemize}
+		\item Algorithmes d'apprentissage [13h30]
+		\begin{itemize}
+			\item Algorithme Bayésien naïf [1h30]
+			\item Analyse en composantes principales [2h]
+			\item Arbres de décision [2h]
+			\item Perceptrons et perceptrons multicouches [4h]
+			\item K moyennes [2h]
+			\item K plus proches voisins [2h]
+			%\item Machines à vecteurs de support [4h]%
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\subsection[Paradigmes]{Paradigmes}
+
+\begin{frame}{Paradigmes et systèmes de pensée}
+	Daniel Kahneman (prix Nobel d'économie 2002) a théorisé 2 modes de fonctionnement du cerveau humain:
+	\begin{itemize}
+		\item \textbf{La pensée lente}: consciente, logique, nécessitant un effort
+		\item \textbf{La pensée rapide}: inconsciente, intuitive, sans effort
+	\end{itemize}
+	\vspace{0.5cm}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.5\linewidth]{Images/velo_centrifuge}
+				\label{fig:velo-centrifuge}
+			\end{figure}
+			%\vspace{-0.5cm}
+			\centering
+			\small Approche logique
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.5\linewidth]{Images/velo-t-es-capable}
+				%\caption[source: http://naitreetgrandir.com]{approche intuitive}
+				\label{fig:velo-t-es-capable}
+			\end{figure}
+			%\vspace{-0.5cm}
+			\centering
+			\small Approche intuitive
+		\end{column}
+	\end{columns}
+	\vfill 
+	\tiny \textcolor{gray}{Source: Thinking, fast and slow - D. Kahneman - 2012 - Penguin}
+\end{frame}
+
+\begin{frame}{Paradigmes et systèmes de pensée}
+	On peut établir un lien avec les paradigmes de programmation:
+	\begin{itemize}
+		\item La pensée lente $\rightarrow$ La programmation \textbf{déductive}: basée sur des règles logiques et explicites, issues des connaissances humaines. Le programme applique les règles aux données qui lui sont fournies.
+		\item La pensée rapide $\rightarrow$ La programmation \textbf{inductive}: basée sur des données, l'expérience, les règles sont implicites et sont découvertes par l'algorithme. Le programme applique les règles qu'il a découvert à de nouvelles données, il généralise.
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}{Paradigmes et systèmes de pensée}
+%	Un autre paradigme existe néanmoins:
+%	\begin{itemize}
+%		\item Le mimétisme $\rightarrow$ La programmation \textbf{transductive}: il n'y a pas de règle, implicite ou explicite, indépendante des données d'apprentissage. L'algorithme ne généralise pas, il copie.
+%	\end{itemize}
+%	\begin{figure}
+%		\centering
+%		\includegraphics[height=0.3\linewidth]{Images/mimétisme}
+%		\label{fig:mimétisme}
+%	\end{figure}
+%	%\vspace{-0.5cm}
+%	\centering
+%	\small Approche mimétique
+%\end{frame}
+
+\subsection[Définitions]{Définitions}
+
+\begin{frame}{Définitions de l'apprentissage automatique}
+	\begin{block}{Définition 1}
+		Champ d'étude qui donne aux ordinateurs la capacité d'apprendre sans être explicitement programmés. \\
+		\hfill
+		\textit{--- Arthur Samuel (1959)}
+	\end{block}
+	\vfill
+	\tiny \textcolor{gray}{Source: Some Studies in Machine Learning Using the Game of Checkers - A.L. Samuel - 1959 - IBM Journal}
+\end{frame}
+
+\begin{frame}{Définitions de l'apprentissage automatique}
+	\begin{block}{Définition 2}
+		Un programme apprend d'une \textbf{expérience $E$} pour une \textbf{tâche $T$} avec une \textbf{performance $P$}, si $P$ s'améliore avec $E$. \\
+		\hfill 
+		\textit{--- Tom Mitchell (1997)}
+	\end{block}
+	%\pause
+	\begin{itemize}
+		\item \textbf{Expérience ($E$)} = Les données.
+		\item \textbf{Tâche ($T$)} = Prédire, classer, regrouper, agir, générer.
+		\item \textbf{Performance ($P$)} = La fonction de perte mathématique.
+	\end{itemize}
+	\vfill 
+	\tiny \textcolor{gray}{Source: Machine Learning - T.M. Mitchell - 1997 - McGraw-Hill}
+\end{frame}
+
+\begin{frame}{Tout est nombre !}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1.0\linewidth]{Images/tout_est_nombre}
+		\label{fig:tout-est-nombre}
+	\end{figure}
+\end{frame}
+
+%=============================================================================================================
+
+\section[Typologie]{Typologie des problèmes d'apprentissage}
+
+\begin{frame}{Apprentissage automatique}
+	On distingue 3 grandes familles d'algorithmes en apprentissage automatique:
+	\begin{itemize}
+		\item L'apprentissage \textbf{non-supervisé}
+		\item L'apprentissage \textbf{supervisé}
+		\item L'apprentissage par \textbf{renforcement}
+	\end{itemize}
+\end{frame}
+
+\subsection[Apprentissage non-supervisé]{Apprentissage non-supervisé}
+
+\begin{frame}{Apprentissage non-supervisé}
+	A partir d'un échantillon d'observations $\mathcal{D} = \begin{Bmatrix}x^{(1)}, x^{(2)}, \cdots, x^{(n)}\end{Bmatrix}$, un algorithme d'apprentissage non-supervisé a pour objectif de découvrir la \textbf{structure interne} des données. Cela peut être réalisé:
+	
+	\begin{itemize}
+		\item En regroupant ensemble des observations présentant des caractéristiques similaires: le \textbf{partitionnement}
+		\item En trouvant une représentation simplifiée des observations avec une quantité réduite de caractéristiques: la \textbf{réduction de dimension}
+	\end{itemize}
+	\vspace{0.5cm}
+	Il n'y a, a priori, pas de réponse précise attendue de la part de l'algorithme.
+	
+\end{frame}
+
+\begin{frame}{Apprentissage non-supervisé}
+	Voici quelques exemples d'algorithmes:
+	
+	\begin{itemize}
+		\item Partitionnement:
+			\begin{itemize}
+				\item Algorithme des K moyennes: \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{\texttt{sklearn.cluster.KMeans}}
+				\item DBSCAN (Partitionnement spatial d'applications fondé sur la densité avec gestion du bruit): \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html}{\texttt{sklearn.cluster.DBSCAN}}
+			\end{itemize}
+		\item Réduction de dimension:
+			\begin{itemize}
+				\item Analyse en composantes principales (ACP): \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{\texttt{sklearn.decomposition.PCA}}
+				\item t-SNE (plongement stochastique de voisins basé sur une loi de Student): \href{https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html}{\texttt{sklearn.manifold.TSNE}}
+			\end{itemize}
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemple d'apprentissage non-supervisé}
+	Considérons les données suivantes de joueurs de rugby:
+	\begin{table}
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\textbf{Taille} (cm) & \textbf{Poids} (kg) & \textbf{Age} & \textbf{Nombre de sélections} \\ \hline
+			190             & 112            & 29           & 47 \\
+			172             & 85             & 22           & 5  \\
+			186             & 135            & 37           & 0  \\
+			180             & 92             & 30           & 70 \\
+			\hline
+		\end{tabular}
+	\end{table}
+	\begin{itemize}
+		\item Un algorithme de partitionnement pourrait, par exemple, regrouper les joueurs les plus grands et lourds ensemble, ou ceux avec le plus de sélections.
+		\item Un algorithme de réduction de dimension pourrait, par exemple, profiter de la corrélation entre la taille et le poids d'un côté et de l'âge et du nombre de sélections de l'autre pour proposer une représentation simplifiée qui serait basée sur seulement 2 caractéristiques, respectivement, le gabarit et l'expérience.
+	\end{itemize}
+\end{frame}
+
+\subsection[Apprentissage supervisé]{Apprentissage supervisé}
+
+\begin{frame}{Apprentissage supervisé}
+	A partir d'un échantillon d'observations $\mathcal{D} = \begin{Bmatrix}(x^{(1)}, y^{(1)}), (x^{(2)}, y^{(2)}), \cdots, (x^{(n)}, y^{(n)})\end{Bmatrix}$, un algorithme d'apprentissage supervisé a pour objectif de découvrir la \textbf{relation} liant les caractéristiques d'entrée ($x$) et celles de sortie ($y$). \\
+	\vspace{0.5cm}
+	Deux familles se détachent basées sur la nature, continue ou discrète, des caractéristiques de sortie:
+	\begin{itemize}
+		\item Les algorithmes de \textbf{régression}: quand les caractéristiques de sortie représentent une grandeur continue
+		\item Les algorithmes de \textbf{classification}: quand les caractéristiques de sortie représentent une grandeur discrète
+	\end{itemize}
+	\vspace{0.5cm}
+	Il y a, a priori, une réponse précise attendue de la part de l'algorithme.
+\end{frame}
+
+\begin{frame}{Exemple de problème de régression}
+	En restant dans notre exemple sur les joueurs de rugby:
+	\begin{table}
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\textbf{Taille} (cm) & \textbf{Poids} (kg) \\ \hline
+			190             & 112 \\
+			172             & 85  \\
+			186             & 135 \\
+			180             & 92  \\
+			\hline
+		\end{tabular}
+	\end{table}
+	Un algorithme d'apprentissage supervisé pourrait, par exemple, trouver une relation entre la taille et le poids d'un joueur. Ce qui permettrait de \textbf{prédire} le poids d'un joueur de rugby, non répertorié dans cette expérience, à partir de la connaissance de sa taille.
+\end{frame}
+
+\begin{frame}{Exemple de problème de classification}
+	Ne changeons pas une équipe qui gagne:
+	\begin{table}
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\textbf{Taille} (cm) & \textbf{Poids} (kg) & \textbf{Poste} \\ \hline
+			190             & 112 &  3ème ligne       \\
+			172             & 85  &  demi d'ouverture \\
+			186             & 135 &  pilier           \\
+			180             & 92  &  centre           \\
+			\hline
+		\end{tabular}
+	\end{table}
+	Un algorithme d'apprentissage supervisé pourrait, par exemple, trouver une relation entre la taille et le poids d'un joueur d'un côté et le poste qu'il occupe de l'autre. Ce qui permettrait de \textbf{prédire} le poste d'un joueur de rugby, non répertorié dans cette expérience, à partir de la connaissance de sa taille et de son poids.
+\end{frame}
+
+\subsection[Apprentissage par renforcement]{Apprentissage par renforcement}
+
+\begin{frame}{Apprentissage par renforcement}
+	Contrairement aux modes précédents, l'apprentissage par renforcement ne repose pas sur un échantillon de données fixe mais sur des \textbf{interactions} dynamiques. \\
+	\vspace{0.5cm}
+	Un \textbf{agent} évolue dans un \textbf{environnement} et doit apprendre à prendre des décisions \textbf{séquentielles}:
+	\begin{itemize}
+		\item L'agent observe un \textbf{état} (le contexte actuel)
+		\item Il choisit une \textbf{action} à effectuer
+		\item Il reçoit une \textbf{récompense} (positive ou négative, immédiate ou différée) en retour
+	\end{itemize}
+	\vspace{0.5cm}
+	L'objectif de l'algorithme est de découvrir la \textbf{stratégie optimale} permettant de maximiser la récompense totale à long terme. \\
+	\vspace{0.5cm}
+	Il n'y a pas, a priori, de réponse précise attendue par l'algorithme. Mais il est possible d'évaluer, de manière précise, la qualité de sa réponse.
+\end{frame}
+
+\begin{frame}{Exemple d'apprentissage par renforcement}
+	Dans l'exemple ci-dessous on peut voir comment un agent interagit avec son environnement (la voiture et le circuit) par le biais de ses capteurs et des actions effectuées sur la direction du véhicule ainsi que sa vitesse. L'objectif est de trouver une trajectoire optimale (position et vitesse) afin de minimiser le temps au tour, sans sortir le véhicule du tracé (pénalité):
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.6\linewidth]{Images/autonomous_car1}
+				\label{fig:autonomous-car-1}
+			\end{figure}
+		    \vspace{-0.3cm}
+			\centering
+			\small Les interactions de l'agent
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.6\linewidth]{Images/autonomous_car2}
+				\label{fig:autonomous-car-2}
+			\end{figure}
+			\vspace{-0.3cm}
+			\centering
+			\small Les stratégies optimales
+		\end{column}		
+	\end{columns}
+	\vfill  % pousse tout ce qui suit vers le bas
+	\tiny \textcolor{gray}{Source: Comparing deep reinforcement learning architectures for autonomous racing - B.D Evans, H.W. Jordaan, H.A Engelbrecht - Elsevier 2023}
+\end{frame}
+
+%\subsection[Méthodes]{Méthodes}
+%
+%\begin{frame}<0>{Méthodes paramétriques et non-paramétriques}
+%	Il existe une autre façon de catégoriser les algorithmes d'apprentissage automatique:
+%	\begin{itemize}
+%		\item Les méthodes \textbf{paramétriques}: L'algorithme dispose d'un nombre de paramètres \textbf{fixe}, indépendant de la taille de l'échantillon d'apprentissage. L'algorithme \textbf{résume} les données d'apprentissage.		
+%		\item Les méthodes \textbf{non-paramétriques}: L'algorithme dispose d'un nombre de paramètres \textbf{variable}, dépendant de la taille de l'échantillon. L'algorithme \textbf{adapte} sa structure aux données d'apprentissage.
+%	\end{itemize}
+%\end{frame}
+%
+%\begin{frame}<0>{Exemple de méthodes paramétriques et non-paramétriques}
+%	En utilisant les mêmes données que précédemment:
+%	\begin{table}
+%		\centering
+%		\begin{tabular}{|c|c|c|c|}
+%			\hline
+%			\textbf{Taille} (cm) & \textbf{Poids} (kg) & \textbf{Poste} \\ \hline
+%			190             & 112 &  3ème ligne       \\
+%			172             & 85  &  demi d'ouverture \\
+%			186             & 135 &  pilier           \\
+%			180             & 92  &  centre           \\
+%			\hline
+%		\end{tabular}
+%	\end{table}
+%	Nous pourrions imaginer un algorithme qui prédirait le poste d'un joueur d'une taille et poids donnés (par exemple 185 cm et 95 kg) en se basant sur l'observation, dans les données d'apprentissage, qui se rapprocherait le plus des caractéristiques de ce joueur. La proximité peut être évaluée à l'aide d'une norme Euclidienne.
+%\end{frame}
+%
+%\begin{frame}<0>{Exemple de méthodes paramétriques et non-paramétriques}
+%	Ici, l'algorithme prédirait le poste comme étant "centre". Pour étayer sa prédiction, l'algorithme se base directement sur les données d'apprentissage, sans avoir recours à la généralisation d'une règle. La structure interne de l'algorithme est directement la donnée d'apprentissage, et elle est d'autant plus complexe que le nombre d'observations croît. Cet algorithme est à la fois \textbf{transductif} (il n'y a pas de fonction de prédiction explicite indépendante des données) et \textbf{non-paramétrique}. \\
+%	\vspace{0.5cm}
+%	Un algorithme extrêmement similaire sera étudié dans le cours: l'algorithme des K plus proches voisins.
+%\end{frame}
+%
+%\begin{frame}<0>{Exemple de méthodes paramétriques et non-paramétriques}
+%	En nous concentrant à présent uniquement sur la taille et le poids:
+%	\begin{table}
+%		\centering
+%		\begin{tabular}{|c|c|c|c|}
+%			\hline
+%			\textbf{Taille} (cm) & \textbf{Poids} (kg) \\ \hline
+%			190             & 112 \\
+%			172             & 85  \\
+%			186             & 135 \\
+%			180             & 92  \\
+%			\hline
+%		\end{tabular}
+%	\end{table}
+%	Un algorithme pourrait prédire le poids d'un joueur en connaissant sa taille. C'est typique ce qu'une régression linéaire pourrait réaliser:
+%
+%	\begin{equation}
+%		\text{poids} = \beta_0 + \beta_1 \times \text{taille}
+%		\nonumber
+%	\end{equation}
+%	
+%	Ici l'algorithme ne dispose que de deux paramètres $\beta_0$ et $\beta_1$. Et ce indépendamment du nombre d'observations. Il est à la fois \textbf{inductif} et \textbf{paramétrique}.
+%	
+%\end{frame}
+%
+%\begin{frame}<0>{Exemple de méthodes paramétriques et non-paramétriques}
+%	\begin{itemize}
+%	\item Un algorithme d'apprentissage peut être à la fois \textbf{inductif} et \textbf{non-paramétrique}. Les processus Gaussiens sont un exemple d'algorithme qui répond à ces deux critères. Un processus Gaussien construit une matrice de covariance à partir des données observées. Le processus Gaussien résume les inter-dépendances des données d'apprentissage dans cette matrice de covariance (nature inductive). Mais le rang de la matrice de covariance croît avec le nombre d'observations et les caractéristiques de sortie des données d'apprentissage restent requise pour la prédiction (nature non-paramétrique).
+%	\item Il existe des algorithmes à la fois \textbf{transductifs} et \textbf{paramétriques} comme les machines à vecteurs de support transductives. Mais ces algorithmes restent assez rares.
+%	\end{itemize}
+%\end{frame}
+
+%=============================================================================================================
+
+\section[Problématique]{Problématique}
+\begin{frame}{Problématique}
+	Dans cette section nous introduirons des concepts fondamentaux de l'apprentissage supervisé:
+	\begin{itemize}
+		\item L'espace des hypothèses
+		\item La hiérarchie des espaces d'apprentissage
+		\item La formulation des problèmes de régression et classification
+	\end{itemize}
+\end{frame}
+
+\subsection[Espaces]{Espaces des hypothèses et de l'apprentissage}
+
+\begin{frame}{Espace des hypothèses}
+	Soient $\mathcal{X}$ et $\mathcal{Y}$, respectivement l'espace des entrées et l'espace des sorties dont nous disposons pour notre problème d'apprentissage supervisé.
+	\begin{block}{Hypothèse: fonction vraie $f$}
+		On suppose qu'il existe une fonction \textbf{vraie} mais inconnue $f: \mathcal{X} \rightarrow \mathcal{Y}$ qui régit la relation entre les données, telle que:
+		\begin{equation}
+			y = f(x) + \epsilon
+			\nonumber
+		\end{equation}
+		\hfill
+	\end{block}
+	$\epsilon$ représente un bruit aléatoire dans les caractéristiques observées (erreur de mesure), ou des caractéristiques non-observées.
+\end{frame}
+
+\begin{frame}{Espace des hypothèses}
+	\begin{block}{Définition: espace des hypothèses $\mathcal{H}$}
+		On définit l'\textbf{espace des hypothèses} $\mathcal{H}$ comme l'ensemble des fonctions candidates:
+		\begin{equation}
+			h: \mathcal{X} \rightarrow \mathcal{Y}
+			\nonumber
+		\end{equation}
+		\hfill
+	\end{block}
+	Le but de l'apprentissage est de trouver, à partir des données d'apprentissage $\mathcal{D}$ la \textit{meilleure} fonction $h^* \in \mathcal{H}$. \\
+	\vspace{0.5cm}
+	Il nous reste à définir ce que \textit{meilleure} signifie dans ce contexte.
+\end{frame}
+
+\begin{frame}[fragile]{Hiérarchie des espaces d'apprentissage}
+	% On utilise hspace pour manger la marge de gauche et recentrer visuellement
+	\hspace*{+1.0cm}
+	\begin{tikzpicture}[
+		% Style des blocs du funnel (largeurs légèrement réduites)
+		stage/.style={
+			fill=#1,
+			draw=none, 
+			rounded corners=8pt, 
+			text=white, 
+			font=\small\bfseries,
+			align=center,
+			minimum height=1.0cm,
+			inner sep=5pt,
+		},
+		% Style des étiquettes à droite
+		labelstyle/.style={
+			font=\footnotesize,
+			text=black,
+			anchor=west
+		}
+		]
+		% --- DÉFINITION DES BLOCS ---
+		% Largeurs ajustées : 8cm / 6.4cm / 4.8cm / 3.2cm
+		\node[stage=blue!85, text width=8cm] (s1) at (0,0) {L'espace des \mbox{caractéristiques} globales $\mathcal{U}$};
+		
+		\node[stage=blue!70, text width=6.4cm, below=10pt of s1] (s2) {L'espace des \mbox{caractéristiques} observées $\mathcal{X}$};
+		
+		\node[stage=blue!55, text width=4.8cm, below=10pt of s2] (s3) {L'espace des hypothèses $\mathcal{H}$};
+		
+		\node[stage=blue!40, text width=3.2cm, below=10pt of s3] (s4) {Les données \mbox{d'apprentissage} $\mathcal{D}$};
+		
+		% --- COORDONNÉES D'ALIGNEMENT ---
+		% L décalé à -4.4 pour coller au bloc de 8cm
+		% R décalé à 4.2 pour ne pas sortir de la slide
+		\coordinate (L) at (-4.4,0); 
+		\coordinate (R) at (4.2,0);  
+		
+		% --- COMMENTAIRES À DROITE ---
+		\node[labelstyle] at (R |- s1) {$g(u)$};
+		\node[labelstyle] at (R |- s2) {$f(x)$};
+		\node[labelstyle] at (R |- s3) {$h^*(x)$};
+		\node[labelstyle] at (R |- s4) {$\hat{f}(x)$};
+		
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Hiérarchie des espaces d'apprentissage}
+	Nous voulons prédire la vitesse d'une voiture en fonction de la consommation instantanée de carburant:
+	\pause
+	\begin{itemize}
+		\item La consommation instantanée est bien une caractéristique explicative de la vitesse.
+		\pause
+		\item Mais il y a d'autres caractéristiques non-observées qui sont aussi pertinentes: poids du véhicule, vent, pente... La fonction vraie $f$ sera donc un modèle très approché de la réalité $g$.
+		\pause
+		\item L'espace des hypothèses $\mathcal{H}$ limite les fonctions candidates explorées, ce qui peut introduire des pertes complémentaires par rapport à la fonction vraie $f$.
+		\pause
+		\item Enfin nous ne disposons que d'un ensemble limité de données d'apprentissage $\mathcal{D}$. Le mieux que nous puissions faire est d'obtenir une approximation de $h^{*}$ que l'on note $\hat{f}$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Espace des hypothèses et hiérarchie des espaces d'apprentissage}
+	En résumé:
+	\begin{itemize}
+		\item On note $g$ le \textbf{processus générateur} reliant les caractéristiques globales aux sorties.
+		\item On note $f$ la fonction \textbf{vraie} reliant l'espace $\mathcal{X}$ à l'espace $\mathcal{Y}$.
+		\item On note $h^*$ la \textbf{meilleure} fonction de l'espace $\mathcal{H}$ reliant ces mêmes espaces.
+		\item On note $\hat{f} \in \mathcal{H}$ l'\textbf{estimation} de $f$ après entraînement de l'algorithme à partir des données $\mathcal{D}$.
+	\end{itemize}
+\end{frame}
+
+\subsection[Apprentissage supervisé]{Apprentissage supervisé}
+
+\begin{frame}{Apprentissage supervisé}
+	\begin{block}{Problématique de l'apprentissage supervisé}
+		L'objectif de l'apprentissage supervisé est de trouver une fonction $\hat{f}: \mathcal{X} \to \mathcal{Y}$ dans l'espace des hypothèses $\mathcal{H}$ qui soit un bon \textbf{estimateur} de la fonction \textbf{vraie} $f$ à partir des données $\mathcal{D} = \begin{Bmatrix}(x^{(i)}, y^{(i)})\end{Bmatrix}_{i=1}^n$:
+		\begin{equation}
+			y = f(x) + \epsilon
+			\nonumber
+		\end{equation}
+		Où $\epsilon$ représente une incertitude liée au bruit de mesure des données observées ou à des variables explicatives non-observées.
+		\hfill
+	\end{block}
+	\vspace{0.5cm}
+	\pause
+	On note $\hat{y} = \hat{f}(x)$ la prédiction réalisée par le modèle pour une entrée $x$. \\
+	\vspace{0.5cm}
+	\pause
+	Un bon estimateur $\hat{f}$ est tel qu'il minimise une \textbf{fonction de perte} $L(y, \hat{y})$ sur l'ensemble des données observées $\mathcal{D}$, aussi appelées données d'apprentissage.
+\end{frame}
+
+\begin{frame}{Problème de régression}
+	\begin{block}{Problématique de la régression}
+		Dans un problème de \textbf{régression}, la variable de sortie est quantitative : $\mathcal{Y} \subseteq \mathbb{R}$. \\
+		\vspace{0.3cm}
+		La fonction de perte $L$ mesure une distance entre la prédiction de l'algorithme $\hat{y}$ et la valeur observée $y$. 
+	\end{block}
+	\pause
+	Un exemple de fonction de perte est l'erreur quadratique:
+	\begin{equation}
+		L(y, \hat{y}) = \left( y - \hat{y}\right)^2
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Problème de classification}
+	\begin{block}{Problématique de la classification binaire}
+		Dans un problème de \textbf{classification binaire}, la variable de sortie est qualitative : $\mathcal{Y} = \{0, 1\}$. \\
+		\vspace{0.3cm}
+		La fonction de perte $L$ est un compteur d'erreurs de classification. \\
+		\vspace{0.3cm}
+	\end{block}
+	\pause
+	Un exemple de fonction de perte serait la fonction 0-1:
+	\begin{equation}
+		\begin{cases}
+			L(y, \hat{y}) = 0 & \text{si } y = \hat{y} \\
+			L(y, \hat{y}) = 1 & \text{si } y \ne \hat{y}
+		\end{cases}
+		\nonumber
+	\end{equation}
+	\pause
+	\begin{itemize}
+		\item \textbf{Note sur l'incertitude:} Ici, $\epsilon = y - f(x)$ représente une incertitude discrète prenant ses valeurs dans $\{-1, 0, 1\}$.
+		\item \textbf{Note sur l'optimisation :} La fonction 0-1 n'est pas dérivable. En pratique, nous utiliserons des substituts (comme la log-vraisemblance).
+	\end{itemize}
+
+\end{frame}
+
+%============================================================================================================
+
+\section[Modèles linéaires]{Modèles linéaires}
+
+\begin{frame}{Modèles linéaires}
+	Dans cette section, nous étudierons 2 modèles linéaires pour des problèmes de régression et de classification:
+	\begin{itemize}
+		\item La \textbf{régression linéaire} pour les problèmes de régression.
+		\item La \textbf{régression logistique} pour les problèmes de classification.
+	\end{itemize}
+\end{frame}
+
+\subsection[Régression linéaire]{Régression linéaire}
+
+\begin{frame}{Régression linéaire}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/regression_lineaire_3}
+				\label{fig:regression-lineaire-3}
+			\end{figure}			
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{table}
+				\centering
+				\begin{tabular}{|c|c|c|c|}
+					\hline
+					\textbf{Taille} (cm) & \textbf{Poids} (kg) \\ \hline
+					190             & 112 \\
+					172             & 85  \\
+					186             & 135 \\
+					180             & 92  \\
+					\hline
+				\end{tabular}
+			\end{table}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Exemples}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/regression_lineaire_1}
+				\label{fig:regression-lineaire-1}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/regression_lineaire_2}
+				\label{fig:regression-lineaire-2}
+			\end{figure}
+		\end{column}		
+	\end{columns}
+	\pause
+	L'idée est de construire une droite qui passe le plus proche possible des observations $\mathcal{D}$. L'algorithme tente de minimiser la distance totale entre les observations et les prédictions.
+\end{frame}
+
+\begin{frame}{Modèle}
+	Le modèle de régression linéaire peut s'écrire sous une forme simple:
+	\begin{equation}
+		\text{poids}^{(i)} \approx \beta_0 + \beta_1 \times \text{taille}^{(i)}
+		\nonumber
+	\end{equation}
+	Une forme équivalente, vectorielle, serait:
+	\begin{equation}
+		\text{poids}^{(i)} \approx \begin{pmatrix}1 & \text{taille}^{(i)}\end{pmatrix} \begin{pmatrix}\beta_0 \\ \beta_1\end{pmatrix}
+		\nonumber
+	\end{equation}	
+\end{frame}
+
+\begin{frame}{Modèle}
+	L'avantage de cette forme vectorielle, c'est qu'elle peut évoluer vers une forme matricielle nous permettant de faire plusieurs prédictions à la fois, grâce à un empilement:
+	\begin{equation}
+		\begin{pmatrix}\text{poids}^{(1)} \\ \text{poids}^{(2)} \\ \text{poids}^{(3)} \\ \text{poids}^{(4)}\end{pmatrix} \approx \begin{pmatrix}1 & \text{taille}^{(1)} \\ 1 & \text{taille}^{(2)} \\ 1 & \text{taille}^{(3)} \\ 1 & \text{taille}^{(4)} \end{pmatrix} \begin{pmatrix}\beta_0 \\ \beta_1\end{pmatrix}
+		\nonumber
+	\end{equation}
+	\pause
+	Et sous une forme plus condensée:
+	\begin{equation}
+		Y \approx \tilde{X} \beta
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Formulation}
+	Soient $\mathcal{X} \subseteq \mathbb{R}^d$ l'espace des caractéristiques d'entrée,  $\mathcal{Y} \subseteq \mathbb{R}$ l'espace des caractéristiques de sortie, et $\mathcal{D} = \begin{Bmatrix}(x^{(i)}, y^{(i)})\end{Bmatrix}_{i=1}^n$ les données d'apprentissage. On définit l'application $\Phi$ qui réalise le passage à l'espace augmenté $\tilde{\mathcal{X}} \subseteq \mathbb{R}^{d+1}$:
+	\begin{equation}
+		\begin{aligned}
+			\Phi: \mathcal{X} &\to \tilde{\mathcal{X}} \\
+			x^{(i)} &\mapsto \tilde{x}^{(i)} = \begin{pmatrix}1 & x^{(i)}\end{pmatrix}
+			\nonumber
+		\end{aligned}
+	\end{equation}
+	L'espace des hypothèses $\mathcal{H}: \mathcal{X} \to \mathcal{Y}$ dans le cadre de la régression linéaire est:
+	\begin{equation}
+		\mathcal{H} = \begin{Bmatrix}h: x \mapsto \Phi(x) \beta \mid \beta \in \mathbb{R}^{d+1}\end{Bmatrix}
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Empilement matriciel}
+	Pour des données d'apprentissage $\mathcal{D}$ , on construit une matrice de design $\tilde{X}$ par empilement vertical des observations augmentées $\tilde{x}^{(i)}$:
+	\begin{equation}
+		\tilde{X} = \begin{pmatrix}\tilde{x}^{(1)} \\ \tilde{x}^{(2)} \\ \vdots \\ \tilde{x}^{(n)} \end{pmatrix} \in \mathcal{M}_{n, d+1}(\mathbb{R})
+		\nonumber
+	\end{equation}
+	On note $Y$ l'empilement vertical des observations des caractéristiques de sortie:
+	\begin{equation}
+		Y = \begin{pmatrix}y^{(1)} \\ y^{(2)} \\ \vdots \\ y^{(n)} \end{pmatrix} \in \mathcal{M}_{n, 1}(\mathbb{R})
+		\nonumber
+	\end{equation}	
+\end{frame}
+
+\begin{frame}{Méthode des moindres carrés}
+	La méthode des moindres carrés cherche à minimiser la somme des erreurs quadratiques:
+	\begin{equation}
+		\begin{aligned}
+			J(\beta) &= \sum_{i=1}^n \left(y^{(i)} - \tilde{x}^{(i)} \beta\right)^2 \\
+			         &= \left(Y - \tilde{X} \beta\right)^T \left(Y - \tilde{X} \beta\right)
+		\end{aligned}
+		\nonumber
+	\end{equation}
+	$\hat{\beta}$ est un estimateur de $\beta$ minimisant cette somme des erreurs quadratiques:
+	\begin{equation}
+		\hat{\beta} = \underset{\beta \in \mathbb{R}^{d+1}}{\text{arg min}}\left(\left(Y - \tilde{X} \beta\right)^T \left(Y - \tilde{X} \beta\right)\right)
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Méthode des moindres carrés}
+	Il existe une solution analytique à ce problème d'optimisation:
+	\begin{equation}
+		\begin{aligned}
+			&\hat{\beta} = \left( \tilde{X}^T \tilde{X}\right)^{-1} \tilde{X}^T Y \\
+			&\hat{\beta} \in \mathcal{M}_{d+1, 1}(\mathbb{R}) \\
+			\nonumber
+		\end{aligned}
+	\end{equation}
+	Pour exister, cette solution nécessite que la matrice $\left(\tilde{X}^T \tilde{X}\right)$ soit inversible. Ce qui signifie que les colonnes de $\tilde{X}$ sont linéairement indépendantes.
+	La fonction d'estimation $\hat{f}$ est donc:
+	\begin{equation}
+		\begin{aligned}
+			\hat{f}: \mathcal{X} &\to \mathcal{Y} \\
+			x &\mapsto \Phi(x) \hat{\beta}
+			\nonumber
+		\end{aligned}
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Hypothèses de la méthode des moindres carrés}
+	La méthode des moindres carrés prend un certain nombre d'hypothèses pour l'incertitude $\epsilon$ afin de dériver la matrice de covariance de $\hat{\beta}$. Pour rappel, en apprentissage supervisé nous cherchons une fonction estimant la fonction vraie $f$ définie comme:
+	\begin{equation}
+		y = f(x) + \epsilon
+		\nonumber
+	\end{equation}
+	Notons $X$ l'empilement matriciel des observations de caractéristiques d'entrées. $\epsilon$ doit satisfaire les conditions suivantes:
+	\begin{itemize}
+		\item La condition d'\textbf{exogénéité}: $\mathbb{E}[\epsilon \mid X] = 0$.
+		\begin{itemize}
+			\item C'est la condition qui garantit que $\mathbb{E}[\hat{\beta}] = \beta$. Ici $\beta$ est celui de $h^*$.
+			\item Il n'existe aucun lien fonctionnel entre l'espérance de $\epsilon$ et les données d'entrée.
+		\end{itemize}
+		\item La condition d'\textbf{homoscédasticité}: $\text{Var}[\epsilon \mid X] = \sigma_{\epsilon}^2$.
+		\begin{itemize}
+			\item Il n'existe aucun lien fonctionnel entre la variance de $\epsilon$ et les données d'entrée.
+		\end{itemize}
+		\item La condition d'\textbf{indépendance}: $\text{Cov}[\epsilon^{(i)}, \epsilon^{(j)}] =0 \quad \forall i \ne j$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Hiérarchie des espaces d'apprentissage et régression linéaire}
+	\begin{columns}
+		\begin{column}{0.4\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1.0\linewidth]{Images/regression_lineaire}
+				\label{fig:poids-taille}
+			\end{figure}			
+		\end{column}
+		\begin{column}{0.6\textwidth}
+			Le modèle linéaire est loin d'être parfait:
+			\begin{itemize}
+				\item Soit l'hypothèse de linéarité n'est pas la bonne. L'espace des hypothèses $\mathcal{H}$ n'est pas le plus approprié.
+				\item Soit il manque des caractéristiques, par exemple la densité, le tour de hanche, le rapport masse musculaire sur masse grasse...
+				\item Soit il y a un bruit de mesure important dans la taille et/ou le poids.
+				\item Soit une combinaison quelconque des éléments ci dessus !
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}	
+
+\begin{frame}{Espaces des hypothèses et régression linéaire}
+	Il aurait été possible de considérer une autre application $\Phi'$ pour réaliser le passage de l'espace d'entrée $\mathcal{X} \subseteq \mathbb{R}$ à l'espace augmenté $\tilde{\mathcal{X}}' \subseteq \mathbb{R}^3$, par exemple:
+	\begin{equation}
+		\begin{aligned}
+			\Phi': \mathcal{X} &\rightarrow \tilde{\mathcal{X}}' \\
+			x^{(i)} &\mapsto \tilde{x}^{(i)} = \begin{pmatrix}1 & x^{(i)} & \left(x^{(i)}\right)^2\end{pmatrix}
+			\nonumber
+		\end{aligned}		
+	\end{equation}
+	La régression linéaire devient en fait une régression polynomiale de degré 2. C'est donc un nouvel espace des hypothèses $\mathcal{H}'$ qui est exploré:
+	\begin{equation}
+		\mathcal{H}' = \begin{Bmatrix}h: x \mapsto \Phi'(x) \beta \mid \beta \in \mathbb{R}^3\end{Bmatrix}
+		\nonumber
+	\end{equation}	
+\end{frame}
+
+\begin{frame}{Espaces des hypothèses et régression linéaire}
+	Dans le cadre de la régression linéaire, la nature de l'application $\Phi$ est un \textbf{hyper-paramètre} de l'algorithme d'apprentissage automatique. \\
+	\vspace{0.5cm}
+	Les coefficients $\beta$ du polynôme sont les $\textbf{paramètres}$ de l'algorithme. Ce sont les paramètres qui sont explorés par l'espace des hypothèses $\mathcal{H}$.\\
+	\vspace{0.5cm}
+	La méthode des moindres carrés permet d'obtenir une estimation $\hat{f}$ de la fonction vraie $f$ parmi les fonctions $h$ de l'espace $\mathcal{H}$.
+\end{frame}
+
+\subsection[Régression logistique]{Régression logistique}
+
+\begin{frame}{Régression logistique}
+	\begin{table}
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Poids} (kg) & \textbf{Position} \\ \hline
+			112 &  avant = 1       \\
+			85  &  trois-quart = 0 \\
+			135 &  avant = 1       \\
+			92  &  trois-quart = 0 \\
+			\hline
+		\end{tabular}
+	\end{table}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.9\linewidth]{Images/regression_logistique_1}
+		\label{fig:regression-logistique-1}
+	\end{figure}			
+\end{frame}
+
+\begin{frame}{Fonction logistique}
+	\begin{columns}
+		\begin{column}{0.6\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=1.0\linewidth]{Images/regression_logistique_3}
+				\label{fig:regression-logistique-3}
+			\end{figure}			
+		\end{column}
+		\begin{column}{0.4\textwidth}
+			\begin{equation}
+				\begin{aligned}
+					\sigma: \mathbb{R} &\to ]0, 1[ \\
+					t &\mapsto \frac{1}{1 + e^{-t}}
+				\end{aligned}
+				\nonumber
+			\end{equation}
+			\pause
+			L'idée est d'associer les avants au plateau supérieur de cette fonction ($\sigma(t) = 1$) et d'associer les trois-quarts au plateau inférieur ($\sigma(t) = 0$).
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Exemples}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/regression_logistique_4}
+				\label{fig:regression-logistique-4}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/regression_logistique_5}
+				\label{fig:regression-logistique-5}
+			\end{figure}
+		\end{column}		
+	\end{columns}
+	\pause
+	Cette régression logistique calcule en fait une probabilité $p$, plus spécifiquement la probabilité qu'un joueur d'un poids donné soit un avant.
+\end{frame}
+
+\begin{frame}{Modèle}
+	Le modèle de régression logistique peut s'écrire sous une forme relativement simple:
+	\begin{equation}
+		p^{(i)} \approx \frac{1}{1 + e^{\displaystyle -\left(\beta_0 + \beta_1 \times \text{poids}^{(i)} \right)}}
+		\nonumber
+	\end{equation}
+	On peut le voir comme un modèle linéaire, dans l'exponentielle, combiné à une fonction qui envoie les résultats dans l'espace des probabilités $]0, 1[$. \\
+\end{frame}
+
+\begin{frame}{Modèle}
+	Et en notation matricielle:
+	\begin{equation}
+		p \approx \frac{1}{1 + e^{\displaystyle -\tilde{X} \beta}}
+		\nonumber
+	\end{equation} \\
+	\vspace{0.5cm}
+	En condensant avec la fonction logistique $\sigma$:
+	\begin{equation}
+		p \approx \sigma\left(\tilde{X} \beta\right)
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Formulation}
+	Soient $\mathcal{X} \subseteq \mathbb{R}^d$ l'espace des caractéristiques d'entrée,  $\mathcal{Y} = \{0, 1\}$ l'espace des caractéristiques de sortie, et $\mathcal{D} = \begin{Bmatrix}(x^{(i)}, y^{(i)})\end{Bmatrix}_{i=1}^n$ les données d'apprentissage. On définit l'application $\Phi$ qui réalise le passage à l'espace augmenté $\tilde{\mathcal{X}} \subseteq \mathbb{R}^{d+1}$:
+	\begin{equation}
+		\begin{aligned}
+			\Phi: \mathcal{X} &\to \tilde{\mathcal{X}} \\
+			x^{(i)} &\mapsto \tilde{x}^{(i)} = \begin{pmatrix}1 & x^{(i)}\end{pmatrix}
+			\nonumber
+		\end{aligned}
+	\end{equation}
+	L'espace des hypothèses $\mathcal{H}: \mathcal{X} \to [0, 1]$ dans le cadre de la régression logistique est:
+	\begin{equation}
+		\mathcal{H} = \begin{Bmatrix}h: x \mapsto \displaystyle \frac{1}{1 + e^{-\Phi(x) \beta}} \mid \beta \in \mathbb{R}^{d+1}\end{Bmatrix}
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Hypothèses et Approche itérative}
+	Contrairement à la régression linéaire, il n'existe pas de solution analytique au problème. Pour déterminer un $\hat{\beta}$ nous allons donc avoir besoin d'utiliser une approche \textbf{itérative}. \\
+\end{frame}
+
+\begin{frame}{Loi de Bernoulli}
+	Une approche pour résoudre le problème consiste à considérer chaque observation ${y^{(i)}}$ comme la réalisation d'une variable aléatoire $Y^{(i)}$ suivant une \textbf{loi de Bernoulli} de paramètre $p^{(i)}$. Les observations sont indépendantes mais ne sont pas identiquement distribuées.\\
+	\vspace{0.5cm}
+	\pause
+	Pour rappel, une variable aléatoire $Y^{(i)}$ suivant une loi de Bernoulli de paramètre $p^{(i)}$ est telle que:
+	\begin{equation}
+		\begin{cases}
+			P(Y^{(i)} = 1) = p^{(i)} \\
+			P(Y^{(i)} = 0) = 1 - p^{(i)}
+		\end{cases}
+		\nonumber
+	\end{equation}
+	Ou de manière condensée avec $y \in \{0, 1\}$:
+	\begin{equation}
+		P(Y^{(i)} = y^{(i)}) = \left(p^{(i)}\right)^{y^{(i)}} \left(1 - p^{(i)}\right)^{1 - y^{(i)}}
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Maximisation de la vraisemblance}
+	La vraisemblance de notre échantillon $\mathcal{D}$ est alors:
+	\begin{equation}
+		\mathcal{L}(\beta) = P(Y = \begin{Bmatrix}y^{(i)}\end{Bmatrix}_{i=1}^n \mid \beta, \tilde{X})
+		\nonumber
+	\end{equation} \\
+	\vspace{0.5cm}
+	\pause
+	L'idée consiste à trouver $\hat{\beta}$ tel qu'il maximise la vraisemblance des observations:
+	\begin{equation}
+		\hat{\beta} = \underset{\beta \in \mathbb{R}^{d+1}}{\text{arg max}} \, \mathcal{L}(\beta)
+		\nonumber
+	\end{equation} \\
+	\vspace{0.5cm}
+	\pause
+	Cette méthode de maximisation de la vraisemblance suppose que les conditions d'exogénéité et d'indépendance des $\epsilon^{(i)}$ sont satisfaites afin d'obtenir le meilleur estimateur possible.
+\end{frame}
+
+\begin{frame}{Intuition}
+	Prenons un "avant", à qui nous avons associé la valeur $y^{(i)}=1$. La variable aléatoire est $Y^{(i)}$. Si la loi de Bernoulli associée est bien faite on devrait avoir $P(Y^{(i)} = 1)$ très proche de 1 et $P(Y^{(i)} = 0)$ très proche de 0. \\
+	\vspace{0.5cm}
+	\pause
+	Pour un "trois-quart", à qui nous avons associé la valeur $y^{(i)}=0$, c'est l'inverse. On voudra avoir $P(Y^{(i)} = 1)$ très proche de 0 et $P(Y^{(i)} = 0)$ très proche de 1. \\
+	\vspace{0.5cm}
+	\pause
+	Ceci est équivalent à dire que pour un "avant" on veut que le paramètre $p^{(i)}$ de la loi de Bernoulli soit proche de 1 et que pour un arrière, on veut que ce même paramètre soit proche de 0. \\
+\end{frame}
+
+\begin{frame}{Intuition}
+	$p^{(i)}$ étant la prédiction de notre régression logistique, c'est à dire la probabilité que l'observation $i$ soit un avant, maximiser la vraisemblance de l'ensemble des variables de Bernoulli revient à avoir une régression logistique bien calibrée ! \\
+	\vspace{0.5cm}
+	\pause
+	L'ensemble de ces lois de Bernoulli est en fait contrôlé par un vecteur paramètre $\beta$ \textbf{commun} à toutes les lois. Notre problème est donc sur-contraint, comme l'était la régression linéaire dans l'exemple précédent.	
+\end{frame}
+
+\begin{frame}{Log-vraisemblance négative moyenne}
+	En pratique, on préfère minimiser une log-vraisemblance négative moyenne que maximiser une vraisemblance:
+	\begin{equation}
+		\hat{\beta} = \underset{\beta \in \mathbb{R}^{d+1}}{\text{arg min}} \, - \frac{1}{n} \ln{\left(\mathcal{L}(\beta)\right)}
+		\nonumber
+	\end{equation} \\
+	\vspace{0.5cm}
+	\pause
+	Comme les observations sont indépendantes, cette log-vraisemblance négative moyenne est en fait:
+	\begin{equation}
+		- \frac{1}{n}\ln{\left(\mathcal{L}(\beta)\right)} = - \frac{1}{n} \sum_{i=1}^n \ln{\left(P(y^{(i)} \mid \tilde{x}^{(i)}, \beta)\right)}
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Entropie croisée moyenne}
+	Cette log-vraisemblance négative moyenne prend une valeur très particulière et caractéristique. Pour rappel $p^{(i)} = \sigma(\tilde{x}^{(i)} \beta)$:
+	\begin{equation}
+		\begin{aligned}
+			-\frac{1}{n} \ln{\left(\mathcal{L}(\beta)\right)} 
+			&= - \frac{1}{n} \sum_{i=1}^n \ln{P(y^{(i)} \mid \tilde{x}^{(i)}, \beta)} \\
+			&= - \frac{1}{n} \sum_{i=1}^n \ln{\left(\left(p^{(i)}\right)^{y^{(i)}} \left(1 - p^{(i)}\right)^{1 - y^{(i)}}\right)} \\
+			&= - \frac{1}{n} \sum_{i=1}^n y^{(i)} \ln{\left(p^{(i)}\right)} + (1 - y^{(i)}) \ln{\left(1 - p^{(i)}\right)}
+		\end{aligned}
+		\nonumber
+	\end{equation}
+	Cette quantité est appelée \textbf{entropie croisée moyenne} !
+\end{frame}
+
+\begin{frame}{Gradient d'entropie croisée}
+	On pourrait montrer que la dérivée de la log-vraisemblance négative moyenne par rapport à $\beta$ s'écrit:
+	\begin{equation}
+		\begin{aligned}
+			\nabla_{\beta}\left(- \frac{1}{n} \ln{\left(\mathcal{L}(\beta)\right)}\right) 
+			&= - \frac{1}{n} \sum_{i=1}^n \left(y^{(i)} - \sigma(\tilde{x}^{(i)} \beta)\right) \tilde{x}^{(i)T} \\
+			&= - \frac{1}{n} \tilde{X}^T \left(Y - \sigma\left(\tilde{X} \beta\right)\right)
+		\end{aligned}
+		\nonumber
+	\end{equation}
+	Ce gradient fait apparaitre 2 termes:
+	\begin{itemize}
+		\item $\left(Y - \sigma\left(\tilde{X} \beta\right)\right)$ qui est la différence entre la probabilité associée à la valeur observée et la probabilité prédite par la régression logistique pour un vecteur paramètre $\beta$ donné.
+		\item $\tilde{X}^T$ sont juste les caractéristiques d'entrée observées (et augmentées).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Descente de gradient}
+	La minimisation de la log-vraisemblance négative moyenne peut être effectuée à l'aide d'une méthode de descente de gradient. La fonction à minimiser est strictement convexe (si les colonnes de $\tilde{X}$ sont linéairement indépendantes). Donc la descente de gradient est garantie de trouver un minimum \textbf{global}. \\
+	\vspace{0.5cm}
+	On notera $\alpha \in \mathbb{R}^+$ le taux d'apprentissage. Une valeur trop grande peut conduire à une instabilité numérique de la descente de gradient et une valeur trop faible peut conduire à une convergence trop lente. Une valeur de $\alpha = 0.001$ est typique pour débuter. \\
+	\vspace{0.5cm}
+	On notera $\epsilon \in \mathbb{R}^+$ la tolérance pour stopper la descente de gradient, par exemple $\epsilon = 10^{-6}$.
+\end{frame}
+
+\begin{frame}{Descente de gradient}
+	L'algorithme de descente de gradient peut être décrit comme suit:
+	\begin{enumerate}
+		\item Prendre une valeur initiale de $\hat{\beta}_{k=0} = 0_{d+1}$
+		\item Boucler jusqu'à convergence:
+		\begin{itemize}
+			\item Calculer les $n$ probabilités $p_k = \sigma(\tilde{X} \beta_{k})$
+			\item Calculer le gradient $\nabla_{\beta}\left(- \frac{1}{n} \ln{\mathcal{L}(\beta)}\right)$
+			\item Calculer l'incrément de $\hat{\beta}$: $\delta_k = - \alpha \nabla_{\beta}\left(- \frac{1}{n} \ln{\mathcal{L}(\beta)}\right)$
+			\item Mettre à jour $\hat{\beta}$: $\hat{\beta}_{k+1} \leftarrow \hat{\beta}_{k} + \delta_k$
+			\item Calculer la norme Euclidienne au carré $\|\delta_k \|_2^2$
+			\item Si $\|\delta_k \|_2^2 < \epsilon$ alors la convergence est atteinte.
+		\end{itemize}
+	\end{enumerate}
+\end{frame}
+
+\subsection[Synthèse]{Synthèse}
+
+\begin{frame}{Synthèse : Linéaire vs Logistique}
+	\begin{table}
+		\renewcommand{\arraystretch}{1.5} % Pour aérer le tableau
+		\begin{tabular}{|l|c|c|}
+			\hline
+			\textbf{Caractéristique} & \textbf{Régression Linéaire} & \textbf{Régression Logistique} \\ \hline
+			\textbf{Nature de $Y$} & Continue ($\mathbb{R}$) & Discrète ($\{0, 1\}$) \\ \hline
+			\textbf{Modèle} & $y \approx \tilde{X}\beta$ & $p \approx \sigma(\tilde{X}\beta)$ \\ \hline
+			\textbf{Fonction de perte} & Erreur Quadratique & Entropie Croisée \\ \hline
+			\textbf{Objectif} & Minimiser & Minimiser \\ \hline
+			\textbf{Résolution} & \textbf{Analytique} (directe) & \textbf{Numérique} (itérative) \\ \hline
+			\textbf{Solution} & $\hat{\beta} = (\tilde{X}^T\tilde{X})^{-1}\tilde{X}^TY$ & Descente de gradient \\ \hline
+		\end{tabular}
+	\end{table}
+	Note: Pour un problème de classification, minimiser une Entropie Croisée est équivalent à maximiser une Log-Vraisemblance. Pour un problème de régression, dans la condition où l'incertitude $\epsilon$ est Gaussienne, minimiser l'erreur quadratique moyenne est équivalent à maximiser la Log-Vraisemblance.
+\end{frame}
+
+
+%=============================================================================================================
+
+\section[Sélection et Validation de modèles]{Sélection et Validation de modèles}
+
+\begin{frame}{Sélection et Validation de modèles}
+	Dans cette section nous discuterons de la sélection et de la validation de modèles pour un problème d'apprentissage supervisé: \\
+	\vspace{0.5cm}
+	\begin{itemize}
+		\item \textbf{Sélection}: quel est le meilleur modèle parmi plusieurs espaces d'hypothèses ?
+		\item \textbf{Validation}: comment s'assurer que notre modèle a une performance suffisante ?
+	\end{itemize}
+\end{frame}
+
+\subsection{Décomposition de l'erreur}
+
+\begin{frame}{Décomposition de l'erreur}
+	Pour mieux comprendre comment faire une sélection et une validation du modèle, nous devons passer un peu plus de temps sur la \textbf{décomposition de l'erreur} d'un modèle.
+\end{frame}
+
+\begin{frame}{Risque empirique}
+	Minimiser la fonction de perte $L$ sur les données d'apprentissage $\mathcal{D}$ revient à minimiser le risque \textbf{empirique} défini comme suit:
+	\begin{block}{Définition: Risque empirique}
+		Le risque empirique est une fonction $R_n: \mathcal{H} \to \mathbb{R}^+$ qui mesure la performance de toute hypothèse $h \in \mathcal{H}$ sur les données d'apprentissage $\mathcal{D}$:
+		\begin{equation}
+			R_n = \frac{1}{n} \sum_{i=1}^n L\left(y^{(i)}, h\left(x^{(i)}\right)\right)
+			\nonumber
+		\end{equation}
+		\hfill
+	\end{block}
+\end{frame}
+
+\begin{frame}{Risque empirique}
+	L'apprentissage de l'algorithme supervisé permet d'obtenir l'estimateur $\hat{f}$ qui minimise le risque empirique à partir des données $\mathcal{D}$:
+	\begin{equation}
+		\hat{f} = \underset{h \in \mathcal{H}}{\text{arg min  }}R_n(h)
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Risque empirique pour la régression linéaire}
+	Dans le cas de la régression linéaire, la fonction de perte est la fonction d'erreur quadratique. Chercher un estimateur $\hat{f}$ correspond donc à minimiser:
+	\begin{equation}
+		\hat{f} = \underset{h \in \mathcal{H}}{\text{arg min  }} \frac{1}{n} \sum_{i=1}^n \left( y^{(i)} - \hat{y}^{(i)}\right)^2
+		\nonumber
+	\end{equation}
+	Ce qui est équivalent à ce que l'algorithme des moindre carrés réalise (au coefficient $1/n$ près).
+\end{frame}
+
+\begin{frame}{Risque empirique pour la régression logistique}
+	Dans le cas de la régression logistique, la fonction de perte est l'entropie croisée moyenne (log-vraisemblance négative moyenne). Chercher un estimateur $\hat{f}$ correspond donc à minimiser:
+	\begin{equation}
+		\hat{f} = \underset{h \in \mathcal{H}}{\text{arg min  }} - \frac{1}{n} \sum_{i=1}^n y^{(i)} \ln{\left(p^{(i)}\right)} + (1 - y^{(i)}) \ln{\left(1 - p^{(i)}\right)}
+		\nonumber
+	\end{equation}
+	C'est la quantité que nous avons minimisé plus tôt grâce à la descente de gradient.
+\end{frame}
+
+\begin{frame}{Comparaison de modèles et d'hypothèses}
+	Reprenons le problème de régression linéaire pour prédire le poids d'un joueur à partir de sa taille et considérons deux espaces des hypothèses:
+	\begin{itemize}
+		\item $\mathcal{H}_1$: l'espace des hypothèses pour des polynômes mono-variés de degré 1.
+		\item $\mathcal{H}_3$: l'espace des hypothèses pour des polynômes mono-variés de degré 3.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Quel est le meilleur modèle ? ou la meilleure hypothèse ?}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/comparaison_modeles_1}
+				\label{fig:comparaison-modeles-1}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/comparaison_modeles_2}
+				\label{fig:comparaison-modeles-2}
+			\end{figure}
+		\end{column}		
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Quel est le meilleur modèle ? ou la meilleure hypothèse ?}
+	\begin{itemize}
+		\item Pour une régression linéaire on cherche à minimiser l'erreur quadratique...
+		\pause
+		\item ...mais ce n'est pas le \textbf{but}, c'est un \textbf{moyen}. Le but, c'est de trouver une \textbf{relation} entre les caractéristiques d'entrées et de sortie qui soit la plus proche possible de la fonction vraie $f(x)$ et du processus générateur $g(u)$.
+		\pause
+		\item Pour l'espace des hypothèses $\mathcal{H}_1$, $\hat{\beta}_0$ n'a pas d'interprétation tangible: un joueur qui mesurerait 0 cm pèserait -291 kg ? En revanche $\hat{\beta}_1$ nous informe qu'en prenant 1 cm, le poids augmente en moyenne de 2 kg. Ce qui ne paraît pas absurde.
+		\pause
+		\item Pour l'espace des hypothèses $\mathcal{H}_3$, le modèle montre qu'on perd du poids jusqu'à 175 cm, puis on gagne du poids jusqu'à 185 cm, avant, à nouveau, de reperdre du poids au-delà de 185 cm. Cela semble peu plausible !
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Quel est le meilleur modèle ? ou la meilleure hypothèse ?}
+	\begin{itemize}
+		\item L'hypothèse $\mathcal{H}_1$ est meilleure ici.
+		\pause
+		\item Notre \textbf{connaissance a priori} du problème nous permet de discriminer la meilleure hypothèse. Que faire quand nous n'avons pas de connaissances a priori ?
+		\pause
+		\item On échange avec des \textbf{experts} du problème.
+		\pause
+		\item Mais on ne peut vraiment \textit{rien} faire avec les mathématiques ?
+		\pause
+		\item \textit{Si}, on peut ! (cela ne dispense pas de s'entourer des experts du domaine).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Quel est le meilleur modèle ? ou la meilleure hypothèse ?}
+	Que se passe-t-il avec notre hypothèse $\mathcal{H}_3$ ?
+	\begin{itemize}
+		\item Il est probable que nous n'ayons pas accès à toutes les variables explicatives dans nos données. Donc il est impossible d'obtenir un modèle qui explique correctement le problème.
+		\pause
+		\item C'est pourtant l'hypothèse prise en travaillant avec $\mathcal{H}_3$. Le modèle a la \textbf{capacité} à expliquer entièrement le poids avec la taille, en lui donnant une importance démesurée par rapport à l'importance qu'elle a réellement.
+		\pause
+		\item C'est ce que l'on appelle le \textbf{sur-apprentissage}: on accorde trop d'importance à certaines variables observées.
+		\pause
+		\item On dit aussi que le modèle issu de $\mathcal{H}_3$ ne \textbf{généralise} pas correctement: la règle qui est \textbf{induite} lors de l'apprentissage ne correspond pas à la réalité.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Quel est le meilleur modèle ? ou la meilleure hypothèse ?}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/comparaison_modeles_3}
+				\label{fig:comparaison-modeles-3}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/comparaison_modeles_4}
+				\label{fig:comparaison-modeles-4}
+			\end{figure}
+		\end{column}		
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Quel est le meilleur modèle ? ou la meilleure hypothèse ?}
+	Dans l'exemple précédent, en utilisant un jeu de données plus conséquent:
+	\begin{itemize}
+		\item Le polynôme de degré 3 semble désormais monotone mais reste peu plausible.
+		\item La droite présente une pente $\hat{\beta}_1$  différente du modèle précédent. 
+	\end{itemize}
+	\pause
+	\vspace{0.5cm}
+	Le sur-apprentissage n'est pas qu'une conséquence d'une complexité (ou capacité) de modèle trop importante, mais plutôt d'un rapport entre la complexité du modèle et la quantité de données observées pour l'apprentissage. \\
+	\vspace{0.5cm}
+	Le modèle entrainé $\hat{f}$ \textbf{varie} avec des données d'apprentissage $\mathcal{D}$ différentes.
+	\pause
+\end{frame}
+
+\begin{frame}{Quel est le meilleur modèle ? ou la meilleure hypothèse ?}
+	Que peut-on faire en tant que mathématiciens ?
+	\begin{itemize}
+		\item On doit donner un \textbf{contre-pouvoir} au risque empirique.
+		\pause
+		\item Ce contre-pouvoir est une nouvelle métrique: le \textbf{risque vrai}.
+		\pause
+		\item L'idée, très simple, consiste à \textbf{vérifier} le modèle avec des observations qui n'ont pas été utilisées pendant l'apprentissage et à \textbf{évaluer} cette métrique sur cet \textbf{échantillon de test}. 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Risque vrai}
+	Le risque \textbf{vrai} généralise la notion de risque empirique aux espaces $\mathcal{X}$ et $\mathcal{Y}$:
+	\begin{block}{Définition: Risque vrai}
+		Le risque vrai est une fonction $R: \mathcal{H} \to \mathbb{R}^+$ qui mesure la performance de toute hypothèse $h$ sur les espaces $\mathcal{X}$ et $\mathcal{Y}$:
+		\begin{equation}
+			R = \mathbb{E}_{(\mathcal{X}, \mathcal{Y}) \sim \mathcal{P}}\left[L\left(y^{(i)}, h\left(x^{(i)}\right)\right)\right]
+			\nonumber
+		\end{equation}
+		\hfill
+	\end{block}
+	\pause
+	Au lieu de moyenner la fonction de perte sur les données explorées, le risque vrai moyenne la fonction de perte sur l'ensemble complet des observations possibles. \\
+	\pause
+	Dans la pratique, il est difficile voire impossible de calculer le risque vrai. On peut obtenir une estimation grâce à un \textbf{échantillon de test}.
+\end{frame}
+
+\begin{frame}{Écart de généralisation}
+	\begin{block}{Définition: Écart de généralisation}
+		L'écart de généralisation est une fonction $\mathcal{H} \to \mathbb{R}$ qui mesure la différence entre le risque vrai et le risque empirique:
+		\begin{equation}
+			\text{Écart} = R - R_n
+			\nonumber
+		\end{equation}
+		\hfill
+	\end{block}
+	\pause
+	Un écart de généralisation positif signifie que l'algorithme est moins performant sur son espace d'application que sur l'espace sur lequel il a été entrainé. C'est un marqueur de sur-apprentissage, ou d'un défaut de généralisation de l'algorithme.
+\end{frame}
+
+\begin{frame}{Risque vrai ponctuel}
+	\begin{block}{Définition: Risque vrai ponctuel}
+		Le \textbf{risque vrai ponctuel} est une fonction $R_{xy}: \mathcal{H} \to \mathbb{R}^+$ qui mesure la performance de toute hypothèse $h$ en \textbf{un point} des espaces $\mathcal{X}$ et $\mathcal{Y}$ tout en considérant \textbf{plusieurs} jeux de données d'apprentissage:
+		\begin{equation}
+			R_{xy} = \mathbb{E}_{\mathcal{D}}\left[L\left(y^{(i)}, h\left(x^{(i)}\right)\right)\right]
+			\nonumber
+		\end{equation}
+		\hfill
+	\end{block}
+	\vspace{0.5cm}
+	\pause
+	Des jeux de données différents peuvent conduire à des estimateurs $h$ différents. Il est donc intéressant de voir, pour un espace des hypothèses $\mathcal{H}$ donné, comment se comportent \textbf{en moyenne} les estimateurs $h$ en un point des espaces $\mathcal{X}$ et $\mathcal{Y}$.
+\end{frame}
+
+\begin{frame}{Décomposition biais variance}
+	Pour un problème de régression, utiliser l'erreur quadratique comme fonction de perte permet de décomposer le risque vrai ponctuel de la manière suivante:
+	\begin{equation}
+		R_{xy} = \left(\mathbb{E}_{\mathcal{D}}\left[f(x) - \hat{f}(x)\right]\right)^2 + \mathbb{E}_{\mathcal{D}}\left[\left(\hat{f}(x) - \mathbb{E}_{\mathcal{D}}\left[\hat{f}(x)\right]\right)^2\right] + \sigma_{\epsilon}^2
+		\nonumber
+	\end{equation}
+	Cette décomposition est nommée \textbf{décomposition biais variance} de l'erreur.
+\end{frame}
+
+\begin{frame}{Décomposition biais variance}
+	\begin{itemize}
+		\item $\mathbb{E}_{\mathcal{D}}\left[f(x) - \hat{f}(x)\right]$ est appelé \textbf{biais} du modèle. C'est une erreur d'approximation.
+		\item $\mathbb{E}_{\mathcal{D}}\left[\left(\hat{f}(x) - \mathbb{E}_{\mathcal{D}}\left[\hat{f}(x)\right]\right)^2\right]$ est appelé \textbf{variance} du modèle. C'est une erreur d'estimation.
+		\item $\sigma_{\epsilon}^2$ est la variance des incertitudes sur les données observées. C'est une erreur \textbf{irréductible}, appelée erreur de Bayes.
+	\end{itemize}
+	\pause
+	\vspace{0.5cm}
+	Le modèle a un risque ponctuel faible, à la condition qu'il dispose, à la fois d'un faible biais et d'une faible variance. \\
+	Le biais mesure la différence moyenne entre le modèle et la fonction vraie. La variance mesure comment la prédiction du modèle change quand les données d'apprentissage changent.
+\end{frame}
+
+\begin{frame}[fragile]{Décomposition de l'erreur}
+	% On utilise hspace pour manger la marge de gauche et recentrer visuellement
+	\hspace*{-0.5cm}
+	\begin{tikzpicture}[
+		% Style des blocs du funnel (largeurs légèrement réduites)
+		stage/.style={
+			fill=#1,
+			draw=none, 
+			rounded corners=8pt, 
+			text=white, 
+			font=\small\bfseries,
+			align=center,
+			minimum height=1.0cm,
+			inner sep=5pt,
+		},
+		% Style des flèches à gauche
+		flowarrow/.style={
+			->,
+			>=latex,
+			thick,
+			gray!70,
+			rounded corners=3pt
+		},
+		% Style des étiquettes à droite
+		labelstyle/.style={
+			font=\footnotesize,
+			text=black,
+			anchor=west
+		}
+		]
+		% --- DÉFINITION DES BLOCS ---
+		% Largeurs ajustées : 8cm / 6.4cm / 4.8cm / 3.2cm
+		\node[stage=blue!85, text width=8cm] (s1) at (0,0) {L'espace de l'ensemble des \mbox{caractéristiques} d'entrée $\mathcal{U}$};
+		
+		\node[stage=blue!70, text width=6.4cm, below=10pt of s1] (s2) {L'espace des \mbox{caractéristiques} observées $\mathcal{X}$};
+		
+		\node[stage=blue!55, text width=4.8cm, below=10pt of s2] (s3) {L'espace des hypothèses $\mathcal{H}$};
+		
+		\node[stage=blue!40, text width=3.2cm, below=10pt of s3] (s4) {Les données d'\mbox{apprentissage} $\mathcal{D}$};
+		
+		% --- COORDONNÉES D'ALIGNEMENT ---
+		% L décalé à -4.4 pour coller au bloc de 8cm
+		% R décalé à 4.2 pour ne pas sortir de la slide
+		\coordinate (L) at (-4.4,0); 
+		\coordinate (R) at (4.2,0);  
+		
+		% --- COMMENTAIRES À DROITE ---
+		\node[labelstyle] at (R |- s1) {$g(u)$};
+		\node[labelstyle] at (R |- s2) {$f(x)$};
+		\node[labelstyle] at (R |- s3) {$h^*(x)$};
+		\node[labelstyle] at (R |- s4) {$\hat{f}(x)$};
+		
+		% --- FLÈCHES À GAUCHE ---
+		
+		% Flèche 1 -> 2
+		\draw[flowarrow] ([yshift=-4pt]s1.west) -- ([yshift=-4pt]s1.west -| L) |- 
+		node[pos=0.25, left, font=\tiny, text=red!70!black, align=right] {Erreur de\\Bayes} 
+		([yshift=4pt]s2.west);
+		
+		% Flèche 2 -> 3
+		\draw[flowarrow] ([yshift=-4pt]s2.west) -- ([yshift=-4pt]s2.west -| L) |- 
+		node[pos=0.25, left, font=\tiny, text=red!70!black, align=right] {Erreur\\d'approximation} 
+		([yshift=4pt]s3.west);
+		
+		% Flèche 3 -> 4
+		\draw[flowarrow] ([yshift=-4pt]s3.west) -- ([yshift=-4pt]s3.west -| L) |- 
+		node[pos=0.25, left, font=\tiny, text=red!70!black, align=right] {Erreur\\d'estimation} 
+		([yshift=4pt]s4.west);
+		
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Le rasoir d'Ockham}
+	L'espace des hypothèses $\mathcal{H}$ doit représenter des fonctions suffisamment complexes (faible biais) pour représenter les relations entre les variables d'entrées et de sortie. Mais pas trop complexe pour ne pas laisser la possibilité à l'algorithme d'accorder une importance trop grande à certaines variables d'entrée (faible variance). \\
+	\vspace{0.5cm}
+	Le risque empirique doit être minimisé mais en maintenant un écart de généralisation faible. \\
+	\vspace{0.5cm}
+	Si deux espaces d'hypothèses permettent d'arriver à des modèles de performance semblable, privilégier l'hypothèse la plus simple.
+\end{frame}
+
+\begin{frame}{Le rasoir d'Ockham}
+	\begin{columns}
+		\begin{column}{0.7\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.9\linewidth]{Images/plan_toulouse_2}
+				\label{fig:plan-toulouse-2}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.3\textwidth}
+			\pause
+			Les deux chemins mènent au même endroit. Le chemin bleu est plus rapide. Mais le chemin rouge est beaucoup plus facile à expliquer à un touriste. Et le touriste aura moins de chance de se perdre.
+		\end{column}		
+	\end{columns}	
+\end{frame}
+
+\subsection[Métriques de performance]{Métriques de performance}
+
+\begin{frame}{Métriques de performance}
+	Dans cette section, nous introduirons les métriques de performance essentielles pour les problèmes de régression et de classification. Il en existe bien plus que ce qui est mentionné ici !
+\end{frame}
+
+\begin{frame}{Métriques de régression: le résidu}
+	La première métrique, centrale au problème de régression, est le \textbf{résidu}. Littéralement, cette métrique mesure ce qui n'a pas pu être expliqué par le modèle, ce qui \textbf{reste} à expliquer:
+	\begin{block}{Définition: Résidu}
+		Dans un problème de régression, le \textbf{résidu} pour une obsservation $i$ est la différence entre les caractéristiques de sorties observées et celles estimées par le modèle $\hat{f}: \mathcal{X} \to \mathcal{Y}$:
+		\begin{equation}
+			r^{(i)} = y^{(i)} - \hat{f}(x^{(i)})
+			\nonumber
+		\end{equation}
+	\end{block}
+	\pause
+	Le résidu $r$ ne doit pas être confondu, ni avec l'incertitude $\epsilon^{(i)} = y^{(i)} - f(x^{(i)})$, ni avec l'erreur de modèle $f(x^{(i)}) - \hat{f}(x^{(i)})$ qui combine à la fois l'erreur d'approximation et l'erreur d'estimation. Comme l'incertitude $\epsilon^{(i)}$ ne peut en général pas être mesurée, $r^{(i)}$ en est la meilleure estimation possible.
+\end{frame}
+
+\begin{frame}{Métriques de régression: le coefficient de détermination}
+	Le coefficient de détermination est défini en fonction de la somme des carrés des résidus, notée $\text{SS}_{\text{res}}$ et de la somme des carrés totale, notée $\text{SS}_{\text{tot}}$ 
+	\begin{block}{Définition: Coefficient de détermination}
+		Dans un problème de régression, le \textbf{coefficient de détermination} $R^2$ est une métrique mesurant la fraction de variance expliquée:
+		\begin{equation}
+			R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}} = 1 - \frac{\sum_{i=1}^n \left(y^{(i)} - \hat{y}^{(i)}\right)^2}{\sum_{i=1}^n \left(y^{(i)} - \bar{y}\right)^2}
+			\nonumber
+		\end{equation}
+	\end{block}
+	\pause
+	Note: Dans le contexte de la régression linéaire, quelle que soit la fonction d'augmentation $\Phi$ disposant d'une constante $\beta_0$, le coefficient de détermination est aussi le carré du coefficient de corrélation de Pearson entre les caractéristiques de sortie estimées $\hat{y}$ et les caractéristiques de sorties observées $y$.
+\end{frame}
+
+\begin{frame}{Métriques de régression: le coefficient de détermination}
+	\begin{itemize}
+		\item Si le modèle prédit $\bar{y}$ pour toute entrée $x$, alors $R^2 = 0$.
+		\pause
+		\item Si le modèle prédit $y^{(i)}$ pour l'entrée $x^{(i)}$ pour toute observation $i$, alors $R^2 = 1$.
+		\pause
+		\item Si les résidus $r^{(i)}$ sont nuls pour toute observation $i$, alors $R^2 = 1$.
+		\pause
+		\item Attention ! Un coefficient de détermination proche de 1 peut masquer un problème de sur-apprentissage. On évalue donc cette métrique à la fois sur les données d'apprentissage et sur des données de test.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la matrice de confusion}
+	Pour un problème de classification à $m$ classes ($\mathcal{Y} = \{0, 1, \cdots, m-1\}$), la matrice de confusion permet de \textbf{compter} les prédictions réalisées par le modèle par rapport à la classe réelle pour chaque observation $k$:
+	\begin{block}{Définition: Matrice de confusion}
+		En classification à $m$ classes, la matrice de confusion $C \in \mathcal{M}_{m,m}$ est définie comme suit en fonction des classes \textbf{réelles} $y^{(k)}$ et des classes \textbf{prédites} $\hat{y}^{(k)}$ pour chaque observation $k$:
+		\begin{equation}
+			C_{i,j} = \text{card} \left( \{k \in \{1, 2, \cdots, n\}\} \mid y^{(k)} = i \, \text{et} \, \hat{y}^{(k)} = j \right)
+			\nonumber
+		\end{equation}
+	\end{block}
+	\pause
+	Note: Attention ! Il n'existe pas de convention globale pour la disposition de la matrice. Dans la définition ci-dessus, les classes réelles sont représentées en ligne et les classes prédites en colonnes (convention de \href{https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html}{\texttt{sklearn.metrics.confusion\_matrix}}). La matrice porte bien son nom !
+\end{frame}
+
+\begin{frame}{Métrique de classification: la matrice de confusion}
+	C'est beaucoup plus simple qu'il n'y paraît. Illustrons avec un problème de classification binaire ($m = 2$) où nous cherchons à prédire la position (avant = 1 ou trois-quart = 0) d'un joueur de rugby:
+	\begin{equation}
+		C = 
+		\begin{bNiceMatrix}[first-row, last-col]
+			\text{prédiction: trois-quart} & \text{prédiction: avant} & \\
+			\textcolor{blue}{5} & \textcolor{orange}{2} & \text{réelle: trois-quart} \\
+			\textcolor{orange}{1} & \textcolor{blue}{7} & \text{réelle: avant}
+		\end{bNiceMatrix}
+		\nonumber
+	\end{equation}
+	\begin{itemize}
+		\item Il y a \textcolor{blue}{5} + \textcolor{blue}{7} prédictions correctes et \textcolor{orange}{1} + \textcolor{orange}{2} prédictions incorrectes.
+		\pause 
+		\item Une matrice de confusion \textcolor{blue}{diagonale} ne comporte que des prédictions \textcolor{blue}{correctes}.
+		\pause 
+		\item Les prédictions \textcolor{orange}{erronées} se retrouvent dans les termes \textcolor{orange}{extra-diagonaux}.
+		\pause
+		\item Comme $\text{avant} = 1$, \textcolor{blue}{7} est le nombre de \textbf{\textcolor{blue}{vrai} positifs}(VP).
+		\pause
+		\item \textcolor{blue}{5} est le nombre de \textbf{\textcolor{blue}{vrai} négatifs}(VN), \textcolor{orange}{2} le nombre de \textbf{\textcolor{orange}{faux} positifs}(FP) et \textcolor{orange}{1} le nombre de \textbf{\textcolor{orange}{faux} négatifs}(FN).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la matrice de confusion}
+	Il y a d'autres dénominations associées à la matrice de confusion qui peuvent être rencontrées:
+	\begin{equation}
+		\begin{aligned}
+			\text{Précision} &= \frac{\text{VP}}{\text{VP} + \text{FP}} \\
+			\text{Rappel} &= \frac{\text{VP}}{\text{VP} + \text{FN}} \\
+			\text{Valeur prédictive négative} &= \frac{\text{VN}}{\text{VN} + \text{FN}} \\
+			\text{Spécificité} &= \frac{\text{VN}}{\text{VN} + \text{FP}}
+		\end{aligned}
+		\nonumber
+	\end{equation}
+	\pause
+	La précision (la valeur prédictive négative) répond à la question spécifique suivante: est-ce que le joueur que j'ai classé comme avant (trois-quart) en était bien un ? \\
+	Le rappel (la spécificité) répond à l'autre question spécifique suivante: ai-je bien réussi à classer tous les avants (trois-quart) de mes données en tant que tel ?
+\end{frame}
+
+\subsection[Méthodes de validation croisée]{Méthodes de validation croisée}
+
+\begin{frame}{Méthodes de validation croisée}
+	Nous avons vu précédemment que:
+	\begin{itemize}
+		\item Pour vérifier la capacité du modèle à \textbf{généraliser} il est nécessaire d'évaluer sa performance sur des données différentes de celles utilisées pour l'apprentissage.
+		\item L'estimation $\hat{f}$ dépend des données d'apprentissage. Des données différentes peuvent conduire à un modèle différent. C'est la \textbf{variance} du modèle.
+	\end{itemize}
+	\pause
+	\vspace{0.5cm}
+	En apprentissage automatique il est commun d'utiliser plusieurs échantillons de données:
+	\begin{itemize}
+		\item Données d'\textbf{apprentissage}: pour l'entraînement du modèle.
+		\item Données de \textbf{validation}: pour tester différents espaces des hypothèses $\mathcal{H}$.
+		\item Données de \textbf{test}: pour l'évaluation finale et \textit{indépendante} du modèle.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Méthodes de validation croisée}
+	Dans la pratique, une équipe développant un modèle d'apprentissage automatique, ne \textit{devrait} pas avoir accès aux données de test. Un échantillon de \textbf{validation} \textit{fixe} présente des avantages dès qu'il s'agit de comparer des estimateurs différents sur les mêmes données. Mais il est aussi courant de \textbf{générer} les données de validations à partir des données d'apprentissage. \\
+	\pause
+	\vspace{0.5cm}
+	Nous explorerons dans cette section différentes méthodes des \textbf{validation croisée} qui permettent de générer ces données de validation:
+	\begin{itemize}
+		\item Leave-One-Out
+		\item Validation croisée à K plis
+		\item Bootstrapping
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Leave-One-Out}
+	Pour des données d'apprentissage $\mathcal{D} = \{(x^{(i)}, y^{(i)}) \mid i=1, 2, \cdots, n\}$, la méthode de \textbf{Leave-One-Out} consiste à créer $n$ échantillons de taille $n-1$ tel que:
+	\begin{equation}
+		\mathcal{D}^{(-k)} = \{(x^{(i)}, y^{(i)}) \quad \forall i \ne k\} \quad \forall k = 1, 2, \cdots, n
+		\nonumber
+	\end{equation}
+	\pause
+	L'estimateur $\hat{f}^{(-k)}$ est donc entraîné à partir des données $\mathcal{D}^{(-k)}$ et une métrique d'erreur peut être calculé sur le point $(x^{(k)}, y^{(k)})$. On calcule ensuite des métriques moyennes sur les $n$ différents modèles entraînés. \\
+	\vspace{0.3cm}
+	Cette méthode est principalement utilisée pour des données d'apprentissage avec très peu d'observations ($n \sim 10-100$). \\
+	\vspace{0.3cm}
+	Voir: \href{https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.LeaveOneOut.html}{\texttt{sklearn.model\_selection.LeaveOneOut}}.
+\end{frame}
+
+\begin{frame}{Leave-One-Out}
+	Un exemple de Leave-One-Out:
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.9\linewidth]{Images/leaveoneout}
+		\label{fig:leave-one-out}
+	\end{figure}	
+\end{frame}
+
+\begin{frame}{Validation croisée à $K$ plis ($K$-Fold)}
+	La méthode de \textbf{validation croisée à $K$ plis} consiste à partitionner aléatoirement les données $\mathcal{D}$ en $K$ sous-ensembles (appelés \textbf{plis} ou \textbf{blocs}) de tailles égales. \\
+	\pause
+	\vspace{0.5cm}
+	Soit $\mathcal{I} = \{1, \dots, n\}$ l'ensemble des indices de $\mathcal{D}$. On définit une \textbf{partition} de $\mathcal{I}$ en $K$ sous-ensembles disjoints $\mathcal{I}_1, \dots, \mathcal{I}_K$ tels que:
+	\begin{equation}
+		\bigcup_{k=1}^K \mathcal{I}_k = \mathcal{I} \quad \text{et} \quad \mathcal{I}_j \cap \mathcal{I}_m = \emptyset \, \text{ pour } \, j \neq m
+		\nonumber
+	\end{equation}	
+	Pour chaque pli $k$, on définit l'estimateur $\hat{f}^{(-k)}$ entraîné sur $\mathcal{I} \setminus \mathcal{I}_k$. Les métriques de performance étant alors évaluées sur $\mathcal{I}_k$. On moyenne ensuite ces métriques pour l'ensemble des $K$ plis. \\
+	\pause
+	\vspace{0.3cm}
+	Typiquement, on choisit $K=5$ ou $K=10$. Pour $K = n$, on retrouve la méthode Leave-One-Out. \\
+	\vspace{0.3cm}
+	Voir: \href{https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html}{\texttt{sklearn.model\_selection.KFold}}.
+\end{frame}
+
+\begin{frame}{Validation croisée à $K$ plis ($K$-Fold)}
+	Un exemple de validation croisée à 5 plis:
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.9\linewidth]{Images/kfold}
+		\label{fig:k-fold}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Bootstrapping}
+	La méthode du \textbf{bootstrapping} consiste à ré-échantillonner, avec remise, $n$ observations aléatoires de l'ensemble des données $\mathcal{D}$. On notera $\mathcal{D}^{(b)}$ un échantillon ainsi créé. On génère $B$ échantillons de la sorte. \\
+	\pause
+	\vspace{0.5cm}
+	Soit $\mathcal{I} = \{1, \dots, n\}$ l'ensemble des indices de $\mathcal{D}$. Un échantillon bootstrap $\mathcal{D}^{(b)}$ est une suite de $n$ variables aléatoires $I_1^*, I_2^*, \cdots, I_n^*$ indépendantes et identiquement distribuées. Chaque variable aléatoire suit une loi uniforme discrète sur $\mathcal{I}$:
+	\begin{equation}
+		P(I_j^* = k) = \frac{1}{n}, \quad \forall k \in \mathcal{I}, \quad \forall j = 1, 2, \cdots, n
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Bootstrapping}
+	Un échantillon bootstrap est donc défini comme:
+	\begin{equation}
+		\mathcal{D}^{(b)} = \left\{ \left(x^{(I_j^*)}, y^{(I_j^*)}\right) \right\}_{j=1}^n
+		\nonumber
+	\end{equation}
+	\pause
+	\vspace{0.5cm}
+	On peut alors en déduire un échantillon pour la validation (out-of-bag): 
+	\begin{equation}
+		\mathcal{D}_{\text{oob}}^{(b)} = \mathcal{D} \setminus \mathcal{D}^{(b)}
+		\nonumber
+	\end{equation} \\
+	\vspace{0.5cm}
+	Typiquement, on choisit $B \sim 10-1000$ et on moyenne les métriques sur les $B$ échantillons de validation.
+\end{frame}
+
+\begin{frame}{Bootstrapping}
+	Un exemple de bootstrapping:
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.9\linewidth]{Images/bootstrapping}
+		\label{fig:bootstrapping}
+	\end{figure}
+\end{frame}
+
+\end{document}
