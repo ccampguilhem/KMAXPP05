@@ -1,5 +1,5 @@
-%\documentclass[10pt]{beamer}  % pour la présentation
-\documentclass[10pt,handout]{beamer}  % pour les notes de cours
+\documentclass[10pt]{beamer}  % pour la présentation
+%\documentclass[10pt,handout]{beamer}  % pour les notes de cours
 
 
 \usetheme{Antibes}
@@ -65,17 +65,17 @@
 		\hline
 		\textbf{Item} & \textbf{\%} & \textbf{Durée} & \textbf{Format} & \textbf{Date} \\
 		\hline
-		CC1 & 33\% & 30 min & En cours, QCM & 19/03 \\
+		CC1 & 33\% & 20 min & En cours, QCM & 19/03 \\
 		\hline
-		CC2 & 34\% & 1h30 & Conditions d'examen & 19/05 \\
+		TD \& TP & 33\% & - & Présence, complétion TP, projet & - \\
 		\hline
-		TD \& TP & 33\% & - & Présence, oral, projet & - \\
+		CC3 & 34\% & 1h30 & Conditions d'examen & 19/05 \\
 		\hline
-		CC3 & - & 1h30 & Conditions d'examen & 11/06 \\
+		CC4 & - & 1h30 & Conditions d'examen & 11/06 \\
 		\hline
 	\end{tabular} \\
 	\vspace{0.5cm}
-	Note: Le contrôle CC2 sera réalisé sur le créneau du mardi de 18h à 20h.
+	Note: Le contrôle CC3 sera réalisé sur le créneau du mardi de 18h à 20h.
 \end{frame}
 
 \begin{frame}{Plan}
@@ -212,7 +212,7 @@
 \subsection[Apprentissage non-supervisé]{Apprentissage non-supervisé}
 
 \begin{frame}{Apprentissage non-supervisé}
-	A partir d'un échantillon d'observations $\mathcal{D} = \begin{Bmatrix}x^{(1)}, x^{(2)}, \cdots, x^{(n)}\end{Bmatrix}$, un algorithme d'apprentissage non-supervisé a pour objectif de découvrir la \textbf{structure interne} des données. Cela peut être réalisé:
+	\`A partir d'un échantillon d'observations $\mathcal{D} = \begin{Bmatrix}x^{(1)}, x^{(2)}, \cdots, x^{(n)}\end{Bmatrix}$, un algorithme d'apprentissage non-supervisé a pour objectif de découvrir la \textbf{structure interne} des données. Cela peut être réalisé:
 	
 	\begin{itemize}
 		\item En regroupant ensemble des observations présentant des caractéristiques similaires: le \textbf{partitionnement}
@@ -263,7 +263,7 @@
 \subsection[Apprentissage supervisé]{Apprentissage supervisé}
 
 \begin{frame}{Apprentissage supervisé}
-	A partir d'un échantillon d'observations $\mathcal{D} = \begin{Bmatrix}(x^{(1)}, y^{(1)}), (x^{(2)}, y^{(2)}), \cdots, (x^{(n)}, y^{(n)})\end{Bmatrix}$, un algorithme d'apprentissage supervisé a pour objectif de découvrir la \textbf{relation} liant les caractéristiques d'entrée ($x$) et celles de sortie ($y$). \\
+	\`A partir d'un échantillon d'observations $\mathcal{D} = \begin{Bmatrix}(x^{(1)}, y^{(1)}), (x^{(2)}, y^{(2)}), \cdots, (x^{(n)}, y^{(n)})\end{Bmatrix}$, un algorithme d'apprentissage supervisé a pour objectif de découvrir la \textbf{relation} liant les caractéristiques d'entrée ($x$) et celles de sortie ($y$). \\
 	\vspace{0.5cm}
 	Deux familles se détachent basées sur la nature, continue ou discrète, des caractéristiques de sortie:
 	\begin{itemize}
@@ -512,7 +512,7 @@
 	\begin{itemize}
 		\item La consommation instantanée est bien une caractéristique explicative de la vitesse.
 		\pause
-		\item Mais il y a d'autres caractéristiques non-observées qui sont aussi pertinentes: poids du véhicule, vent, pente... La fonction vraie $f$ sera donc un modèle très approché de la réalité $g$.
+		\item Mais il y a d'autres caractéristiques non-observées qui sont aussi pertinentes: poids du véhicule, vent, pente... La fonction vraie $f$ sera donc un modèle très approximatif de la réalité $g$.
 		\pause
 		\item L'espace des hypothèses $\mathcal{H}$ limite les fonctions candidates explorées, ce qui peut introduire des pertes complémentaires par rapport à la fonction vraie $f$.
 		\pause
@@ -758,7 +758,7 @@
 		\begin{itemize}
 			\item Il n'existe aucun lien fonctionnel entre la variance de $\epsilon$ et les données d'entrée.
 		\end{itemize}
-		\item La condition d'\textbf{indépendance}: $\text{Cov}[\epsilon^{(i)}, \epsilon^{(j)}] =0 \quad \forall i \ne j$
+		\item La condition d'\textbf{indépendance} implique: $\text{Cov}[\epsilon^{(i)}, \epsilon^{(j)}] =0 \quad \forall i \ne j$
 	\end{itemize}
 \end{frame}
 
@@ -905,7 +905,7 @@
 			\nonumber
 		\end{aligned}
 	\end{equation}
-	L'espace des hypothèses $\mathcal{H}: \mathcal{X} \to [0, 1]$ dans le cadre de la régression logistique est:
+	L'espace des hypothèses $\mathcal{H}: \mathcal{X} \to ]0, 1[$ dans le cadre de la régression logistique est:
 	\begin{equation}
 		\mathcal{H} = \begin{Bmatrix}h: x \mapsto \displaystyle \frac{1}{1 + e^{-\Phi(x) \beta}} \mid \beta \in \mathbb{R}^{d+1}\end{Bmatrix}
 		\nonumber
@@ -1105,7 +1105,7 @@
 		\hat{f} = \underset{h \in \mathcal{H}}{\text{arg min  }} \frac{1}{n} \sum_{i=1}^n \left( y^{(i)} - \hat{y}^{(i)}\right)^2
 		\nonumber
 	\end{equation}
-	Ce qui est équivalent à ce que l'algorithme des moindre carrés réalise (au coefficient $1/n$ près).
+	Ce qui est équivalent à ce que l'algorithme des moindres carrés réalise (au coefficient $1/n$ près).
 \end{frame}
 
 \begin{frame}{Risque empirique pour la régression logistique}
@@ -1291,6 +1291,26 @@
 	Le biais mesure la différence moyenne entre le modèle et la fonction vraie. La variance mesure comment la prédiction du modèle change quand les données d'apprentissage changent.
 \end{frame}
 
+\begin{frame}{Décomposition biais variance}
+	Exemple de décomposition de biais et variance. Plusieurs modèles sont construits à partir de différents jeux de données d'apprentissage. Un intervalle de confiance à 95\% est utilisé pour illustrer la variance:
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/biais_variance_1}
+				\label{fig:biais-variance-1}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[height=0.8\linewidth]{Images/biais_variance_2}
+				\label{fig:biais-variance-2}
+			\end{figure}
+		\end{column}		
+	\end{columns}
+\end{frame}
+
 \begin{frame}[fragile]{Décomposition de l'erreur}
 	% On utilise hspace pour manger la marge de gauche et recentrer visuellement
 	\hspace*{-0.5cm}
@@ -1396,7 +1416,7 @@
 \begin{frame}{Métriques de régression: le résidu}
 	La première métrique, centrale au problème de régression, est le \textbf{résidu}. Littéralement, cette métrique mesure ce qui n'a pas pu être expliqué par le modèle, ce qui \textbf{reste} à expliquer:
 	\begin{block}{Définition: Résidu}
-		Dans un problème de régression, le \textbf{résidu} pour une obsservation $i$ est la différence entre les caractéristiques de sorties observées et celles estimées par le modèle $\hat{f}: \mathcal{X} \to \mathcal{Y}$:
+		Dans un problème de régression, le \textbf{résidu} pour une observation $i$ est la différence entre les caractéristiques de sorties observées et celles estimées par le modèle $\hat{f}: \mathcal{X} \to \mathcal{Y}$:
 		\begin{equation}
 			r^{(i)} = y^{(i)} - \hat{f}(x^{(i)})
 			\nonumber
@@ -1432,7 +1452,7 @@
 \end{frame}
 
 \begin{frame}{Métrique de classification: la matrice de confusion}
-	Pour un problème de classification à $m$ classes ($\mathcal{Y} = \{0, 1, \cdots, m-1\}$), la matrice de confusion permet de \textbf{compter} les prédictions réalisées par le modèle par rapport à la classe réelle pour chaque observation $k$:
+	Pour un problème de classification à $m$ classes ($\mathcal{Y} = \{0, 1, \cdots, m-1\}$), la matrice de confusion permet de \textbf{compter} les prédictions réalisées par le modèle par rapport à la classe réelle pour chaque observation $k$ des $n$ données observées $\mathcal{D}$:
 	\begin{block}{Définition: Matrice de confusion}
 		En classification à $m$ classes, la matrice de confusion $C \in \mathcal{M}_{m,m}$ est définie comme suit en fonction des classes \textbf{réelles} $y^{(k)}$ et des classes \textbf{prédites} $\hat{y}^{(k)}$ pour chaque observation $k$:
 		\begin{equation}
@@ -1441,7 +1461,17 @@
 		\end{equation}
 	\end{block}
 	\pause
-	Note: Attention ! Il n'existe pas de convention globale pour la disposition de la matrice. Dans la définition ci-dessus, les classes réelles sont représentées en ligne et les classes prédites en colonnes (convention de \href{https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html}{\texttt{sklearn.metrics.confusion\_matrix}}). La matrice porte bien son nom !
+	Note: $\text{card}$ est l'opérateur \textbf{cardinal} qui indique le nombre d'éléments d'un ensemble.
+\end{frame}
+
+\begin{frame}{Métrique de classification: la matrice de confusion}
+	\begin{alertblock}{Absence de convention pour $C$}
+		Il n'existe pas de convention globale pour la disposition de la matrice. Dans la définition fournie, les classes réelles sont représentées en ligne et les classes prédites en colonnes (convention de \href{https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html}{\texttt{sklearn.metrics.confusion\_matrix}}). \\
+		\vspace{0.5cm}
+		Il vaut mieux toujours préciser (ou vérifier) la convention utilisée en communiquant une matrice de confusion. \\
+		\vspace{0.5cm}
+		La matrice de confusion porte son nom pour une raison ;)
+	\end{alertblock}
 \end{frame}
 
 \begin{frame}{Métrique de classification: la matrice de confusion}
@@ -1455,6 +1485,7 @@
 		\end{bNiceMatrix}
 		\nonumber
 	\end{equation}
+	\pause
 	\begin{itemize}
 		\item Il y a \textcolor{blue}{5} + \textcolor{blue}{7} prédictions correctes et \textcolor{orange}{1} + \textcolor{orange}{2} prédictions incorrectes.
 		\pause 
@@ -1462,26 +1493,217 @@
 		\pause 
 		\item Les prédictions \textcolor{orange}{erronées} se retrouvent dans les termes \textcolor{orange}{extra-diagonaux}.
 		\pause
-		\item Comme $\text{avant} = 1$, \textcolor{blue}{7} est le nombre de \textbf{\textcolor{blue}{vrai} positifs}(VP).
+		\item Comme $\text{avant} = 1$, \textcolor{blue}{7} est le nombre de \textbf{\textcolor{blue}{vrais} positifs}(VP).
 		\pause
-		\item \textcolor{blue}{5} est le nombre de \textbf{\textcolor{blue}{vrai} négatifs}(VN), \textcolor{orange}{2} le nombre de \textbf{\textcolor{orange}{faux} positifs}(FP) et \textcolor{orange}{1} le nombre de \textbf{\textcolor{orange}{faux} négatifs}(FN).
+		\item \textcolor{blue}{5} est le nombre de \textbf{\textcolor{blue}{vrais} négatifs}(VN), \textcolor{orange}{2} le nombre de \textbf{\textcolor{orange}{faux} positifs}(FP) et \textcolor{orange}{1} le nombre de \textbf{\textcolor{orange}{faux} négatifs}(FN).
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Métrique de classification: la matrice de confusion}
-	Il y a d'autres dénominations associées à la matrice de confusion qui peuvent être rencontrées:
+	\begin{block}{Définition: VP, FP, VN, FN}
+		Dans la matrice de confusion $C$ pour une classification \textbf{binaire}, pour les $n$ données observées $\mathcal{D}$, les termes de la matrice ont l'appellation suivante:
+		\begin{equation}
+			C = 
+			\begin{bNiceMatrix}[first-row, last-col]
+				\text{prédiction: } \{0\} & \text{prédiction: } \{1\} & \\
+				\text{Vrais négatifs (VN)} & \text{Faux positifs (FP)} & \text{réelle: } \{0\} \\
+				\text{Faux négatifs (FN)} & \text{Vrais positifs (VP)} & \text{réelle: } \{1\} \\
+			\end{bNiceMatrix}
+			\nonumber
+		\end{equation}
+		Ces valeurs sont des \textbf{compteurs} tels que:
+		\begin{equation}
+			\text{VN} + \text{FN} + \text{FP} + \text{VP} = n
+			\nonumber
+		\end{equation}
+	\end{block}
+	\pause
+	\textbf{Vrai} signifie que l'algorithme a effectué la bonne prédiction. \textbf{Négatif} signifie que l'algorithme a prédit la classe \{0\}, alors que positif signifie que l'algorithme a prédit la classe \{1\}.
+\end{frame}
+
+\begin{frame}{Métrique de classification: la matrice de confusion}
+	On associe souvent des \textbf{taux} à la matrice de confusion $C$:
+	\begin{equation}
+		\begin{cases}
+			\displaystyle \frac{\text{VP}}{\text{VP} + \text{FP}} & \text{Précision} \\[10pt]
+			\displaystyle \frac{\text{VP}}{\text{VP} + \text{FN}} & \text{Rappel} \\[10pt]
+			\displaystyle \frac{\text{VN}}{\text{VN} + \text{FN}} & \text{Valeur prédictive négative} \\[10pt]
+			\displaystyle \frac{\text{VN}}{\text{VN} + \text{FP}} & \text{Spécificité}
+		\end{cases}
+		\nonumber
+	\end{equation}
+	\pause
+	Note: Le rappel est un terme d'apprentissage automatique. Les statisticiens appellent aussi cette métrique \textbf{sensibilité} ou encore \textbf{puissance statistique}.
+\end{frame}
+
+\begin{frame}{Métrique de classification: la matrice de confusion}
+	Voici les différentes questions auxquelles ces termes répondent:
+	\begin{itemize}
+		\item Précision: \textit{est-ce que le joueur que j'ai classé comme avant en était bien un ?}
+		\item Rappel: \textit{ai-je bien réussi à classer les avants de mes données en tant que tel ?}
+		\item Valeur prédictive négative: \textit{est-ce que le joueur que j'ai classé comme trois-quart en était bien un ?}
+		\item Spécificité: \textit{ai-je bien réussi à classer les trois-quart de mes données en tant que tel ?}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la courbe ROC}
+	Dans la section sur la régression logistique, nous avions le modèle suivant:
 	\begin{equation}
 		\begin{aligned}
-			\text{Précision} &= \frac{\text{VP}}{\text{VP} + \text{FP}} \\
-			\text{Rappel} &= \frac{\text{VP}}{\text{VP} + \text{FN}} \\
-			\text{Valeur prédictive négative} &= \frac{\text{VN}}{\text{VN} + \text{FN}} \\
-			\text{Spécificité} &= \frac{\text{VN}}{\text{VN} + \text{FP}}
+			h: &\mathcal{X} \to ]0, 1[ \\
+			   &x \mapsto \sigma\left(\Phi(X) \beta\right)
 		\end{aligned}
 		\nonumber
 	\end{equation}
 	\pause
-	La précision (la valeur prédictive négative) répond à la question spécifique suivante: est-ce que le joueur que j'ai classé comme avant (trois-quart) en était bien un ? \\
-	Le rappel (la spécificité) répond à l'autre question spécifique suivante: ai-je bien réussi à classer tous les avants (trois-quart) de mes données en tant que tel ?
+	Implicitement, nous avons considéré que si le modèle prédit une probabilité proche de 1, alors la classe prédite était \{1\}. Inversement si la probabilité était proche de 0, alors la classe prédite était \{0\}. \\
+	\pause
+	\vspace{0.3cm}
+	En fait, il est possible de considérer n'importe quel \textbf{seuil}, noté $\theta$, afin de prendre une \textbf{décision} pour une observation $i$:
+	\begin{equation}
+		\hat{y}^{(i)} = 
+		\begin{cases}
+			1 & \text{si} \, h(x^{(i)}) \ge \theta \\
+			0 & \text{sinon}
+		\end{cases}
+		\nonumber
+	\end{equation}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la courbe ROC}
+	Cette flexibilité dans le choix de $\theta$ permet de faire des \textbf{compromis} différents dans la matrice de confusion. La \textbf{courbe ROC} permet de visualiser ces compromis entre le taux de vrais positifs (rappel ou sensibilité), noté $\text{TVP}$, et le taux de faux positifs, noté $\text{TFP}$:
+	\begin{equation}
+		\begin{cases}
+			\text{TVP} = \displaystyle \frac{\text{VP}}{\text{VP} + \text{FN}} \\[10pt]
+			\text{TFP} = \displaystyle \frac{\text{FP}}{\text{FP} + \text{VN}}
+		\end{cases}
+		\nonumber
+	\end{equation}	
+\end{frame}
+
+\begin{frame}{Métrique de classification: la courbe ROC}
+	\begin{block}{Définition: Courbe ROC}
+		La courbe ROC (Receiver Operating Characteristic), notée $\mathcal{C}_{\text{ROC}}$ représente la relation entre le taux de vrais positifs $\text{TVP}$ et le taux de faux positifs $\text{TFP}$ quand le seuil de décision $\theta$ change:
+		\begin{equation}
+			\mathcal{C}_{\text{ROC}} = \{ \left(\text{TFP}, \text{TVP}\right) \in [0, 1]^2 \mid \theta \in [0, 1]\}
+			\nonumber
+		\end{equation}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la courbe ROC}
+	Supposons qu'un modèle de régression logistique calcule les probabilités suivantes pour des observations $\mathcal{D}$:
+	\begin{table}
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Probabilité} & \textbf{Classe vraie} \\ \hline
+			0.98 & 1 \\ \hline
+			0.2  & 0 \\ \hline
+			0.05 & 0 \\ \hline
+			0.60 & 0 \\ \hline
+			0.79 & 1 \\ \hline
+			0.83 & 1 \\ \hline
+			0.47 & 1 \\ \hline
+		\end{tabular}
+	\end{table}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la courbe ROC}
+	Prenons par exemple $\theta = 1$:
+	\begin{columns}
+		\begin{column}{0.3\textwidth}
+			\begin{table}
+				\centering
+				\begin{tabular}{|c|c|c|}
+					\hline
+					\textbf{Prob.} & \textbf{Vraie} & \textbf{Préd.} \\ \hline
+					0.98 & 1 & 0 \\ \hline
+					0.2  & 0 & 0 \\ \hline
+					0.05 & 0 & 0 \\ \hline
+					0.60 & 0 & 0 \\ \hline
+					0.79 & 1 & 0 \\ \hline
+					0.83 & 1 & 0 \\ \hline
+					0.47 & 1 & 0 \\ \hline
+				\end{tabular}
+			\end{table}
+		\end{column}
+		\begin{column}{0.7\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Images/roc_theta1}
+				\label{fig:roc-theta1}
+			\end{figure}			
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la courbe ROC}
+	Prenons par exemple $\theta = 0$:
+	\begin{columns}
+		\begin{column}{0.3\textwidth}
+			\begin{table}
+				\centering
+				\begin{tabular}{|c|c|c|}
+					\hline
+					\textbf{Prob.} & \textbf{Vraie} & \textbf{Préd.} \\ \hline
+					0.98 & 1 & 1 \\ \hline
+					0.2  & 0 & 1 \\ \hline
+					0.05 & 0 & 1 \\ \hline
+					0.60 & 0 & 1 \\ \hline
+					0.79 & 1 & 1 \\ \hline
+					0.83 & 1 & 1 \\ \hline
+					0.47 & 1 & 1 \\ \hline
+				\end{tabular}
+			\end{table}
+		\end{column}
+		\begin{column}{0.7\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Images/roc_theta0}
+				\label{fig:roc-theta0}
+			\end{figure}			
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Métrique de classification: la courbe ROC}
+	Prenons par exemple $\theta = 0.5$:
+	\begin{columns}
+		\begin{column}{0.3\textwidth}
+			\begin{table}
+				\centering
+				\begin{tabular}{|c|c|c|}
+					\hline
+					\textbf{Prob.} & \textbf{Vraie} & \textbf{Préd.} \\ \hline
+					0.98 & 1 & 1 \\ \hline
+					0.2  & 0 & 0 \\ \hline
+					0.05 & 0 & 0 \\ \hline
+					0.60 & 0 & 1 \\ \hline
+					0.79 & 1 & 1 \\ \hline
+					0.83 & 1 & 1 \\ \hline
+					0.47 & 1 & 0 \\ \hline
+				\end{tabular}
+			\end{table}
+		\end{column}
+		\begin{column}{0.7\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Images/roc_theta05}
+				\label{fig:roc-theta05}
+			\end{figure}			
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Métriques de classification: synthèse}
+	Cela fait beaucoup de métriques différentes pour la classification !
+	\begin{itemize}
+		\item Maitriser ces différentes métriques demande du temps et de la pratique.
+		\item Plutôt que d'essayer de mémoriser les différentes définitions et termes, je conseille de partir de la matrice de confusion et de dériver les autres termes à partir de là.
+		\item Les dénominations vrais positifs, faux positifs... sont les plus intuitives (par rapport à précision, rappel, ...). Commencez par maitriser ces termes ;)
+		\item Gardez à l'esprit que le seuil de décision $\theta$ peut en fait varier. La courbe ROC découle alors naturellement.
+	\end{itemize}
 \end{frame}
 
 \subsection[Méthodes de validation croisée]{Méthodes de validation croisée}
@@ -1521,7 +1743,7 @@
 		\nonumber
 	\end{equation}
 	\pause
-	L'estimateur $\hat{f}^{(-k)}$ est donc entraîné à partir des données $\mathcal{D}^{(-k)}$ et une métrique d'erreur peut être calculé sur le point $(x^{(k)}, y^{(k)})$. On calcule ensuite des métriques moyennes sur les $n$ différents modèles entraînés. \\
+	L'estimateur $\hat{f}^{(-k)}$ est donc entraîné à partir des données $\mathcal{D}^{(-k)}$ et une métrique d'erreur peut être calculée sur le point $(x^{(k)}, y^{(k)})$. On calcule ensuite des métriques moyennes sur les $n$ différents modèles entraînés. \\
 	\vspace{0.3cm}
 	Cette méthode est principalement utilisée pour des données d'apprentissage avec très peu d'observations ($n \sim 10-100$). \\
 	\vspace{0.3cm}
@@ -1598,6 +1820,36 @@
 		\includegraphics[width=0.9\linewidth]{Images/bootstrapping}
 		\label{fig:bootstrapping}
 	\end{figure}
+\end{frame}
+
+\begin{frame}{Méthodes de validation croisée}
+	\begin{itemize}
+		\item Ces méthodes de validation croisée sont très couramment utilisées en pratique pour réaliser une estimation du biais et de la variance du modèle, en générant, directement à partir des données d'apprentissage des données indépendantes pour valider les modèles. L'échantillon de test reste donc complètement indépendant du processus d'apprentissage du modèle.
+		\pause
+		\item Une variation \textit{trop} importante des métriques de performance entre les données d'apprentissage (risque empirique) et les données de validation (estimation du risque vrai) permet d'identifier un défaut de généralisation, aussi appelé sur-apprentissage ou variance élevée.
+		\pause
+		\item Des métriques d'erreurs \textit{trop} élevées sur les données de validation peuvent illustrer un biais de modèle important.
+		\pause
+		\item \textit{Trop} sera à définir, en fonction du contexte, avec des experts du domaine.
+		\pause
+		\item Un modèle d'apprentissage supervisé doit garantir un \textbf{faible biais} et une \textbf{faible variance}.
+	\end{itemize}
+\end{frame}
+
+%=============================================================================================================
+
+\section[Conclusions]{Conclusions}
+
+\begin{frame}{Conclusions}
+	Dans ce premier chapitre:
+	\begin{itemize}
+		\item Nous avons parcouru rapidement les différents types de problèmes d'apprentissage automatique.
+		\item Nous avons formalisé un problème d'apprentissage supervisé pour la régression et la classification.
+		\item Nous avons introduit des modèles linéaires: la régression linéaire et la régression logistique.
+		\item Nous avons abordé les notions de décomposition d'erreur, de généralisation, de biais et de variance.
+		\item Nous avons défini les métriques essentielles pour les problèmes de régression et de classification.
+		\item Nous avons exposé 3 méthodes de validation croisée utilisées en pratique pour valider et sélectionner des modèles.
+	\end{itemize}
 \end{frame}
 
 \end{document}
