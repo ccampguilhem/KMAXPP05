@@ -28,9 +28,10 @@ env/
 *.synctex.gz
 *.lof
 *.lot
+*.vrb
 
 # Fichiers PDF
-# *.pdf
+*.pdf
 
 ### --- SYSTÈME & IDE --- ###
 # Windows / macOS / Linux
