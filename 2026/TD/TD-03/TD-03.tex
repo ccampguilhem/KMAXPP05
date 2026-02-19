@@ -1,0 +1,148 @@
+\documentclass[solutions]{../exercices}
+
+\begin{document}
+	
+\makeheader{2025}{2026}
+\tdtitle{3}{Régularisation Ridge et métriques de performance}
+
+La régression linéaire \textbf{Ridge} est une variante de la méthode des moindres carrés qui pénalise les valeurs \textit{trop élevées} des coefficients $\beta$. Comme discuté en cours, une situation de sur-apprentissage intervient lorsque le modèle accorde une importance trop importante (i.e $\beta$ trop élevé) à une variable d'entrée. En pénalisant les solutions accordant une trop grande importance à certaines variables d'entrée la régression Ridge permet de limiter le sur-apprentissage. C'est une technique dite de \textbf{régularisation}.
+
+La régression linéaire cherche une approximation à la fonction vraie $f(x)$ qui relie les variables d'entrées et de sortie:
+
+\begin{equation}
+	\begin{aligned}
+		f: &\mathcal{X} \subseteq \mathbb{R}^d \to \mathcal{Y} \subseteq \mathbb{R} \\
+		&Y = f(X) + \epsilon
+	\end{aligned}
+	\label{eqn:problematique}
+\end{equation}
+
+Où $\epsilon \in \mathcal{M}_{n,1}(\mathbb{R})$ représente une incertitude liée au bruit de mesure sur les variables observées et/ou des variables explicatives non observées, $X \in \mathcal{M}_{n,d}(\mathbb{R})$ et $Y \in \mathcal{M}_{n,1}(\mathbb{R})$.
+
+On suppose que les conditions d'exogénéité ($\mathbb{E}[\epsilon \mid X] = 0$), d'homoscédasticité ($\Var{[\epsilon \mid X]} = \sigma_{\epsilon}^2$) et d'indépendance ($\Cov{[\epsilon^{(i)}, \epsilon^{(j)}]} = 0 \quad \forall i \ne j, i = \{1, 2, \cdots, n\}, j = \{1, 2, \cdots, n\}$) sont réunies.
+
+La méthode des moindres carrés consiste à minimiser la somme des erreurs quadratiques:
+
+\begin{equation}
+	\hat{\beta} = \underset{\beta \in \mathcal{M}_{p,1}(\mathbb{R})}{\text{arg min}} \left(Y - \tilde{X}\beta\right)^T \left(Y - \tilde{X}\beta\right)
+	\label{eqn:moindres-carres}
+\end{equation}
+
+Avec $\tilde{X} = \Phi(X)$ la matrice de design et $\Phi: \mathcal{X} \subseteq \mathbb{R}^d \to \tilde{\mathcal{X}} \subseteq \mathbb{R}^p, \, p > d$ l'application permettant d'augmenter les données d'entrées observées.
+
+La régression linéaire Ridge propose d'estimer $\hat{\beta}$ par:
+
+\begin{equation}
+	\hat{\beta} = \underset{\beta \in \mathcal{M}_{p,1}(\mathbb{R})}{\text{arg min}} \left(Y - \tilde{X}\beta\right)^T \left(Y - \tilde{X}\beta\right) + \lambda \| \beta \|_2^2
+	\label{eqn:ridge-1}
+\end{equation}
+
+où $\lambda \in \mathbb{R}^{+*}$ est la pénalité de régularisation dite L2. Tout comme l'application $\Phi$, $\lambda$ est un \textbf{hyper-paramètre} du problème de régression.
+
+Résoudre un problème de régression par les méthodes des moindres carrés avec régularisation Ridge revient à chercher un $\beta$ minimisant la somme des erreurs quadratiques pénalisée de la norme euclidienne au carré de $\beta$.
+
+\begin{exercice}
+
+On notera $J$ la quantité suivante:
+
+\begin{equation}
+	J = \left(Y - \tilde{X}\beta\right)^T \left(Y - \tilde{X}\beta\right) + \lambda \beta^T \beta
+	\nonumber
+\end{equation}
+
+On admet la propriété suivante avec $A \in \mathcal{M}_{k,1}(\mathbb{R})$ et $B \in \mathcal{M}_{k,k}(\mathbb{R})$ une matrice symétrique, i.e $B^T = B$:
+
+\begin{equation}
+	\frac{d}{dA} A^T B A = 2 B A
+	\nonumber
+\end{equation}
+
+\begin{enumerate}
+	\item Vérifier que $\lambda \| \beta \|_2^2 = \lambda \beta^T \beta$.
+	\item Développer $J$. Quelles sont les dimensions des termes constituant le développement ?
+	\item Noter que $Y^T\tilde{X}\beta$ est la transposée de $\beta^T \tilde{X}^T Y$. Proposer une simplification pour le développement de $J$.
+	\item Démontrer que $\displaystyle \frac{d}{d\beta} Y^T Y = 0_p$.
+	\item Démontrer que $\displaystyle \frac{d}{d\beta} \beta^T \tilde{X}^T Y = \tilde{X}^T Y$.
+	\item Démontrer que $\displaystyle \frac{d}{d\beta} \beta^T \beta = 2 \beta$.
+	\item Démontrer que $\displaystyle \frac{d}{d\beta} \beta^T \tilde{X}^T \tilde{X} \beta = 2 \tilde{X}^T \tilde{X} \beta$.
+	\item Calculer $\displaystyle \frac{dJ}{d\beta}$.
+	\item En déduire la condition que $\beta$ doit remplir pour minimiser $J$.
+	\item En posant $\lambda = 0$, que remarquez-vous ?
+\end{enumerate}
+
+\end{exercice}
+
+\begin{exercice}
+Dans la pratique, la régression Ridge utilise une variante pour estimer $\beta$:
+
+\begin{equation}
+	\hat{\beta} = \left( \tilde{X}^T \tilde{X} + \lambda I_p^* \right)^{-1} \tilde{X}^T Y
+	\label{eqn:ridge-2}
+\end{equation}
+
+Où $I_p^* \in \mathcal{M}_{p,p}(\mathbb{R})$ est la matrice définie comme suit:
+
+\begin{equation}
+	I_{p,ij}^* = \begin{cases}
+		1 & \text{si} \, i = j \, \text{et} \, i > 1 \\
+		0 & \text{sinon}
+	\end{cases}
+	\nonumber
+\end{equation}
+
+Techniquement, cela signifie que l'on ne régularise pas le terme de biais (intercept) $\beta_0$.
+
+On donne la matrice $\tilde{X}^T \tilde{X}$ suivante:
+\begin{equation}
+	\tilde{X}^T \tilde{X} = 
+	\begin{pmatrix}
+		2 & 3 & 3 \\
+		3 & 5 & 5 \\
+		3 & 5 & 5
+	\end{pmatrix}
+	\nonumber
+\end{equation}
+
+\begin{enumerate}
+	\item Peut-on résoudre le problème de régression en utilisant la méthode des moindres carrés sans régularisation Ridge ($\lambda = 0$) avec la matrice $\tilde{X}^T \tilde{X}$ fournie ?
+	\item En fixant $\lambda = 1$, le problème de régression admet-il une solution ?
+	\item Quel est l'effet de la régularisation Ridge dans cet exemple ?
+	\item Pourquoi, selon vous, ne régularise-t-on pas le coefficient $\beta_0$ ?
+\end{enumerate}
+	
+\end{exercice}
+
+\begin{exercice}
+
+On dispose des données suivantes pour des joueurs de rugby:
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Taille} (cm) & \textbf{Poids} (kg) \\ \hline
+		175             & 95             \\
+		181             & 103            \\
+		183             & 101            \\
+		189             & 109            \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\begin{enumerate}
+	\item Déterminer l'application $\Phi$ permettant d'obtenir le modèle suivant: $\text{poids (kg)} = \beta_0 + \beta_1 \times \text{taille (cm)} + \epsilon$.
+	\item On se propose de standardiser les vecteurs $X$ en $X_s$ et $Y$ en $Y_s$ afin que $\bar{X}_s = 0, \Var{[X_s]} = 1, \bar{Y}_s = 0, \Var{[Y_s]} = 1$. Calculer la matrice $\tilde{X}_s^T\tilde{X}_s$ pour les données fournies.
+	\item Résoudre la régression linéaire avec l'application $\Phi$ de la question 1 en utilisant la méthode des moindres carrés ordinaires (sans régularisation Ridge). On notera ce résultat $\hat{\beta}_{\text{MCO}}$.
+	\item Résoudre le problème de régression linéaire en utilisant la régularisation Ridge (équation \ref{eqn:ridge-2} donnée à l'exercice 2) avec $\lambda = 1$. On notera ce résultat $\hat{\beta}_{\text{Ridge}}$.
+	\item \`A partir du moment où l'application $\Phi$ contient un terme de biais, le modèle linéaire avec ou sans régularisation Ridge doit passer par le centre de masse des données ($\bar{X}_s, \bar{Y}_s$). Vérifier que c'est bien le cas.
+	\item Comparer $\hat{\beta}_{\text{MCO}}$ et $\hat{\beta}_{\text{Ridge}}$. Que conclure sur l'effet de la régression Ridge dans cet exemple ?
+	\item Calculer le coefficient de corrélation (Pearson) de $X_s$ et $Y_s$. Que remarquez-vous ?
+	\item En utilisant $\hat{\beta}_{\text{MCO}}$, calculer les prédictions $\hat{Y}_s$ pour toutes les données d'apprentissage.
+	\item Calculer les résidus à partir de la réponse à la question précédente.
+	\item En déduire le coefficient de détermination $R^2$.
+	\item Calculer la corrélation (Pearson) de $\hat{Y}_s$ et de $Y_s$.
+	\item Comparer le coefficient de détermination $R^2$ au carré des corrélations calculées aux questions 7 et 11.
+	\item En utilisant la régression Ridge, on trouve un coefficient de détermination $R^2 = 0.8847$. Qu'en concluez-vous ?
+\end{enumerate}
+	
+\end{exercice}
+	
+\end{document}
