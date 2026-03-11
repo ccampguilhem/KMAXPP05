@@ -366,9 +366,9 @@ On dispose des données suivantes pour des joueurs de rugby:
 		\[
 		\begin{aligned}
 			\Cov(\hat{Y}_s, Y_s) &= \frac{1}{4} \sum_{i=1}^4 (\hat{y}_{s,i} - \bar{\hat{y}}_s)(y_{s,i} - \bar{y}_s) \\
-			&= \frac{1}{4} [ (-1.344)(-1.4) + (-0.192)(-0.2) + (0.192)(0.2) + (1.344)(1.4) ] \\
-			&= \frac{1}{4} [ 1.8816 + 0.0384 + 0.0384 + 1.8816 ] \\
-			&= \frac{1}{4} [ 3.84 ] = 0.96
+			&= \frac{1}{4} [ (-1.344)(-1.4) + (-0.192)(0.2) + (0.192)(-0.2) + (1.344)(1.4) ] \\
+			&= \frac{1}{4} [ 1.8816 - 0.0384 - 0.0384 + 1.8816 ] \\
+			&= \frac{1}{4} [ 3.6864 ] = 0.9216
 		\end{aligned}
 		\]
 		(Note : $\bar{\hat{y}}_s = 0$ et $\bar{y}_s = 0$).
@@ -385,7 +385,7 @@ On dispose des données suivantes pour des joueurs de rugby:
 		D'où $\sigma_{\hat{Y}_s} = \sqrt{0.9216} = 0.96$.
 
 		Le coefficient de corrélation de Pearson est donc :
-		\[ \rho(\hat{Y}_s, Y_s) = \frac{\Cov(\hat{Y}_s, Y_s)}{\sigma_{\hat{Y}_s} \sigma_{Y_s}} = \frac{0.96}{0.96 \times 1} = 1 \]
+		\[ \rho(\hat{Y}_s, Y_s) = \frac{\Cov(\hat{Y}_s, Y_s)}{\sigma_{\hat{Y}_s} \sigma_{Y_s}} = \frac{0.9216}{0.96 \times 1} = 0.9216 \]
 		\textit{Attention :} Dans le cas d'une régression linéaire simple MCO, $\hat{Y}$ est colinéaire à $Y$ projeté, donc la corrélation est maximale si on considère l'alignement, mais ici calculons $R^2$.
 
 		Reprenons le calcul plus simplement avec les propriétés théoriques :
