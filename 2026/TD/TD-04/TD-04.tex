@@ -95,6 +95,84 @@
 
 	\end{exercice}
 
+\begin{solution}
+	\begin{enumerate}
+		\item Le jeu de données contient 20 pompes : 12 sont défaillantes ($y_{\text{test}}=1$) et 8 ont un fonctionnement nominal ($y_{\text{test}}=0$). 
+		Pour le seuil $\theta = 0.65$, l'algorithme prédit $\hat{y}=1$ si $\hat{p} \ge 0.65$. Il y a 9 prédictions positives. Parmi celles-ci, 8 correspondent à une vraie défaillance et 1 correspond à un fonctionnement nominal. Il y a 11 prédictions négatives ($\hat{p} < 0.65$), dont 7 sont de vrais négatifs et 4 sont des faux négatifs.
+		
+		La matrice de confusion est :
+		\begin{table}[h]
+			\centering
+			\begin{tabular}{|l|c|c|}
+				\hline
+				& Réel : 0 (Nominal) & Réel : 1 (Panne) \\
+				\hline
+				Prédit : 0 & VN = 7 & FN = 4 \\
+				\hline
+				Prédit : 1 & FP = 1 & VP = 8 \\
+				\hline
+			\end{tabular}
+		\end{table}
+
+		\item Le Taux de Vrais Positifs (TVP) et le Taux de Faux Positifs (TFP) se calculent par :
+		\[
+		\text{TVP} = \frac{\text{VP}}{\text{VP} + \text{FN}} \quad \text{et} \quad \text{TFP} = \frac{\text{FP}}{\text{FP} + \text{VN}}
+		\]
+		Avec un nombre total de positifs réels à $12$ et de négatifs réels à $8$ :
+		\begin{itemize}
+			\item \textbf{Pour $\theta = 0.15$} : Il y a 17 prédictions positives (dont 12 VP et 5 FP) et 3 prédictions négatives (3 VN, 0 FN).
+			\[
+			\text{TVP} = \frac{12}{12} = 1 \quad \text{et} \quad \text{TFP} = \frac{5}{8} = 0.625
+			\]
+			\item \textbf{Pour $\theta = 0.65$} : D'après la matrice précédente, VP = 8 et FP = 1.
+			\[
+			\text{TVP} = \frac{8}{12} \approx 0.667 \quad \text{et} \quad \text{TFP} = \frac{1}{8} = 0.125
+			\]
+			\item \textbf{Pour $\theta = 0.85$} : Il y a 5 prédictions positives, toutes sont de vraies pannes (5 VP, 0 FP).
+			\[
+			\text{TVP} = \frac{5}{12} \approx 0.417 \quad \text{et} \quad \text{TFP} = \frac{0}{8} = 0
+			\]
+		\end{itemize}
+
+		\item Le facteur de Bayes $\text{BF}_{10}(\hat{y} = 1)$ pour une prédiction positive représente le rapport de vraisemblance entre la défaillance et le fonctionnement nominal. Il est équivalent au rapport entre le TVP et le TFP :
+		\[
+		\text{BF}_{10}(\hat{y} = 1) = \frac{P(\hat{y} = 1 \mid \text{défaillance})}{P(\hat{y} = 1 \mid \text{nominal})} = \frac{\text{TVP}}{\text{TFP}}
+		\]
+		\begin{itemize}
+			\item Pour $\theta = 0.15$ : $\text{BF}_{10} = \frac{1}{0.625} = 1.6$
+			\item Pour $\theta = 0.65$ : $\text{BF}_{10} = \frac{8/12}{1/8} = \frac{16}{3} \approx 5.33$
+			\item Pour $\theta = 0.85$ : $\text{BF}_{10} = \frac{5/12}{0} \to +\infty$ (car le TFP est nul)
+		\end{itemize}
+
+		\item L'équipe de contrôle préfère maximiser le Taux de Vrais Positifs, c'est-à-dire minimiser les faux négatifs au prix de tests manuels inutiles. Elle veut s'assurer de ne rater aucune défaillance ($\text{TVP} = 1$). Elle devrait donc choisir le seuil \textbf{$\theta = 0.15$}.
+
+		\item La probabilité a priori de défaillance est $P(D) = \frac{1}{1000}$, ce qui donne une cote a priori (prior odds) de :
+		\[
+		O(D) = \frac{1/1000}{999/1000} = \frac{1}{999}
+		\]
+		Avec le seuil $\theta = 0.15$, le facteur de Bayes est $\text{BF}_{10} = 1.6$.
+		Après un premier test positif, la cote a posteriori est :
+		\[
+		O(D \mid \hat{y}_1=1) = \text{BF}_{10} \times O(D) = 1.6 \times \frac{1}{999}
+		\]
+		Après un second test positif indépendant avec le même algorithme, la nouvelle cote a posteriori est :
+		\[
+		O(D \mid \hat{y}_1=1, \hat{y}_2=1) = \text{BF}_{10} \times O(D \mid \hat{y}_1=1) = 1.6 \times \frac{1.6}{999} = \frac{2.56}{999}
+		\]
+		On convertit cette cote en probabilité de défaillance :
+		\[
+		P(D \mid 2\text{ tests positifs}) = \frac{O}{1 + O} = \frac{2.56/999}{1 + 2.56/999} = \frac{2.56}{1001.56} \approx 0.002556
+		\]
+		La probabilité que la pompe n'ait \textit{aucune} défaillance (le contrôle manuel ne révèle rien) est le complément :
+		\[
+		P(\text{Nominal} \mid 2\text{ tests positifs}) = 1 - 0.002556 = 0.997444
+		\]
+		La probabilité que le contrôle manuel ne révèle aucune défaillance est donc de \textbf{99.74\%}.
+
+		\item \textbf{Non}, ce processus n'est pas efficace. Même en effectuant le test deux fois, la probabilité que la pompe ciblée soit effectivement défectueuse reste minuscule ($\approx 0.26\%$). Cela signifie que plus de 99.7\% des contrôles manuels approfondis demandés seront inutiles. L'algorithme a un taux de faux positifs bien trop élevé en regard de la rareté de la panne sur le terrain.
+	\end{enumerate}
+\end{solution}
+
 	\begin{exercice}
 		Le télescope Kepler a pour mission de détecter des exoplanètes. Une des difficultés est de différencier les exoplanètes des naines brunes. Les naines brunes sont des corps célestes trop massifs pour être considérés comme des exoplanètes mais pas assez massifs pour avoir pu initier des réactions de fusion d'hydrogène comme notre soleil. Pour effectuer ces détections les astrophysiciens se reposent sur plusieurs critères clé:
 
