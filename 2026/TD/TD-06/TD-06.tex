@@ -4,7 +4,7 @@
 
 	\makeheader{2025}{2026}
 	\tdtitle{6}{Analyse en Composantes Principales}
-	
+
 	\begin{exercice}
 		On donne une matrice de covariance $\Sigma_1 \in \mathcal{M}_{2,2}(\R)$:
 		\begin{equation*}
@@ -12,7 +12,7 @@
 		\end{equation*}
 		On notera $\lambda_1^{(1)}$ et $\lambda_2^{(1)}$ les valeurs propres de cette matrice, avec $\lambda_1^{(1)} \ge \lambda_2^{(1)}$.
 		Les vecteurs propres associés seront notés $u_1^{(1)}$ et $u_2^{(1)}$.
-		
+
 		Soit une seconde matrice $\Sigma_2 \in \mathcal{M}_{3,3}(\R)$:
 		\begin{equation*}
 			\Sigma_2 = \frac{1}{3}\begin{pmatrix}3 & 2 & 0 \\ 2 & 3 & 0 \\ 0 & 0 & 3\end{pmatrix}
@@ -35,7 +35,31 @@
 			\item Comparer les valeurs et vecteurs propres des deux matrices $\Sigma_1$ et $\Sigma_2$. Quelle interprétation peut être donnée ?
 		\end{enumerate}
 	\end{exercice}
-	
+
+\begin{solution}
+	\begin{enumerate}
+		\item L'équation caractéristique de $\Sigma_1$ est $\det(\Sigma_1 - \lambda I) = 0$.
+		\begin{align*}
+			\left(\frac{3}{3} - \lambda\right)^2 - \left(\frac{2}{3}\right)^2 = 0 &\iff (1 - \lambda)^2 = \frac{4}{9} \\
+			&\iff 1 - \lambda = \pm \frac{2}{3} \implies \lambda = 1 \mp \frac{2}{3}
+		\end{align*}
+		Les valeurs propres sont donc $\lambda_1^{(1)} = \frac{5}{3}$ et $\lambda_2^{(1)} = \frac{1}{3}$.
+
+		Pour $\lambda_1^{(1)} = \frac{5}{3}$, on résout $\Sigma_1 u = \frac{5}{3} u$ :
+		\[ 3x + 2y = 5x \implies 2x = 2y \implies x = y \]
+		Le vecteur propre normalisé associé est $u_1^{(1)} = \frac{1}{\sqrt{2}}\begin{pmatrix}1 \\ 1\end{pmatrix}$.
+
+		Pour $\lambda_2^{(1)} = \frac{1}{3}$, on résout $\Sigma_1 u = \frac{1}{3} u$ :
+		\[ 3x + 2y = x \implies 2x = -2y \implies x = -y \]
+		Le vecteur propre normalisé associé est $u_2^{(1)} = \frac{1}{\sqrt{2}}\begin{pmatrix}1 \\ -1\end{pmatrix}$.
+
+		\item La matrice $\Sigma_2$ est une matrice diagonale par blocs. Le bloc inférieur droit est simplement $3/3 = 1$. La seconde valeur propre $\lambda = 1$ (car $\lambda_1^{(1)} > 1 > \lambda_2^{(1)}$) correspond au vecteur propre $u_2^{(2)} = (0, 0, 1)^T$. 
+		Cela s'interprète physiquement par le fait que la troisième variable est totalement indépendante (décorrélée) des deux premières et possède une variance de $1$.
+
+		\item En comparant les éléments, la matrice $\Sigma_2$ intègre le problème $\Sigma_1$ sur les deux premières dimensions. Le spectre de $\Sigma_2$ est simplement l'union du spectre de $\Sigma_1$ et de la variance de la 3ème variable (qui vaut $1$). Les premier et troisième vecteurs propres de $\Sigma_2$ sont identiques à ceux de $\Sigma_1$ (complétés par un zéro sur la 3ème dimension), soulignant que les axes de variation maximale du sous-groupe (variable 1 et 2) restent inchangés.
+	\end{enumerate}
+\end{solution}
+
 	\begin{exercice}
 		Toute matrice à valeurs réelles $M \in \mathcal{M}_{n,m}(\R)$, avec $n \ge m$, admet une décomposition en valeurs singulières (ou SVD pour Singular Value Decomposition):
 		\begin{equation*}
@@ -59,11 +83,11 @@
 		\begin{equation*}
 			\Sigma = \frac{1}{n} X^T X
 		\end{equation*}
-		
+
 		Enfin, on dispose de $n$ observations des caractéristiques de sortie associées aux caractéristiques d'entrées $Y \in \mathcal{M}_{n,1}(\R)$. On s'intéressera alors également au problème de régression linéaire $Y = X \beta + \epsilon$. \\
-		
+
 		\noindent \textit{Indice: Dans cet exercice, penser à utiliser la décomposition spectrale de $\Sigma$}.
-		
+
 		\begin{enumerate}
 			\item On prend $X \in \mathcal{M}_{100,4}(\R)$. Une décomposition en valeurs singulières de $X$ nous a donné $s = \begin{pmatrix}\sqrt{200} & \sqrt{150} & \sqrt{50} & 0 \end{pmatrix}$. Calculer les valeurs propres de $\Sigma$.
 			\item Calculer la somme des valeurs propres. Ce résultat était-il prévisible ?
@@ -76,32 +100,67 @@
 			\item En déduire une expression de l'estimateur $\beta$, que l'on notera $\hat{\beta}$. Cette solution est appelée régression en composantes principales.
 		\end{enumerate}
 	\end{exercice}
-	
+
+\begin{solution}
+	\begin{enumerate}
+		\item En remplaçant $X$ par sa décomposition SVD dans la formule de la covariance, on obtient :
+		\[ \Sigma = \frac{1}{n} (V S U^T)^T (V S U^T) = \frac{1}{n} U S^T V^T V S U^T = U \left(\frac{S^T S}{n}\right) U^T \]
+		Les valeurs propres de $\Sigma$ sont donc $\lambda_i = \frac{s_i^2}{n}$. 
+		Avec $n = 100$, on calcule :
+		\[ \lambda_1 = \frac{200}{100} = 2, \quad \lambda_2 = \frac{150}{100} = 1.5, \quad \lambda_3 = \frac{50}{100} = 0.5, \quad \lambda_4 = 0 \]
+
+		\item La somme des valeurs propres vaut $\sum \lambda_i = 2 + 1.5 + 0.5 + 0 = 4$.
+		Ce résultat était parfaitement prévisible. La somme des valeurs propres de la matrice de covariance est égale à sa trace, qui est la somme des variances des variables. Comme on dispose de $4$ caractéristiques de variance unitaire, la somme vaut $4 \times 1 = 4$.
+
+		\item La 4\textsuperscript{ème} valeur propre est nulle ($\lambda_4 = 0$). Cela signifie qu'il n'y a aucune variance selon ce 4\textsuperscript{ème} axe principal. Les colonnes de $X$ sont linéairement dépendantes (multicolinéarité parfaite) ; les données résident en réalité dans un sous-espace de dimension 3.
+
+		\item L'estimateur des moindres carrés purs est donné par $\hat{\beta} = (X^T X)^{-1} X^T Y$. Puisqu'il existe une valeur propre nulle, le déterminant de $\Sigma$ (et donc de $X^T X$) est nul. La matrice $X^T X$ n'est pas inversible. Le système est sous-déterminé et admet une infinité de solutions (pas de solution unique).
+
+		\item La matrice de passage vers les composantes principales correspond aux colonnes de $U$ associées aux plus grandes valeurs propres. Soit $U_3 = [u_1, u_2, u_3] \in \mathcal{M}_{4,3}(\R)$ contenant les 3 premiers vecteurs propres de $\Sigma$. La nouvelle matrice projetée s'écrit :
+		\[ Z = X U_3 \]
+
+		\item La fraction de variance conservée est le ratio entre la somme des valeurs propres retenues et la somme totale :
+		\[ \frac{\lambda_1 + \lambda_2 + \lambda_3}{\sum_{i=1}^4 \lambda_i} = \frac{2 + 1.5 + 0.5}{4} = \frac{4}{4} = 1 = 100\% \]
+		Le changement de base s'effectue sans aucune perte d'information.
+
+		\item Calculons $Z^T Z$ :
+		\[ Z^T Z = (X U_3)^T (X U_3) = U_3^T X^T X U_3 \]
+		Comme $X^T X = n \Sigma$, par définition des vecteurs propres orthogonaux, $U_3^T (n\Sigma) U_3$ est une matrice diagonale contenant les valeurs propres de $X^T X$, soit $n \lambda_i = s_i^2$ :
+		\[ Z^T Z = \begin{pmatrix} 200 & 0 & 0 \\ 0 & 150 & 0 \\ 0 & 0 & 50 \end{pmatrix} \]
+
+		\item Dans la nouvelle base, la matrice $Z^T Z$ est diagonale, donc triviale à inverser. L'estimateur OLS est :
+		\[ \hat{\beta}^{'} = (Z^T Z)^{-1} Z^T Y = \begin{pmatrix} \frac{1}{200} & 0 & 0 \\ 0 & \frac{1}{150} & 0 \\ 0 & 0 & \frac{1}{50} \end{pmatrix} Z^T Y \]
+
+		\item Nous savons que $Y = Z \beta^{'} + \epsilon$ et $Z = X U_3$, donc $Y = X (U_3 \beta^{'}) + \epsilon$. Par identification avec $Y = X \beta + \epsilon$, on peut définir notre estimateur $\hat{\beta}$ :
+		\[ \hat{\beta} = U_3 \hat{\beta}^{'} \]
+	\end{enumerate}
+\end{solution}
+
 	\begin{exercice}
 		On s'intéresse à un afficheur digital permettant de représenter 4 symboles: \textit{haut}, \textit{bas}, \textit{gauche} et \textit{droite}. Ces afficheurs peuvent être représentés par des images ou des matrices comme suit:
-		
+
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[height=0.1\linewidth]{Images/afficheur_digital_1}
 			\label{fig:afficheur_digital_1}
 		\end{figure}
-		
+
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[height=0.1\linewidth]{Images/afficheur_digital_2}
 			\label{fig:afficheur_digital_2}
 		\end{figure}
-		
+
 		On notera $X \in \mathcal{M}_{4,4}(\R)$ la matrice centrée construite par empilement vertical des aplatissements (dans le sens de lecture de gauche vers la droite, du haut vers le bas) des matrices associées aux différents symboles.
-		
+
 		On donne les valeurs propres et les vecteurs propres associés de la matrice de covariance des colonnes de X:
-		
+
 		\begin{equation*}
 			\lambda = \begin{pmatrix}
 				1/2 & 1/2 & 0 & 0
 			\end{pmatrix}
 		\end{equation*}
-		
+
 		\begin{equation*}
 			\begin{aligned}
 				u_1 &= \begin{pmatrix} -\sqrt{2}/2 & 0 & 0 & \sqrt{2}/2 \end{pmatrix}^T \\
@@ -110,7 +169,7 @@
 				u_4 &= \begin{pmatrix} -\sqrt{2}/2 & 0 & 0 & -\sqrt{2}/2\end{pmatrix}^T
 			\end{aligned}	
 		\end{equation*}
-		
+
 		\begin{enumerate}
 			\item Calculer une image moyenne.
 			\item Calculer la matrice $X$ des observations.
@@ -121,5 +180,57 @@
 			\item En se basant sur la question précédente, est ce qu'utiliser la première composante suffit à assurer une compression sans perte ? Si non, que faudrait il faire ?
 		\end{enumerate}		
 	\end{exercice}
-	
+
+\begin{solution}
+	\noindent \textit{Analyse préliminaire :} Les 4 symboles (Haut, Bas, Gauche, Droite) sur un afficheur $2\times 2$ peuvent être modélisés de manière binaire (1 pour allumé, 0 pour éteint).
+	Haut : $[1, 1; 0, 0] \implies x_H = (1, 1, 0, 0)$ \\
+	Bas : $[0, 0; 1, 1] \implies x_B = (0, 0, 1, 1)$ \\
+	Gauche : $[1, 0; 1, 0] \implies x_G = (1, 0, 1, 0)$ \\
+	Droite : $[0, 1; 0, 1] \implies x_D = (0, 1, 0, 1)$
+
+	\begin{enumerate}
+		\item Chaque pixel est allumé dans 2 symboles sur 4. L'image moyenne aplatie est donc :
+		\[ \bar{x} = (0.5, 0.5, 0.5, 0.5) \]
+		Ce qui correspond à la matrice moyenne $\begin{pmatrix} 0.5 & 0.5 \\ 0.5 & 0.5 \end{pmatrix}$.
+
+		\item On construit la matrice centrée $X$ en soustrayant $\bar{x}$ à chaque vecteur aplati. L'empilement vertical donne :
+		\[ X = \begin{pmatrix} 
+		1 - 0.5 & 1 - 0.5 & 0 - 0.5 & 0 - 0.5 \\
+		0 - 0.5 & 0 - 0.5 & 1 - 0.5 & 1 - 0.5 \\
+		1 - 0.5 & 0 - 0.5 & 1 - 0.5 & 0 - 0.5 \\
+		0 - 0.5 & 1 - 0.5 & 0 - 0.5 & 1 - 0.5
+		\end{pmatrix} = \begin{pmatrix} 
+		0.5 & 0.5 & -0.5 & -0.5 \\
+		-0.5 & -0.5 & 0.5 & 0.5 \\
+		0.5 & -0.5 & 0.5 & -0.5 \\
+		-0.5 & 0.5 & -0.5 & 0.5
+		\end{pmatrix} \]
+		\textit{Note : les lignes représentent respectivement les symboles Haut, Bas, Gauche et Droite}.
+
+		\item Le vecteur centré du symbole \textit{gauche} est la 3ème ligne de $X$ : $\tilde{x}_G = (0.5, -0.5, 0.5, -0.5)$.
+		Le score $Z_G = (\tilde{x}_G \cdot u_1, \tilde{x}_G \cdot u_2)$ s'obtient par projection :
+		\begin{align*}
+			z_1 &= 0.5\left(\frac{-\sqrt{2}}{2}\right) - 0.5(0) + 0.5(0) - 0.5\left(\frac{\sqrt{2}}{2}\right) = -\frac{\sqrt{2}}{4} - \frac{\sqrt{2}}{4} = -\frac{\sqrt{2}}{2} \\
+			z_2 &= 0.5(0) - 0.5\left(\frac{\sqrt{2}}{2}\right) + 0.5\left(-\frac{\sqrt{2}}{2}\right) - 0.5(0) = -\frac{\sqrt{2}}{4} - \frac{\sqrt{2}}{4} = -\frac{\sqrt{2}}{2}
+		\end{align*}
+		Le score $Z$ est $\left(-\frac{\sqrt{2}}{2}, -\frac{\sqrt{2}}{2}\right)$.
+
+		\item Le vecteur centré du symbole \textit{haut} est $\tilde{x}_H = (0.5, 0.5, -0.5, -0.5)$. 
+		La projection sur la 1ère composante $u_1$ donne :
+		\[ Z_{H,1} = 0.5\left(\frac{-\sqrt{2}}{2}\right) + 0.5(0) - 0.5(0) - 0.5\left(\frac{\sqrt{2}}{2}\right) = -\frac{\sqrt{2}}{2} \]
+
+		\item La reconstruction centrée sur le premier axe est $\tilde{x}_{H\_rec} = Z_{H,1} \cdot u_1^T$ :
+		\[ \tilde{x}_{H\_rec} = -\frac{\sqrt{2}}{2} \begin{pmatrix} -\frac{\sqrt{2}}{2} & 0 & 0 & \frac{\sqrt{2}}{2} \end{pmatrix} = \begin{pmatrix} \frac{2}{4} & 0 & 0 & -\frac{2}{4} \end{pmatrix} = \begin{pmatrix} 0.5 & 0 & 0 & -0.5 \end{pmatrix} \]
+		Pour obtenir la reconstruction $\hat{X}_H$ finale, on rajoute la moyenne $\bar{x}$ :
+		\[ \hat{X}_H = (0.5, 0, 0, -0.5) + (0.5, 0.5, 0.5, 0.5) = (1, 0.5, 0.5, 0) \]
+
+		\item L'erreur de reconstruction se calcule via la norme euclidienne au carré de la différence entre l'image originale $x_H = (1, 1, 0, 0)$ et la reconstruction $\hat{X}_H$ :
+		\[ \text{Erreur} = \| x_H - \hat{X}_H \|^2 = \| (0, 0.5, -0.5, 0) \|^2 = 0^2 + 0.5^2 + (-0.5)^2 + 0^2 = 0.5 \]
+		\textit{(Si on demande juste l'écart non carré, l'erreur vaut $\sqrt{0.5} = \frac{\sqrt{2}}{2}$)}.
+
+		\item Non, utiliser la première composante ne suffit pas (l'erreur de reconstruction n'est pas nulle : 0.5 au lieu de 0). En regardant les valeurs propres, $\lambda_1 = 1/2$, ce qui signifie que $u_1$ n'explique que $50\%$ de la variance totale.
+		Pour assurer une compression sans perte, il faut conserver toutes les composantes associées à une valeur propre non nulle. Ici, il faudrait conserver les \textbf{deux premières composantes} ($u_1$ et $u_2$), dont la somme des valeurs propres ($1/2 + 1/2 = 1$) explique $100\%$ de la variance.
+	\end{enumerate}
+\end{solution}
+
 \end{document}
