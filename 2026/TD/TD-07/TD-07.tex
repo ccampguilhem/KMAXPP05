@@ -1,34 +1,86 @@
 \documentclass[solutions]{../exercices}
-
+\usepackage{bbm}
 \begin{document}
-	
+
 	\makeheader{2025}{2026}
 	\tdtitle{7}{Arbres de Décision}
-		
+
 	\begin{exercice}
 		Nous disposons d'une urne contenant des balles de différentes couleurs : rouge (R), vert (V) et bleu (B). On notera $X$ la variable aléatoire correspondant à la couleur d'une balle tirée au hasard de l'urne. Cette variable a trois issues possibles : $X \in \{\text{R}, \text{V}, \text{B}\}$. 
-		
+
 		\textit{Note : Pour tous les calculs de cet exercice, nous utiliserons le logarithme naturel vu en cours plutôt que le logarithme en base 2 qui est utilisé en théorie de l'information.}
-		
+
 		\begin{enumerate}
 			\item On nous affirme (à tort ou à raison) que la loi de probabilité de l'urne est la distribution $Q$ suivante : $Q(X=\text{R}) = 0.1$, $Q(X=\text{V}) = 0.6$ et $Q(X=\text{B}) = 0.3$. 
 			Quelles sont les valeurs de surprise (quantité d'information) associées au tirage d'une balle rouge, d'une balle verte et d'une balle bleue ?
-			
+
 			\item En conservant l'hypothèse que la distribution de l'urne est $Q$, on réalise un tirage avec remise de 10 balles qui donne la séquence suivante : $\{\text{R, V, V, B, V, R, V, V, B, V}\}$. 
 			Déduisez-en la distribution empirique de cet échantillon (que l'on notera $\hat{P}$), puis calculez l'entropie croisée $H(\hat{P}, Q)$.
-			
+
 			\item On ouvre finalement l'urne pour inspecter son contenu réel. Elle dispose exactement de 20 balles : 3 rouges, 12 vertes et 5 bleues. 
 			Soit $P$ la véritable distribution de l'urne. Calculez son entropie exacte $H(P)$.
-			
+
 			\item Quelle est la divergence de Kullback-Leibler $D_{KL}(P \parallel Q)$ mesurant l'écart entre la véritable distribution de l'urne ($P$) et la distribution supposée à la première question ($Q$) ? 
-			
+
 			\item Quelle aurait été cette divergence KL $D_{KL}(P \parallel Q)$ si l'urne avait contenu 20 balles: 2 rouges, 12 vertes et 6 bleues ?
 		\end{enumerate}
 	\end{exercice}
-	
+\begin{solution}
+\begin{enumerate}
+    \item La surprise (ou quantité d'information) associée à la réalisation d'un événement $X=x$ de probabilité $P(X=x)$ est donnée par $I(x) = -\ln P(X=x)$.
+    Pour la distribution affirmée $Q$ :
+    \begin{itemize}
+        \item Balle rouge : $I(X=\text{R}) = -\ln Q(X=\text{R}) = -\ln(0.1) \approx 2.303$
+        \item Balle verte : $I(X=\text{V}) = -\ln Q(X=\text{V}) = -\ln(0.6) \approx 0.511$
+        \item Balle bleue : $I(X=\text{B}) = -\ln Q(X=\text{B}) = -\ln(0.3) \approx 1.204$
+    \end{itemize}
+    \item Le tirage comporte $10$ balles au total : $2$ rouges, $6$ vertes et $2$ bleues.
+    La distribution empirique $\hat{P}$ est donc :
+    \begin{itemize}
+        \item $\hat{P}(X=\text{R}) = 0.2$
+        \item $\hat{P}(X=\text{V}) = 0.6$
+        \item $\hat{P}(X=\text{B}) = 0.2$
+    \end{itemize}
+    L'entropie croisée de $\hat{P}$ par rapport à $Q$ correspond à l'espérance de la surprise selon $Q$ sur les événements issus de la distribution empirique $\hat{P}$ :
+    \begin{align*}
+        H(\hat{P}, Q) &= - \sum_{x \in \{\text{R, V, B}\}} \hat{P}(X=x) \ln Q(X=x) \\
+        &= -\big(0.2 \ln(0.1) + 0.6 \ln(0.6) + 0.2 \ln(0.3)\big) \\
+        &\approx 0.2 \times 2.303 + 0.6 \times 0.511 + 0.2 \times 1.204 \\
+        &\approx 1.008
+    \end{align*}
+    \item La véritable urne contient 20 balles (3 rouges, 12 vertes, 5 bleues). La véritable distribution $P$ est donc :
+    $P(X=\text{R}) = \frac{3}{20} = 0.15$, $P(X=\text{V}) = \frac{12}{20} = 0.6$, et $P(X=\text{B}) = \frac{5}{20} = 0.25$.
+    L'entropie exacte de $P$ est :
+    \begin{align*}
+        H(P) &= - \sum_{x \in \{\text{R, V, B}\}} P(X=x) \ln P(X=x) \\
+        &= -\big(0.15 \ln(0.15) + 0.6 \ln(0.6) + 0.25 \ln(0.25)\big) \\
+        &\approx - \big(0.15 \times (-1.897) + 0.6 \times (-0.511) + 0.25 \times (-1.386)\big) \\
+        &\approx 0.285 + 0.307 + 0.347 \\
+        &\approx 0.938
+    \end{align*}
+    \item La divergence de Kullback-Leibler $D_{KL}(P \parallel Q)$ s'exprime comme la différence entre l'entropie croisée $H(P, Q)$ et l'entropie de la vraie distribution $H(P)$ :
+    \begin{equation*}
+        D_{KL}(P \parallel Q) = H(P, Q) - H(P)
+    \end{equation*}
+    Calculons d'abord $H(P, Q)$ (l'entropie croisée entre la vraie distribution et la distribution supposée) :
+    \begin{align*}
+        H(P, Q) &= - \sum_{x \in \{\text{R, V, B}\}} P(X=x) \ln Q(X=x) \\
+        &= -\big(0.15 \ln(0.1) + 0.6 \ln(0.6) + 0.25 \ln(0.3)\big) \\
+        &\approx 0.15 \times 2.303 + 0.6 \times 0.511 + 0.25 \times 1.204 \\
+        &\approx 0.345 + 0.307 + 0.301 \\
+        &\approx 0.953
+    \end{align*}
+    On en déduit :
+    \begin{equation*}
+        D_{KL}(P \parallel Q) \approx 0.953 - 0.938 = 0.015
+    \end{equation*}
+    \item Si l'urne avait contenu 2 rouges, 12 vertes et 6 bleues sur un total de 20 balles, sa distribution exacte aurait été $P_{nouv}(X=\text{R}) = 0.1$, $P_{nouv}(X=\text{V}) = 0.6$ et $P_{nouv}(X=\text{B}) = 0.3$. 
+    Cette distribution est rigoureusement identique à la distribution affirmée $Q$. Dans ce cas de figure, l'écart d'information est nul : on a $H(P_{nouv}, Q) = H(P_{nouv})$, et donc la divergence KL est nulle : $D_{KL}(P_{nouv} \parallel Q) = 0$.
+\end{enumerate}
+\end{solution}
 	\begin{exercice}
 		Pour un problème de classification binaire mono-dimensionnel on dispose des données d'observations suivantes:
-		
+
 		\begin{table}[h]
 			\centering
 			\begin{tabular}{|l|c|c|c|c|}
@@ -41,9 +93,9 @@
 				\hline
 			\end{tabular}
 		\end{table}
-		
+
 		On se propose de résoudre ce problème de classification en utilisant un algorithme AdaBoost combiné à un arbre de décision de profondeur maximale 1, de taille minimum de feuille égale à 1 et d'entropie minimale par feuille fixée à 0. On prendra un taux d'apprentissage $\nu = 1$ pour AdaBoost et on considèrera que l'on utilise une séquence de 2 arbres.
-		
+
 		\begin{enumerate}
 			\item Déterminer les poids initiaux pour les données d'apprentissage.
 			\item On suppose que le premier arbre réalise une découpe en $x^* = 0.1$. Déterminer l'entropie dans les deux branches.
@@ -53,17 +105,100 @@
 			\item Pour le deuxième arbre, considérer une découpe en $x^*=0.1$ et une autre en $x^*=0.5$. Quelle découpe l'arbre va-t-il choisir ? Ce résultat semble-t-il logique ?
 			\item Calculer le poids de vote de ce deuxième arbre.
 			\item Calculer les probabilités prédites pour les classes 0 et 1 pour une donnée d'inférence $x_i = 0.55$.
-			
+
 		\end{enumerate}
 	\end{exercice}
-	
+\begin{solution}
+\begin{enumerate}
+    \item Au début de l'algorithme AdaBoost, toutes les observations ont la même importance. Comme on a 4 observations, le vecteur des poids initiaux est $w_1 = (0.25, 0.25, 0.25, 0.25)$.
+
+    \item Avec une découpe en $x^* = 0.1$, on sépare les données en deux branches :
+    \begin{itemize}
+        \item \textbf{Branche gauche ($x \leq 0.1$)} : ne contient que l'observation 1 (classe 0). L'entropie de cette feuille pure est $H_{gauche} = 0$.
+        \item \textbf{Branche droite ($x > 0.1$)} : contient les observations 2 (classe 1), 3 (classe 1) et 4 (classe 0). Les proportions des classes sont donc $P(Y=1) = \frac{2}{3}$ et $P(Y=0) = \frac{1}{3}$.
+        L'entropie de cette branche est :
+        \begin{equation*}
+            H_{droite} = - \frac{1}{3} \ln\left(\frac{1}{3}\right) - \frac{2}{3} \ln\left(\frac{2}{3}\right) \approx 0.637
+        \end{equation*}
+    \end{itemize}
+    \item L'arbre de profondeur 1 (souche) effectue ses prédictions selon la classe majoritaire de chaque feuille : la feuille gauche prédit 0 et la feuille droite prédit 1.
+    Les prédictions de ce premier arbre $\hat{b}_1(x^{(i)})$ sont :
+    \begin{itemize}
+        \item $\hat{b}_1(x^{(1)}) = 0 \implies$ correct ($y^{(1)}=0$)
+        \item $\hat{b}_1(x^{(2)}) = 1 \implies$ correct ($y^{(2)}=1$)
+        \item $\hat{b}_1(x^{(3)}) = 1 \implies$ correct ($y^{(3)}=1$)
+        \item $\hat{b}_1(x^{(4)}) = 1 \implies$ \textbf{erreur} ($y^{(4)}=0$)
+    \end{itemize}
+    Il y a une seule erreur, sur l'observation 4. L'erreur pondérée vaut la somme des poids des observations mal classées :
+    \begin{equation*}
+        \epsilon_1 = \frac{\sum_{i=1}^4 w_1^{(i)} \mathbbm{1}(\hat{b}_1(x^{(i)}) \neq y^{(i)})}{\sum_{i=1}^4 w_1^{(i)}} = \frac{0.25}{1} = 0.25
+    \end{equation*}
+    \item Le poids de vote pour ce premier arbre est défini par la formule de mise à jour d'AdaBoost pour la classification (avec $K=2 \implies \ln(K-1) = 0$) :
+    \begin{equation*}
+        \alpha_1 = \nu \left(\ln\left(\frac{1-\epsilon_1}{\epsilon_1}\right) + \ln(K-1)\right) = 1 \times \ln\left(\frac{1-0.25}{0.25}\right) = \ln(3) \approx 1.099
+    \end{equation*}
+    \item Les poids des observations sont mis à jour en les multipliant par $\exp(\alpha_1)$ si l'observation est mal classée, puis en normalisant :
+    \begin{equation*}
+        \tilde{w}_2^{(i)} = w_1^{(i)} \exp\left(\alpha_1 \mathbbm{1}(\hat{b}_1(x^{(i)}) \neq y^{(i)})\right)
+    \end{equation*}
+    Pour les observations bien classées (1, 2 et 3), le poids reste inchangé avant normalisation : $0.25 \times \exp(0) = 0.25$.
+    Pour l'observation mal classée (4), le poids augmente : $0.25 \times \exp(1.099) \approx 0.25 \times 3 = 0.75$.
+    Le vecteur des nouveaux poids est proportionnel à $(0.25, 0.25, 0.25, 0.75)$, dont la somme fait $1.5$.
+    Après normalisation (division par 1.5), on obtient $w_2 = (\frac{1}{6}, \frac{1}{6}, \frac{1}{6}, \frac{1}{2}) \approx (0.167, 0.167, 0.167, 0.5)$.
+    \textbf{Remarque :} On observe que le poids de la quatrième observation a été multiplié par 2 par rapport à son poids initial (passant de $0.25$ à $0.5$). Le système accorde plus d'importance aux exemples difficiles à prédire.
+    \item Pour l'entraînement du deuxième arbre, étudions les deux découpes en tenant compte des \textbf{poids $w_2$} :
+    \begin{itemize}
+        \item \textbf{Découpe à $x^* = 0.1$ :} 
+        La branche gauche (obs 1) est pure $\implies$ entropie 0. 
+        Pour la branche droite (obs 2, 3, 4), la somme des poids est $0.167 + 0.167 + 0.5 = 0.834$. 
+        Les probabilités pondérées sont $P(Y=1) = \frac{0.167+0.167}{0.834} \approx 0.4$ et $P(Y=0) = \frac{0.5}{0.834} \approx 0.6$. 
+        L'entropie de la branche de droite est $-0.4 \ln(0.4) - 0.6 \ln(0.6) \approx 0.673$.
+        L'entropie pondérée de la découpe s'obtient en pondérant par le poids total de chaque feuille : $\frac{0.167}{1} \times 0 + \frac{0.834}{1} \times 0.673 \approx 0.561$.
+
+        \item \textbf{Découpe à $x^* = 0.5$ :} 
+        La branche droite (obs 4) est pure $\implies$ entropie 0. 
+        Pour la branche gauche (obs 1, 2, 3), la somme des poids est $0.167 \times 3 \approx 0.5$. 
+        Les probabilités pondérées sont $P(Y=1) = \frac{0.167+0.167}{0.5} \approx 0.666$ et $P(Y=0) = \frac{0.167}{0.5} \approx 0.334$. 
+        L'entropie de la branche de gauche est $-0.666 \ln(0.666) - 0.334 \ln(0.334) \approx 0.636$.
+        L'entropie pondérée de la découpe vaut : $\frac{0.5}{1} \times 0.636 + \frac{0.5}{1} \times 0 = 0.318$.
+    \end{itemize}
+    L'entropie pondérée pour la découpe en $x^* = 0.5$ est plus faible ($0.318 < 0.561$). L'arbre va donc choisir la découpe \textbf{$x^* = 0.5$}.
+    C'est un choix très logique : comme l'observation 4 a pris un poids plus important (0.5 sur un total de 1), l'algorithme privilégie une découpe qui la classifie correctement et l'isole.
+    \item L'arbre $\hat{b}_2$ (découpe à $0.5$) prédit la classe majoritaire pondérée de chaque feuille :
+    La feuille gauche ($x \leq 0.5$) prédit la classe 1 (majoritaire avec $P=0.666$).
+    La feuille droite ($x > 0.5$) prédit la classe 0.
+    Les prédictions $\hat{b}_2(x^{(i)})$ sont :
+    \begin{itemize}
+        \item $\hat{b}_2(x^{(1)}) = 1 \implies$ \textbf{erreur} ($y^{(1)}=0$)
+        \item $\hat{b}_2(x^{(2)}) = 1 \implies$ correct ($y^{(2)}=1$)
+        \item $\hat{b}_2(x^{(3)}) = 1 \implies$ correct ($y^{(3)}=1$)
+        \item $\hat{b}_2(x^{(4)}) = 0 \implies$ correct ($y^{(4)}=0$)
+    \end{itemize}
+    Il n'y a qu'une seule erreur, sur l'observation 1. L'erreur pondérée est donc $\epsilon_2 = w_2^{(1)} \approx 0.167$.
+    Le poids de vote du deuxième arbre est :
+    \begin{equation*}
+        \alpha_2 = \ln\left(\frac{1-\epsilon_2}{\epsilon_2}\right) = \ln\left(\frac{1-0.167}{0.167}\right) \approx \ln(4.988) \approx 1.607
+    \end{equation*}
+    \item Regardons les prédictions d'AdaBoost pour la donnée d'inférence $x_i = 0.55$ :
+    \begin{itemize}
+        \item Arbre 1 (découpe à $0.1$) : $0.55 > 0.1$, donc il l'envoie dans sa branche droite et vote pour la \textbf{classe 1} avec un poids $\alpha_1 = 1.099$.
+        \item Arbre 2 (découpe à $0.5$) : $0.55 > 0.5$, donc il l'envoie dans sa branche droite et vote pour la \textbf{classe 0} avec un poids $\alpha_2 = 1.607$.
+    \end{itemize}
+    Les probabilités d'appartenance s'obtiennent par le ratio de la somme des votes pour chaque classe sur la somme de tous les votes :
+    \begin{align*}
+        \hat{P}(Y=1) &= \frac{\alpha_1}{\alpha_1 + \alpha_2} = \frac{1.099}{1.099 + 1.607} \approx 0.406 \\
+        \hat{P}(Y=0) &= \frac{\alpha_2}{\alpha_1 + \alpha_2} = \frac{1.607}{1.099 + 1.607} \approx 0.594
+    \end{align*}
+    La forêt va donc prédire la \textbf{classe 0} avec une probabilité de 0.594.
+\end{enumerate}
+\end{solution}
 	\begin{exercice}
 		Dans l'implémentation de scikit-learn, par défaut, un critère différent de l'entropie est utilisé pour calculer la pureté des feuilles dans les arbres de décision. C'est le critère Gini, noté $G$. Il est défini de la façon suivante pour un problème à $K$ classes:
 		\begin{equation*}
 			G = 1 - \sum_{k=1}^K P(X=k)^2
 		\end{equation*}
 		Ce critère est beaucoup plus rapide à calculer par un ordinateur car il n'implique pas de calculer un logarithme.
-		
+
 		On considère une pièce de monnaie. On note $X$ l'événement aléatoire correspondant au lancer d'une pièce. On considèrera que l'issue positive est \textit{Face} ($k = 1$) et que l'issue négative est \textit{Pile} ($k = 0$). La loi de probabilité de la pièce est une distribution de Bernoulli de paramètre $p$:
 		\begin{equation*}
 			P(X = k) = p^k \left(1 - p\right)^{\left(1 - k\right)}
@@ -78,5 +213,62 @@
 			\item Que conclure pour l'utilisation de ces critères dans les arbres ?
 		\end{enumerate}
 	\end{exercice}
-	
+\begin{solution}
+La distribution de Bernoulli de paramètre $p$ a pour probabilités $P(X=1) = p$ et $P(X=0) = 1-p$.
+\begin{enumerate}
+    \item Calcul de l'entropie et du critère Gini aux bornes :
+    \begin{itemize}
+        \item \textbf{Pour $p = 0$} : l'événement est certain de ne pas arriver ($P(X=1) = 0$, $P(X=0) = 1$).
+        \begin{align*}
+            G &= 1 - (P(X=0)^2 + P(X=1)^2) = 1 - (1^2 + 0^2) = 0 \\
+            H &= -(P(X=0) \ln P(X=0) + P(X=1) \ln P(X=1)) \\
+            &= -(1 \ln 1 + 0 \ln 0) = 0 \quad \text{(en supposant $0 \ln 0 = 0$ par convention)}
+        \end{align*}
+        \item \textbf{Pour $p = 1$} : l'événement est certain de se produire ($P(X=1) = 1$, $P(X=0) = 0$).
+        \begin{align*}
+            G &= 1 - (0^2 + 1^2) = 0 \\
+            H &= -(0 \ln 0 + 1 \ln 1) = 0
+        \end{align*}
+    \end{itemize}
+    \item En fonction de $p$, les expressions de l'entropie et de Gini sont :
+    $G(p) = 1 - \big(p^2 + (1-p)^2\big)$ et $H(p) = -p \ln(p) - (1-p) \ln(1-p)$.
+    Dérivons ces deux fonctions par rapport à $p$ :
+    \begin{align*}
+        \frac{dG}{dp} &= - \Big(2p + 2(1-p)(-1)\Big) = -2p + 2 - 2p = -4p + 2 \\
+        \frac{dH}{dp} &= - \left(1 \cdot \ln(p) + p \cdot \frac{1}{p}\right) - \left(-1 \cdot \ln(1-p) + (1-p) \cdot \frac{-1}{1-p}\right) \\
+        &= -\ln(p) - 1 + \ln(1-p) + 1 \\
+        &= \ln(1-p) - \ln(p) = \ln\left(\frac{1-p}{p}\right)
+    \end{align*}
+    \item Pour trouver les maximums, on annule les dérivées :
+    \begin{align*}
+        \frac{dG}{dp} = 0 &\implies -4p + 2 = 0 \implies 4p = 2 \implies p = \frac{1}{2} \\
+        \frac{dH}{dp} = 0 &\implies \ln\left(\frac{1-p}{p}\right) = 0 \implies \frac{1-p}{p} = 1 \implies 1-p = p \implies p = \frac{1}{2}
+    \end{align*}
+    L'entropie $H$ et le critère de Gini admettent donc tous les deux un maximum en $p = \frac{1}{2}$.
+    \item Étudions le signe des dérivées :
+    \begin{itemize}
+        \item Pour Gini : $\frac{dG}{dp} > 0 \implies -4p + 2 > 0 \implies p < \frac{1}{2}$. Le critère Gini est strictement croissant sur $\left[0, \frac{1}{2}\right[$ et strictement décroissant sur $\left]\frac{1}{2}, 1\right]$.
+        \item Pour l'entropie : $\frac{dH}{dp} > 0 \implies \ln\left(\frac{1-p}{p}\right) > 0 \implies \frac{1-p}{p} > 1 \implies 1-p > p \implies p < \frac{1}{2}$. L'entropie est également strictement croissante sur $\left[0, \frac{1}{2}\right[$ et strictement décroissante sur $\left]\frac{1}{2}, 1\right]$.
+    \end{itemize}
+    Les deux fonctions décrivent une courbure similaire (en forme de cloche). La seule différence notable est leur valeur maximale au point $p=1/2$ : $G(1/2) = 1 - (1/4 + 1/4) = 0.5$ alors que $H(1/2) = -2 \times \frac{1}{2} \ln(\frac{1}{2}) \approx 0.693$.
+    \item En utilisant le développement limité $\ln(x) \approx x - 1$ au voisinage de $x=1$, l'entropie se réécrit :
+    \begin{align*}
+        H &= - \sum_{k=1}^K P(X=k) \ln P(X=k) \\
+        &\approx - \sum_{k=1}^K P(X=k) \big(P(X=k) - 1\big) \\
+        &\approx - \sum_{k=1}^K \big(P(X=k)^2 - P(X=k)\big) \\
+        &\approx \sum_{k=1}^K P(X=k) - \sum_{k=1}^K P(X=k)^2
+    \end{align*}
+    Puisque la somme des probabilités est toujours égale à 1 ($\sum_{k=1}^K P(X=k) = 1$), on obtient :
+    \begin{equation*}
+        H \approx 1 - \sum_{k=1}^K P(X=k)^2
+    \end{equation*}
+    On retombe ainsi exactement sur l'expression du critère de Gini.
+    \item L'approximation ci-dessus est évidemment mathématiquement fausse en $0$ car le développement limité est supposé être fait autour de 1. Cependant, le théorème des croissances comparées stipule que le logarithme croît (ou décroît) moins vite que la fonction polynomiale. Ainsi :
+    \begin{equation*}
+        \lim_{P(X=k) \to 0} P(X=k) \ln P(X=k) = 0
+    \end{equation*}
+    C'est ce qui justifie la convention utilisée de poser $0 \ln 0 = 0$.
+    \item En conclusion, utiliser l'impureté de Gini revient de fait à utiliser une approximation de la fonction entropie qui s'avère précise au voisinage de 0 et de 1. Bien qu'elle diverge de l'entropie sur sa valeur maximale absolue autour de $0.5$, le critère de Gini garde le même comportement (variation, concavité et extremum). Cela guide donc l'arbre vers les mêmes décisions structurelles mais avec des temps de calcul beaucoup plus courts puisqu'il évite l'évaluation coûteuse d'un algorithme de calcul logarithmique.
+\end{enumerate}
+\end{solution}
 \end{document}
